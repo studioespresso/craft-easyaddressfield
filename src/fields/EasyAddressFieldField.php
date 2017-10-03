@@ -45,7 +45,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 		$addressFields = null;
 
 		return Craft::$app->getView()->renderTemplate(
-			'easyaddressfield/_field/_EasyAddressFieldField',
+			'easyaddressfield/_field/_input',
 			[
 				'name' => $this->handle,
 				'value' => $value,
