@@ -8,6 +8,8 @@ use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use yii\db\Schema;
 
 
 class EasyAddressFieldField extends Field implements PreviewableFieldInterface
@@ -15,6 +17,50 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 	public static function displayName(): string
 	{
 		return Craft::t('easyaddressfield', 'Easy Address Field');
+	}
+
+
+	public function getContentColumnType(): string
+	{
+		return Schema::TYPE_TEXT;
+	}
+
+	/**
+	 * @return string
+	 * @throws \yii\base\Exception
+	 * @throws \Twig_Error_Loader
+	 * @throws \RuntimeException
+	 */
+	public function getSettingsHtml(): string
+	{
+		// Render the settings template
+		return Craft::$app->getView()->renderTemplate(
+			'easyaddressfield/_field/_settings',
+			[
+				'field' => $this,
+			]
+		);
+	}
+
+	/**
+	 * @param mixed $value
+	 * @param ElementInterface|null $element
+	 * @return mixed|EasyAddressFieldModel
+	 */
+	public function normalizeValue(
+		$value,
+		ElementInterface $element = null
+	)
+	{
+		if (is_string($value)) {
+			$value = json_decode($value, true);
+		}
+
+		if (is_array($value) && !empty(array_filter($value))) {
+			return new EasyAddressFieldModel($value);
+		}
+
+		return null;
 	}
 
 
@@ -32,7 +78,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 		return $this->renderFormFields($value);
 	}
 
-	protected function renderFormFields(AddressModel $value = null)
+	protected function renderFormFields(EasyAddressFieldModel $value = null)
 	{
 		// Get our id and namespace
 		$id = Craft::$app->getView()->formatInputId($this->handle);

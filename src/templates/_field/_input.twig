@@ -1,1 +1,7 @@
 {% import "_includes/forms" as forms %}
+
+    {{ forms.text({
+        id: name ~ '-postalCode',
+        name: name ~ '[postalCode]',
+        value: value ? value.postalCode : null
+    }) }}
