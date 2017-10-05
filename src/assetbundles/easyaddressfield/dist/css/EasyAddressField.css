@@ -1,0 +1,16 @@
+.form__item {
+    margin-top: 10px;
+}
+
+.form_coords {
+    display: inline;
+    float: left;
+}
+.form_long {
+    width: 49.2%;
+    float: right;
+}
+.form_lat {
+    width: 49.3%;
+    float: left;
+}

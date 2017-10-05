@@ -1,7 +1,83 @@
 {% import "_includes/forms" as forms %}
 
-    {{ forms.text({
-        id: name ~ '-postalCode',
-        name: name ~ '[postalCode]',
-        value: value ? value.postalCode : null
-    }) }}
+<div>
+    <div class="form__row">
+        <div class="form__item">
+            <label for="{{ name ~ '-name' }}">{{ 'Name'|t }}</label>
+            {{ forms.text({
+                id: name ~ '-name',
+                name: name ~ '[name]',
+                value: value ? value.name : null
+            }) }}
+        </div>
+        <div class="form__item">
+            <label for="{{ name ~ '-street' }}">{{ 'Street'|t }}</label>
+            {{ forms.text({
+                id: name ~ '-street',
+                name: name ~ '[street]',
+                value: value ? value.street : null
+            }) }}
+        </div>
+        <div class="form__item">
+            <label for="{{ name ~ '-street2' }}">{{ 'Street'|t }}</label>
+            {{ forms.text({
+                id: name ~ '-street2',
+                name: name ~ '[street2]',
+                value: value ? value.street2 : null
+            }) }}
+        </div>
+        <div class="form__item">
+            <label for="{{ name ~ '-street' }}">{{ 'Street'|t }}</label>
+            {{ forms.text({
+                id: name ~ '-street',
+                name: name ~ '[street]',
+                value: value ? value.street : null
+            }) }}
+        </div>
+        <div class="form__item ">
+            <label for="{{ name ~ '-postalCode' }}">{{ 'Postal code'|t }}</label>
+            {{ forms.text({
+                id: name ~ '-postalCode',
+                name: name ~ '[postalCode]',
+                value: value ? value.postalCode : null
+            }) }}
+        </div>
+        <div class="form__item ">
+            <label for="{{ name ~ '-city' }}">{{ 'City'|t }}</label>
+            {{ forms.text({
+                id: name ~ '-city',
+                name: name ~ '[city]',
+                value: value ? value.city : null
+            }) }}
+        </div>
+        <div class="form__item">
+            <label for="{{ name ~ '-country' }}">{{ 'Country'|t }}</label>
+            {{ forms.text({
+                id: name ~ '-country',
+                name: name ~ '[country]',
+                value: value ? value.country : null
+            }) }}
+        </div>
+    </div>
+
+    {% if fieldSettings.showCoordinates %}
+        <div class="form__row">
+            <div class="form__item form_coords form_lat">
+                <label for="{{ name ~ '-latitude' }}">{{ 'Latitude'|t }}</label>
+                {{ forms.text({
+                    id: name ~ '-latitude',
+                    name: name ~ '[latitude]',
+                    value: value ? value.latitude : null
+                }) }}
+            </div>
+            <div class="form__item form_coords form_long">
+                <label for="{{ name ~ '-longitude' }}">{{ 'Longitude'|t }}</label>
+                {{ forms.text({
+                    id: name ~ '-longitude',
+                    name: name ~ '[longitude]',
+                    value: value ? value.longitude : null
+                }) }}
+            </div>
+        </div>
+    {% endif %}
+</div>

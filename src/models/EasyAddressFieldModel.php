@@ -11,9 +11,12 @@ class EasyAddressFieldModel extends Model {
 		return [
 			[
 				[
+					'name',
 					'street',
-					'street',
+					'street2',
 					'postalCode',
+					'city',
+					'country',
 					'latitude',
 					'longitude',
 				],
@@ -70,5 +73,11 @@ class EasyAddressFieldModel extends Model {
 	 * @var string
 	 */
 	public $street2;
+
+	public $name;
+
+	public $country;
+
+	public $city;
 
 }
