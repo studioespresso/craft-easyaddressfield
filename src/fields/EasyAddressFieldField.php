@@ -6,9 +6,11 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\helpers\Db;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\services\GeoLocationService;
 use yii\db\Schema;
 
 
@@ -27,13 +29,15 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 	);
 
 
+
+
 	public static function displayName(): string {
 		return Craft::t( 'easyaddressfield', 'Easy Address Field' );
 	}
 
 
 	public function getContentColumnType(): string {
-		return Schema::TYPE_TEXT;
+		return Schema::TYPE_STRING;
 	}
 
 	/**
@@ -86,9 +90,11 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 	 * @return mixed|EasyAddressFieldModel
 	 */
 	public function normalizeValue( $value, ElementInterface $element = null ) {
+		$settings = $this->getSettings();
 		if ( is_string( $value ) ) {
 			$value = json_decode( $value, true );
 		}
+
 
 		if ( is_array( $value ) && ! empty( array_filter( $value ) ) ) {
 			return new EasyAddressFieldModel( $value );
@@ -96,6 +102,17 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 
 		return null;
 	}
+
+	public function serializeValue($value, ElementInterface $element = null) {
+		$settings = $this->getSettings();
+		if($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
+			$service = new GeoLocationService();
+			$value = $service->geoLocate($value);
+
+		}
+		return Db::prepareValueForDb($value);
+	}
+
 
 
 	public function getInputHtml( $value, ElementInterface $element = null ): string {

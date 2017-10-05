@@ -39,6 +39,16 @@ class EasyAddressFieldModel extends Model {
 		return $this->latitude;
 	}
 
+	public function toString(): array {
+		if(!empty($this->street)) { $data['street'] = $this->street; }
+		if(!empty($this->street2)) { $data['street2'] = $this->street2; }
+		if(!empty($this->postalCode)) { $data['postalCode'] = $this->postalCode; }
+		if(!empty($this->city)) { $data['city'] = $this->city; }
+		if(!empty($this->country)) { $data['country'] = $this->country; }
+
+		return $data;
+	}
+
 	/**
 	 * Longitude
 	 *
