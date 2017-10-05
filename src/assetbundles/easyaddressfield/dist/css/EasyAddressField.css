@@ -1,16 +1,25 @@
 .form__item {
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.form_coords {
+.form__inline {
     display: inline;
     float: left;
 }
-.form_long {
+
+.form--postalcode {
+    width: 29%;
+    float: left;
+}
+.form--city {
+    width: 69%;
+    float: right;
+}
+.form--long {
     width: 49.2%;
     float: right;
 }
-.form_lat {
+.form--lat {
     width: 49.3%;
     float: left;
 }

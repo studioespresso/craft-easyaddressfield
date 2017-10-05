@@ -3,58 +3,51 @@
 <div>
     <div class="form__row">
         <div class="form__item">
-            <label for="{{ name ~ '-name' }}">{{ 'Name'|t }}</label>
             {{ forms.text({
                 id: name ~ '-name',
                 name: name ~ '[name]',
+                placeholder: 'Name'|t,
                 value: value ? value.name : null
             }) }}
         </div>
         <div class="form__item">
-            <label for="{{ name ~ '-street' }}">{{ 'Street'|t }}</label>
             {{ forms.text({
                 id: name ~ '-street',
                 name: name ~ '[street]',
+                placeholder: 'Street'|t,
                 value: value ? value.street : null
             }) }}
         </div>
         <div class="form__item">
-            <label for="{{ name ~ '-street2' }}">{{ 'Street'|t }}</label>
             {{ forms.text({
                 id: name ~ '-street2',
                 name: name ~ '[street2]',
+                placeholder: 'Street 2'|t,
                 value: value ? value.street2 : null
             }) }}
         </div>
-        <div class="form__item">
-            <label for="{{ name ~ '-street' }}">{{ 'Street'|t }}</label>
-            {{ forms.text({
-                id: name ~ '-street',
-                name: name ~ '[street]',
-                value: value ? value.street : null
-            }) }}
-        </div>
-        <div class="form__item ">
-            <label for="{{ name ~ '-postalCode' }}">{{ 'Postal code'|t }}</label>
+
+        <div class="form__item form__inline form--postalcode">
             {{ forms.text({
                 id: name ~ '-postalCode',
                 name: name ~ '[postalCode]',
+                placeholder: 'Postal code'|t,
                 value: value ? value.postalCode : null
             }) }}
         </div>
-        <div class="form__item ">
-            <label for="{{ name ~ '-city' }}">{{ 'City'|t }}</label>
+        <div class="form__item form__inline form--city">
             {{ forms.text({
                 id: name ~ '-city',
                 name: name ~ '[city]',
+                placeholder: 'City'|t,
                 value: value ? value.city : null
             }) }}
         </div>
         <div class="form__item">
-            <label for="{{ name ~ '-country' }}">{{ 'Country'|t }}</label>
             {{ forms.text({
                 id: name ~ '-country',
                 name: name ~ '[country]',
+                placeholder: 'Country'|t,
                 value: value ? value.country : null
             }) }}
         </div>
@@ -62,19 +55,19 @@
 
     {% if fieldSettings.showCoordinates %}
         <div class="form__row">
-            <div class="form__item form_coords form_lat">
-                <label for="{{ name ~ '-latitude' }}">{{ 'Latitude'|t }}</label>
+            <div class="form__item form__inline form--lat">
                 {{ forms.text({
                     id: name ~ '-latitude',
                     name: name ~ '[latitude]',
+                    placeholder: 'Latitude'|t,
                     value: value ? value.latitude : null
                 }) }}
             </div>
-            <div class="form__item form_coords form_long">
-                <label for="{{ name ~ '-longitude' }}">{{ 'Longitude'|t }}</label>
+            <div class="form__item form__inline form--long">
                 {{ forms.text({
                     id: name ~ '-longitude',
                     name: name ~ '[longitude]',
+                    placeholder: 'Longitude'|t,
                     value: value ? value.longitude : null
                 }) }}
             </div>
