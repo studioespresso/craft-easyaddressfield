@@ -7,6 +7,8 @@ namespace studioespresso\easyaddressfield;
 
 use craft\events\RegisterComponentTypesEvent;
 use craft\services\Fields;
+use craft\web\twig\variables\CraftVariable;
+use studioespresso\easyaddressfield\web\twig\variables\AddressVariable;
 use yii\base\Event;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 
@@ -38,5 +40,11 @@ class Plugin extends \craft\base\Plugin {
 
 			}
 		);
+
+
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
+            $variable = $event->sender;
+            $variable->set('address', AddressVariable::class);
+        });
 	}
 }
