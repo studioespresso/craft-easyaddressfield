@@ -8,7 +8,7 @@ use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\helpers\Db;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
-use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\Plugin;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 use studioespresso\easyaddressfield\services\GeoLocationService;
 use yii\db\Schema;
@@ -123,7 +123,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		$id           = Craft::$app->getView()->formatInputId( $this->handle );
 		$namespacedId = Craft::$app->getView()->namespaceInputId( $id );
 
-		$pluginSettings = EasyAddressField::getInstance()->getSettings();
+		$pluginSettings = Plugin::getInstance()->getSettings();
 		$fieldSettings  = $this->getSettings();
 
 		return $this->renderFormFields( $value );
@@ -135,7 +135,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		$namespacedId = Craft::$app->getView()->namespaceInputId( $id );
 
 		$fieldSettings  = $this->getSettings();
-		$pluginSettings = EasyAddressField::getInstance()->getSettings();
+		$pluginSettings = Plugin::getInstance()->getSettings();
 
 		$fieldLabels   = null;
 		$addressFields = null;

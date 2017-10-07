@@ -6,7 +6,6 @@
 namespace studioespresso\easyaddressfield;
 
 use craft\events\RegisterComponentTypesEvent;
-use craft\base\Plugin;
 use craft\services\Fields;
 use yii\base\Event;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
@@ -17,7 +16,7 @@ use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
  * @author Studio Espresso <support@studioespresso.co>
  * @since  1.0
  */
-class EasyAddressField extends Plugin {
+class Plugin extends \craft\base\Plugin {
 
 	public static $plugin;
 
