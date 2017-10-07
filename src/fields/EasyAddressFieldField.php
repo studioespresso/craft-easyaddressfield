@@ -105,7 +105,11 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 
 	public function serializeValue($value, ElementInterface $element = null) {
 		$settings = $this->getSettings();
-		if($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
+        if (!$value ) {
+            return $value;
+        }
+
+        if($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
 			$service = new GeoLocationService();
 			$value = $service->geoLocate($value);
 
