@@ -1,0 +1,9 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+    label: 'Google API Key'|t,
+    id: 'googleApiKey',
+    name: 'googleApiKey',
+    value: settings['googleApiKey'],
+    errors: settings.getErrors('googleApiKey')
+}) }}
