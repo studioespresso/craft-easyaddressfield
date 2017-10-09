@@ -53,24 +53,22 @@
         </div>
     </div>
 
-    {% if fieldSettings.showCoordinates %}
-        <div class="form__row">
-            <div class="form__item form__inline form--lat">
-                {{ forms.text({
-                    id: name ~ '-latitude',
-                    name: name ~ '[latitude]',
-                    placeholder: 'Latitude'|t,
-                    value: value ? value.latitude : null
-                }) }}
-            </div>
-            <div class="form__item form__inline form--long">
-                {{ forms.text({
-                    id: name ~ '-longitude',
-                    name: name ~ '[longitude]',
-                    placeholder: 'Longitude'|t,
-                    value: value ? value.longitude : null
-                }) }}
-            </div>
+    <div class="form__row {% if not fieldSettings.showCoordinates %}visuallyhidden{% endif %}">
+        <div class="form__item form__inline form--lat">
+            {{ forms.text({
+                id: name ~ '-latitude',
+                name: name ~ '[latitude]',
+                placeholder: 'Latitude'|t,
+                value: value ? value.latitude : null
+            }) }}
         </div>
-    {% endif %}
+        <div class="form__item form__inline form--long">
+            {{ forms.text({
+                id: name ~ '-longitude',
+                name: name ~ '[longitude]',
+                placeholder: 'Longitude'|t,
+                value: value ? value.longitude : null
+            }) }}
+        </div>
+    </div>
 </div>
