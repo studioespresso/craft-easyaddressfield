@@ -10,10 +10,10 @@ use craft\base\model;
  */
 class EasyAddressFieldSettingsModel extends Model
 {
-    /**
-     * @var bool Whether request to APIs should be cached or not
-     */
-    public $googleApiKey;
+	public $googleApiKey;
 
+    public $defaultMapTheme;
+
+    public $defaultMarkerColor;
 
 }

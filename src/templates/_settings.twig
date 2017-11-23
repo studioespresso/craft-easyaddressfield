@@ -7,3 +7,24 @@
     value: settings['googleApiKey'],
     errors: settings.getErrors('googleApiKey')
 }) }}
+
+<hr>
+<h2>{{ 'Look & feel'|t }}</h2>
+<div class="field" id="settings-defaultMapStyle-field">
+    <div class="heading">
+        <label id="settings-defaultMapStyle-label" for="settings-defaultMapStyle">{{ 'Map theme'|t }}</label>
+    </div>
+    {% for theme, label in styleOptions %}
+        <label>
+            <input type="radio" id="defaultMapTheme" name="defaultMapTheme" value="{{ theme }}"
+                   {% if theme == settings.defaultMapTheme %}checked{% endif %}/> {{ label }}
+        </label>
+    {% endfor %}
+</div>
+
+{{ forms.colorField({
+    label: 'Marker color',
+    id: 'defaultMarkerColor',
+    name: 'defaultMarkerColor',
+    value: settings['defaultMarkerColor'] ? settings['defaultMarkerColor'] : '#E50000'})
+}}

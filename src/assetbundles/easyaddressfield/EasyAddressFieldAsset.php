@@ -1,12 +1,4 @@
 <?php
-/**
- * NSM Fields plugin for Craft CMS 3.x
- *
- * Various fields for CraftCMS
- *
- * @link      http://newism.com.au
- * @copyright Copyright (c) 2017 Leevi Graham
- */
 
 namespace studioespresso\easyaddressfield\assetbundles\easyaddressfield;
 
@@ -26,7 +18,6 @@ class EasyAddressFieldAsset extends AssetBundle
     public function init()
     {
         $this->sourcePath = "@studioespresso/easyaddressfield/assetbundles/easyaddressfield/dist";
-
         $this->depends = [
             CpAsset::class,
         ];
