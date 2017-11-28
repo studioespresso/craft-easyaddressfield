@@ -53,25 +53,17 @@ class AddressVariable
 			'style'   => $this->getMapStyle( $style ),
 		);
 		if ( ! is_array( $data ) ) {
-			$lat      = $data['latitude'];
-			$lng      = $data['longitude'];
-			$location = array(
-				'center'  => $lat . ',' . $lng,
-				'markers' => 'color:' . $markerColor . '|' . $lat . ',' . $lng,
-
-			);
-			$image    = $baseLink . http_build_query( array_merge( $params, $location ) );
-
-		} else {
-			$location = '';
-			foreach ( $data as $address ) {
-				$lat      = $address['latitude'];
-				$lng      = $address['longitude'];
-				$location .= '&markers=color:' . $markerColor . '|' . $lat . ',' . $lng;
-			}
-			$image = $baseLink . http_build_query( $params ) . $location;
+			$data = [$data];
 		}
 
+		$location = '';
+		foreach ( $data as $address ) {
+			$lat      = $address['latitude'];
+			$lng      = $address['longitude'];
+			$location .= '&markers=color:' . $markerColor . '|' . $lat . ',' . $lng;
+		}
+		$image = $baseLink . http_build_query( $params ) . $location;
+		
 		return urldecode( $image );
 	}
 
