@@ -14,7 +14,7 @@ class GeoLocationService extends Component
     {
         $pluginSettings = Plugin::getInstance()->getSettings();
         if (!$pluginSettings->googleApiKey) {
-            return false;
+            return $value;
         }
         $apiKey = $pluginSettings->googleApiKey;
         $client = new Client(['base_uri' => 'https://maps.googleapis.com']);
