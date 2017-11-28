@@ -17,7 +17,8 @@
     {% for theme, label in styleOptions %}
         <label>
             <input type="radio" id="defaultMapTheme" name="defaultMapTheme" value="{{ theme }}"
-                   {% if theme == settings.defaultMapTheme %}checked{% endif %}/> {{ label }}
+                   {% if theme == settings.defaultMapTheme %}checked{% endif %}/>
+                    <img src="{{ url }}/{{ theme }}.jpg" height="80">
         </label>
     {% endfor %}
 </div>
@@ -28,3 +29,16 @@
     name: 'defaultMarkerColor',
     value: settings['defaultMarkerColor'] ? settings['defaultMarkerColor'] : '#E50000'})
 }}
+<style>
+    label > input{ /* HIDE RADIO */
+        visibility: hidden; /* Makes input not-clickable */
+        position: absolute; /* Remove input from document flow */
+    }
+    label > input + img{ /* IMAGE STYLES */
+        cursor:pointer;
+        border:2px solid transparent;
+    }
+    label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+        border:2px solid #da5a47;
+    }
+</style>

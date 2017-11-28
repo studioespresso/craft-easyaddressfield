@@ -21,11 +21,12 @@ class GeoLocationService extends Component
         $res = $client->request('GET', 'maps/api/geocode/json?address=' . urlencode($value->toString()) . '&key='. $apiKey .'', ['allow_redirects' => false]);
         $json = json_decode($res->getBody()->getContents(), true);
 
-
-        if ($json['results'][0]['geometry']['location']) {
-            $value['latitude'] = $json['results'][0]['geometry']['location']['lat'];
-            $value['longitude'] = $json['results'][0]['geometry']['location']['lng'];
-        }
+	    if ( $json['status'] == 'OK' ) {
+		    if ( $json['results'][0]['geometry']['location'] ) {
+			    $value['latitude']  = $json['results'][0]['geometry']['location']['lat'];
+			    $value['longitude'] = $json['results'][0]['geometry']['location']['lng'];
+		    }
+	    }
 
         return $value;
     }

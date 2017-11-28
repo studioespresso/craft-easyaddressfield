@@ -76,7 +76,7 @@ class Plugin extends \craft\base\Plugin {
 	 * @throws \RuntimeException
 	 */
 	protected function settingsHtml(): string {
-//		Craft::$app->getView()->registerAssetBundle( EasyAddressFieldSettignsAsset::class );
+		$url = Craft::$app->assetManager->getPublishedUrl('@studioespresso/easyaddressfield/assets', true);
 		$styleOptions = [
 			'standard'  => Craft::t( "easyaddressfield", "Standard" ),
 			'silver'    => Craft::t( "easyaddressfield", 'Silver' ),
@@ -91,6 +91,7 @@ class Plugin extends \craft\base\Plugin {
 			[
 				'settings'     => $this->getSettings(),
 				'styleOptions' => $styleOptions,
+				'url' => $url,
 			]
 		);
 	}
