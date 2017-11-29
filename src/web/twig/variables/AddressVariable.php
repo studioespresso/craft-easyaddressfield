@@ -2,10 +2,11 @@
 
 namespace studioespresso\easyaddressfield\web\twig\variables;
 
+use Craft;
+use craft\helpers\Template;
 use studioespresso\easyaddressfield\Plugin;
 
-class AddressVariable
-{
+class AddressVariable {
 	private $key;
 
 	private $settings;
@@ -13,11 +14,41 @@ class AddressVariable
 	public function __construct() {
 		$pluginSettings = Plugin::getInstance()->getSettings();
 		$this->settings = $pluginSettings;
-		$this->key = $pluginSettings->googleApiKey;
+		$this->key      = $pluginSettings->googleApiKey;
+	}
+
+	public function getMap( $data ) {
+
+		$html = $this->loadJs();
+		$html .= '
+			<script>
+		      var map;
+		      document.addEventListener("DOMContentLoaded", function initMap(){ 
+		        map = new google.maps.Map(document.getElementById("map"), {
+		          center: {lat: -34.397, lng: 150.644},
+		          zoom: 8
+		        });
+		      });
+		    </script>
+		    <div id="map" class="easyaddressfield-map">Loading map...</div>
+	    ';
+
+		return Template::raw( $html );
+
+	}
+
+	private function loadJs() {
+		$params = [
+			'key'      => $this->key
+		];
+		$api    = 'https://maps.googleapis.com/maps/api/js?' . http_build_query( $params );
+		$api = '<script src="' . $api . '"></script>';
+		return $api;
 	}
 
 	public function getStaticMap( $data, $zoom = 14, $size = '640x640', $style = null, $color = null ) {
 		$image = $this->getStaticMapRaw( $data, $zoom, $size, $style, $color );
+
 		return '<img src="' . $image . '"></a>';
 
 	}
@@ -27,7 +58,7 @@ class AddressVariable
 	 * @param int $zoom : Zoom level of the map
 	 * @param string $size : size of the rendered image, maximum 640x640
 	 * @param string $style : map image style, if defined, it overrules the style defined in settings*
-	 * @param string $color: HEX color value
+	 * @param string $color : HEX color value
 	 *
 	 * @return bool|string
 	 */
@@ -38,7 +69,7 @@ class AddressVariable
 		}
 
 		// Support a custom marker color for each tag or fall back to the color set in settings, or the default color
-		if(isset($color) && preg_match('/^#[a-f0-9]{6}$/i', $color)) {
+		if ( isset( $color ) && preg_match( '/^#[a-f0-9]{6}$/i', $color ) ) {
 			$markerColor = '0x' . ltrim( $color, '#' );
 		} else {
 			$markerColor = $this->settings->defaultMarkerColor ? '0x' . ltrim( $this->settings->defaultMarkerColor, '#' ) : 'red';
@@ -53,7 +84,7 @@ class AddressVariable
 			'style'   => $this->getMapStyle( $style ),
 		);
 		if ( ! is_array( $data ) ) {
-			$data = [$data];
+			$data = [ $data ];
 		}
 
 		$location = '';
@@ -63,7 +94,7 @@ class AddressVariable
 			$location .= '&markers=color:' . $markerColor . '|' . $lat . ',' . $lng;
 		}
 		$image = $baseLink . http_build_query( $params ) . $location;
-		
+
 		return urldecode( $image );
 	}
 
