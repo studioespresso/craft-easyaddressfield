@@ -18,7 +18,7 @@
         <label>
             <input type="radio" id="defaultMapTheme" name="defaultMapTheme" value="{{ theme }}"
                    {% if theme == settings.defaultMapTheme %}checked{% endif %}/>
-                    <img src="{{ url }}/{{ theme }}.jpg" height="80">
+                    <img src="{{ url }}/{{ theme }}.jpg" height="80" alt="{{ label }}">
         </label>
     {% endfor %}
 </div>
