@@ -4,6 +4,7 @@ namespace studioespresso\easyaddressfield\web\twig\variables;
 
 use Craft;
 use craft\helpers\Template;
+use studioespresso\easyaddressfield\assetbundles\easyaddressmap\EasyAddressMapAsset;
 use studioespresso\easyaddressfield\Plugin;
 
 class AddressVariable {
@@ -11,39 +12,73 @@ class AddressVariable {
 
 	private $settings;
 
+	private $jsLoaded = false;
+
 	public function __construct() {
 		$pluginSettings = Plugin::getInstance()->getSettings();
 		$this->settings = $pluginSettings;
 		$this->key      = $pluginSettings->googleApiKey;
 	}
 
-	public function getMap( $data ) {
+	public function getMap( $data )
+	{
+		if ( $this->key ) {
 
-		$html = $this->loadJs();
-		$html .= '
-			<script>
-		      var map;
-		      document.addEventListener("DOMContentLoaded", function initMap(){ 
-		        map = new google.maps.Map(document.getElementById("map"), {
-		          center: {lat: -34.397, lng: 150.644},
-		          zoom: 8
-		        });
-		      });
-		    </script>
+			$html = $this->loadJs();
+			$html .= $this->loadMarkers( $data );
+			$html .= '
 		    <div id="map" class="easyaddressfield-map">Loading map...</div>
+			<script>
+		    	var mapElement = document.getElementById("map");
+		    	if(mapElement) {
+		    	    
+		        document.addEventListener("DOMContentLoaded", function initMap(){ 
+		              var myLatLng = {lat: -25.363, lng: 131.044};
+            		map = new google.maps.Map(mapElement, {
+		          		zoom: 8,
+		          		center: myLatLng
+	                });
+		        	var marker = new google.maps.Marker({
+    					position: myLatLng,
+    					map: map,
+                	});
+		      	});
+		    	}
+		    </script>
 	    ';
 
-		return Template::raw( $html );
+			return Template::raw( $html );
+		} elseif ( Craft::$app->config->getGeneral()->devMode ) {
+			throw new \Exception( 'Google API not set' );
+		} else {
+			return false;
+		}
 
 	}
 
+	private function loadMarkers( $data ) {
+		if ( is_array( $data ) ) {
+			$markers = json_encode( array_map( function ( $marker ) {
+				return $marker->toArray();
+			}, $data ) );
+		} else {
+			$markers = json_encode( array( $data->toArray() ) );
+		}
+
+		return '<script>' . $markers . '</script>';
+	}
+
 	private function loadJs() {
-		$params = [
-			'key'      => $this->key
-		];
-		$api    = 'https://maps.googleapis.com/maps/api/js?' . http_build_query( $params );
-		$api = '<script src="' . $api . '"></script>';
-		return $api;
+		if ( $this->jsLoaded === false ) {
+			$params         = [
+				'key' => $this->key
+			];
+			$api            = 'https://maps.googleapis.com/maps/api/js?' . http_build_query( $params );
+			$api            = '<script src="' . $api . '"></script>';
+			$this->jsLoaded = true;
+
+			return $api;
+		}
 	}
 
 	public function getStaticMap( $data, $zoom = 14, $size = '640x640', $style = null, $color = null ) {
