@@ -20,29 +20,59 @@ class AddressVariable {
 		$this->key      = $pluginSettings->googleApiKey;
 	}
 
-	public function getMap( $data )
-	{
+	public function getMap( $data ) {
 		if ( $this->key ) {
 
 			$html = $this->loadJs();
 			$html .= $this->loadMarkers( $data );
 			$html .= '
 		    <div id="map" class="easyaddressfield-map">Loading map...</div>
-			<script>
-		    	var mapElement = document.getElementById("map");
+			<script>		    	var mapElement = document.getElementById("map");
+		    	var markers = window["points"];
 		    	if(mapElement) {
 		    	    
 		        document.addEventListener("DOMContentLoaded", function initMap(){ 
 		              var myLatLng = {lat: -25.363, lng: 131.044};
             		map = new google.maps.Map(mapElement, {
-		          		zoom: 8,
-		          		center: myLatLng
+
 	                });
-		        	var marker = new google.maps.Marker({
-    					position: myLatLng,
-    					map: map,
-                	});
+            		
+                    var bounds = new google.maps.LatLngBounds();
+                    var points = [];
+                    var pointCount = markers.length;
+					
+                    for (var i = 0; i < pointCount; i++) {
+                        console.log(i);
+						point = markers[i];
+                        latLng = new google.maps.LatLng(point.latitude, point.longitude);
+
+            			marker = new google.maps.Marker({
+                			position: latLng,
+                            map: map,
+                			lat: point.latitude,
+                			lng: point.longitude,
+                			icon: pinSymbol("#000080"),
+
+            			});
+                        bounds.extend(latLng);
+                        points.push(marker);
+                    }
+                    if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+         			   	bounds.extend(new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01));
+            			bounds.extend(new google.maps.LatLng(bounds.getSouthWest().lat() - 0.01, bounds.getSouthWest().lng() - 0.01));
+        			}
+                    map.fitBounds(bounds);
 		      	});
+		        
+		        function pinSymbol(color) {
+    				return {
+        			path: \'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0\',
+        			fillColor: color,
+        			fillOpacity: 1,
+        			strokeColor: \'#000\',
+        			strokeWeight: 2,
+        			scale: 1,
+   					};}
 		    	}
 		    </script>
 	    ';
@@ -65,7 +95,7 @@ class AddressVariable {
 			$markers = json_encode( array( $data->toArray() ) );
 		}
 
-		return '<script>' . $markers . '</script>';
+		return '<script>var points = ' . $markers . '</script>';
 	}
 
 	private function loadJs() {
