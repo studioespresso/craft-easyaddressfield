@@ -14,46 +14,50 @@ class AddressVariable {
 
 	private $jsLoaded = false;
 
+	private $mapCount = 1;
+
 	public function __construct() {
 		$pluginSettings = Plugin::getInstance()->getSettings();
 		$this->settings = $pluginSettings;
 		$this->key      = $pluginSettings->googleApiKey;
 	}
 
-	public function getMap( $data ) {
+	public function getMap( $data, $zoom) {
 		if ( $this->key ) {
-
+			$mapId = substr(md5(json_encode($data)), -4);
 			$html = $this->loadJs();
-			$html .= $this->loadMarkers( $data );
+			$html .= $this->loadMarkers( $data , $mapId );
 			$html .= '
-		    <div id="map" class="easyaddressfield-map">Loading map...</div>
-			<script>		    	var mapElement = document.getElementById("map");
-		    	var markers = window["points"];
+		    <div id="map-' . $mapId . '" class="easyaddressfield-map">Loading map...</div>
+			<script>		    	
+				var mapElement = document.getElementById("map-' . $mapId . '");
+		    	var markers = window["points' . $mapId . '"];
+		    	var mapOptions = {
+        			zoom: 16,
+                	gestureHandling: "none",
+                    zoomControl: false,		
+                    disableDefaultUI: true
+                };
 		    	if(mapElement) {
-		    	    
 		        document.addEventListener("DOMContentLoaded", function initMap(){ 
-		              var myLatLng = {lat: -25.363, lng: 131.044};
-            		map = new google.maps.Map(mapElement, {
-
-	                });
+            		map' . $mapId .' = new google.maps.Map(mapElement, mapOptions);
             		
                     var bounds = new google.maps.LatLngBounds();
                     var points = [];
                     var pointCount = markers.length;
 					
                     for (var i = 0; i < pointCount; i++) {
-                        console.log(i);
 						point = markers[i];
                         latLng = new google.maps.LatLng(point.latitude, point.longitude);
 
             			marker = new google.maps.Marker({
                 			position: latLng,
-                            map: map,
+                            map: map' . $mapId .',
                 			lat: point.latitude,
                 			lng: point.longitude,
                 			icon: pinSymbol("#000080"),
-
             			});
+            			
                         bounds.extend(latLng);
                         points.push(marker);
                     }
@@ -61,7 +65,7 @@ class AddressVariable {
          			   	bounds.extend(new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01));
             			bounds.extend(new google.maps.LatLng(bounds.getSouthWest().lat() - 0.01, bounds.getSouthWest().lng() - 0.01));
         			}
-                    map.fitBounds(bounds);
+                    map' . $mapId .'.fitBounds(bounds);
 		      	});
 		        
 		        function pinSymbol(color) {
@@ -70,13 +74,13 @@ class AddressVariable {
         			fillColor: color,
         			fillOpacity: 1,
         			strokeColor: \'#000\',
-        			strokeWeight: 2,
+        			strokeWeight: 1,
         			scale: 1,
    					};}
 		    	}
 		    </script>
 	    ';
-
+			$this->mapCount = $this->mapCount + 1;
 			return Template::raw( $html );
 		} elseif ( Craft::$app->config->getGeneral()->devMode ) {
 			throw new \Exception( 'Google API not set' );
@@ -86,7 +90,7 @@ class AddressVariable {
 
 	}
 
-	private function loadMarkers( $data ) {
+	private function loadMarkers( $data , $mapId) {
 		if ( is_array( $data ) ) {
 			$markers = json_encode( array_map( function ( $marker ) {
 				return $marker->toArray();
@@ -95,7 +99,7 @@ class AddressVariable {
 			$markers = json_encode( array( $data->toArray() ) );
 		}
 
-		return '<script>var points = ' . $markers . '</script>';
+		return '<script>var points' . $mapId .' = ' . $markers . '</script>';
 	}
 
 	private function loadJs() {
