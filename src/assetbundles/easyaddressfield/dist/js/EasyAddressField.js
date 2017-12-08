@@ -1,15 +1,3 @@
-/**
- * Easy Address Field plugin for Craft CMS
- *
- * EasyAddressFieldFieldType JS
- *
- * @author    Studio Espresso
- * @copyright Copyright (c) 2017 Studio Espresso
- * @link      https://studioespresso.co
- * @package   EasyAddressField
- * @since     1.0.0-alpha
- */
-
 ;(function ($, window, document, undefined) {
 
     var handle;
