@@ -1,6 +1,18 @@
 {% import "_includes/forms" as forms %}
 
-<div>
+<div class="easyaddressfield-field" id="{{ name}}">
+    {% set dragPinData %}
+        data-default="false"
+        data-lat="50.8823536"
+        data-lng="4.7027497"
+        data-zoom="10"
+    {% endset %}
+    <div>
+    <span class="easyaddressfield-marker">
+        <img src="{{ iconUrl }}" height="30">
+        <span id="{{ name }}-drag-pin-data" {{ dragPinData|raw }}></span>
+    </span>
+    </div>
     <div class="form__row">
         <div class="form__item">
             {{ forms.text({
