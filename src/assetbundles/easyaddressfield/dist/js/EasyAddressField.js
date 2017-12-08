@@ -50,8 +50,8 @@
                 var existingCoords;
                 var zoom = 11;
 
-                var lat = $('#' + handle + '-lat').val();
-                var lng = $('#' + handle + '-lng').val();
+                var lat = $('#' + handle + '-latitude').val();
+                var lng = $('#' + handle + '-longitude').val();
 
                 var defaultData = $('#' + handle + '-drag-pin-data').data();
                 if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
@@ -80,8 +80,8 @@
 
                 // Set modal submit trigger
                 $('.modal-submit-drag-pin').on('click', function () {
-                    $('#' + handle + '-lat').val(marker.getPosition().lat());
-                    $('#' + handle + '-lng').val(marker.getPosition().lng());
+                    $('#' + handle + '-latitude').val(marker.getPosition().lat());
+                    $('#' + handle + '-longitude').val(marker.getPosition().lng());
                     dragPin[handle]['modal'].hide();
                     return false;
                 });
