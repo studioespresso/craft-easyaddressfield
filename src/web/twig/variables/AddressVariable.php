@@ -30,24 +30,24 @@ class AddressVariable {
 			$html .= '
 		    <div id="map-' . $mapId . '" class="easyaddressfield-map">Loading map...</div>
 			<script>		    	
-				var mapElement = document.getElementById("map-' . $mapId . '");
-		    	var markers = window["points' . $mapId . '"];
+				var mapElement'. $mapId . ' = document.getElementById("map-' . $mapId . '");
+		    	var markers'. $mapId . ' = window["points' . $mapId . '"];
 		    	var mapOptions = {
         			zoom: 16,
                 	gestureHandling: "none",
                     zoomControl: false,		
                     disableDefaultUI: true
                 };
-		    	if(mapElement) {
+		    	if(mapElement'. $mapId . ') {
 		        document.addEventListener("DOMContentLoaded", function initMap(){ 
-            		map' . $mapId .' = new google.maps.Map(mapElement, mapOptions);
+            		map' . $mapId .' = new google.maps.Map(mapElement'. $mapId . ', mapOptions);
             		
                     var bounds = new google.maps.LatLngBounds();
                     var points = [];
-                    var pointCount = markers.length;
+                    var pointCount = markers'. $mapId . '.length;
 					
                     for (var i = 0; i < pointCount; i++) {
-						point = markers[i];
+						point = markers'. $mapId . '[i];
                         latLng = new google.maps.LatLng(point.latitude, point.longitude);
 
             			marker = new google.maps.Marker({
