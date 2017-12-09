@@ -32,6 +32,14 @@
             </tbody>
         </table>
 
+        {{ forms.selectField({
+            label:      "Default country"|t,
+            id:         "defaultCountry",
+            name:       "defaultCountry",
+            options:    countries,
+            value:      field.defaultCountry
+        }) }}
+
 
         {{ forms.lightswitchField({
             label:        "Get coordinates for addresses"|t,

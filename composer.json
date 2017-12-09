@@ -23,7 +23,8 @@
     "docs": "https://studioespresso.co"
   },
   "require": {
-    "craftcms/cms": "3.0.0-RC1"
+    "craftcms/cms": "3.0.0-RC1",
+    "league/iso3166": "^2.0"
   },
   "autoload": {
     "psr-4": {
