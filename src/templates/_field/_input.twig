@@ -55,12 +55,13 @@
                 value: value ? value.city : null
             }) }}
         </div>
-        <div class="form__item">
-            {{ forms.text({
-                id: name ~ '-country',
-                name: name ~ '[country]',
-                placeholder: 'Country'|t,
-                value: value ? value.country : null
+
+        <div class="form__item form--country">
+            {{ forms.selectField({
+                id:         name ~ '-country',
+                name:       name ~ '[country]',
+                options:    countries,
+                value:      (value|length and value.country|length) ? value.country : fieldSettings.defaultCountry
             }) }}
         </div>
     </div>

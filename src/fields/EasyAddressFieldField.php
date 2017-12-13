@@ -47,18 +47,12 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 	 */
 	public function getSettingsHtml(): string {
 		// Render the settings template
-		$data = new ISO3166();
-		$data = $data->all();
-		$countries = array();
-		foreach($data as $country) {
-			$countries[$country['alpha2']] = $country['name'];
-		};
 
 		return Craft::$app->getView()->renderTemplate(
 			'easyaddressfield/_field/_settings',
 			[
 				'field'     => $this,
-				'countries' => $countries
+				'countries' => $this->getCountries()
 			]
 		);
 	}
@@ -168,11 +162,22 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 				'field'          => $this,
 				'id'             => $id,
 				'iconUrl'        => $iconUrl,
+				'countries'      => $this->getCountries(),
 				'namespacedId'   => $namespacedId,
 				'fieldSettings'  => $fieldSettings,
 				'pluginSettings' => $pluginSettings,
 			]
 		);
+	}
+
+	protected function getCountries() {
+		$data = new ISO3166();
+		$data = $data->all();
+		$countries = array();
+		foreach($data as $country) {
+			$countries[$country['alpha2']] = $country['name'];
+		};
+		return $countries;
 	}
 
 }

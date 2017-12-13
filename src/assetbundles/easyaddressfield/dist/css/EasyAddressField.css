@@ -24,6 +24,10 @@
     float: left;
 }
 
+.form--country .select, .form--country .select select {
+    width: 100%;
+}
+
 .visuallyhidden {
     display: none;
 }
