@@ -22,7 +22,11 @@ class AddressVariable {
 		$this->key      = $pluginSettings->googleApiKey;
 	}
 
-	public function getMap( $data, $zoom) {
+	public function getMap( $data, $options) {
+		d($options);
+		$controls = 'false';
+		if(isset($options['controls']) && $options['controls']) { $controls = 'true'; }
+
 		if ( $this->key ) {
 			$markerColor = $this->settings->defaultMarkerColor ? $this->settings->defaultMarkerColor : 'red';
 			$mapId = substr(md5(json_encode($data)), -4);
@@ -36,7 +40,7 @@ class AddressVariable {
 		    	var mapOptions = {
         			zoom: 16,
                 	gestureHandling: "none",
-                    zoomControl: false,		
+                    zoomControl: ' . $controls . ',		
                     disableDefaultUI: true
                 };
 		    	if(mapElement'. $mapId . ') {
