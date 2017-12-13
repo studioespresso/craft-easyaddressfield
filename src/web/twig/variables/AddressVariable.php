@@ -24,6 +24,7 @@ class AddressVariable {
 
 	public function getMap( $data, $zoom) {
 		if ( $this->key ) {
+			$markerColor = $this->settings->defaultMarkerColor ? $this->settings->defaultMarkerColor : 'red';
 			$mapId = substr(md5(json_encode($data)), -4);
 			$html = $this->loadJs();
 			$html .= $this->loadMarkers( $data , $mapId );
@@ -39,45 +40,35 @@ class AddressVariable {
                     disableDefaultUI: true
                 };
 		    	if(mapElement'. $mapId . ') {
-		        document.addEventListener("DOMContentLoaded", function initMap(){ 
-            		map' . $mapId .' = new google.maps.Map(mapElement'. $mapId . ', mapOptions);
-            		
-                    var bounds = new google.maps.LatLngBounds();
-                    var points = [];
-                    var pointCount = markers'. $mapId . '.length;
-					
-                    for (var i = 0; i < pointCount; i++) {
-						point = markers'. $mapId . '[i];
-                        latLng = new google.maps.LatLng(point.latitude, point.longitude);
-
-            			marker = new google.maps.Marker({
-                			position: latLng,
-                            map: map' . $mapId .',
-                			lat: point.latitude,
-                			lng: point.longitude,
-                			icon: pinSymbol("#000080"),
-            			});
-            			
-                        bounds.extend(latLng);
-                        points.push(marker);
-                    }
-                    if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
-         			   	bounds.extend(new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01));
-            			bounds.extend(new google.maps.LatLng(bounds.getSouthWest().lat() - 0.01, bounds.getSouthWest().lng() - 0.01));
-        			}
-                    map' . $mapId .'.fitBounds(bounds);
-		      	});
-		        
-		        function pinSymbol(color) {
-    				return {
-        			path: \'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0\',
-        			fillColor: color,
-        			fillOpacity: 1,
-        			strokeColor: \'#000\',
-        			strokeWeight: 1,
-        			scale: 1,
-   					};}
-		    	}
+			        document.addEventListener("DOMContentLoaded", function initMap(){ 
+	                    map' . $mapId . ' = new google.maps.Map(mapElement' . $mapId . ', mapOptions);
+	                    
+	                    var bounds = new google.maps.LatLngBounds();
+	                    var points = [];
+	                    var pointCount = markers' . $mapId . '.length;
+						
+	                    for (var i = 0; i < pointCount; i++) {
+							point = markers' . $mapId . '[i];
+	                        latLng = new google.maps.LatLng(point.latitude, point.longitude);
+	
+	                        marker = new google.maps.Marker({
+	                            position: latLng,
+	                            map: map' . $mapId . ',
+	                            lat: point.latitude,
+	                            lng: point.longitude,
+								color: "#' . $markerColor . '",
+	                        });
+	                        
+	                        bounds.extend(latLng);
+	                        points.push(marker);
+	                    }
+	                    if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+	                        bounds.extend(new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01));
+	                        bounds.extend(new google.maps.LatLng(bounds.getSouthWest().lat() - 0.01, bounds.getSouthWest().lng() - 0.01));
+	                    }
+	                    map' . $mapId . '.fitBounds(bounds);
+			        });
+		        }
 		    </script>
 	    ';
 			$this->mapCount = $this->mapCount + 1;
