@@ -27,6 +27,9 @@ class AddressVariable {
 		$controls = 'false';
 		if(isset($options['controls']) && $options['controls']) { $controls = 'true'; }
 
+		$zoom = 16;
+		if(isset($options['zoom']) && $options['zoom']) { $zoom = $options['zoom']; }
+
 		if ( $this->key ) {
 			$markerColor = $this->settings->defaultMarkerColor ? $this->settings->defaultMarkerColor : 'red';
 			$mapId = substr(md5(json_encode($data)), -4);
@@ -38,41 +41,31 @@ class AddressVariable {
 				var mapElement'. $mapId . ' = document.getElementById("map-' . $mapId . '");
 		    	var markers'. $mapId . ' = window["points' . $mapId . '"];
 		    	var mapOptions = {
-        			zoom: 16,
+        			zoom: ' . $zoom .',
                 	gestureHandling: "none",
                     zoomControl: ' . $controls . ',		
                     disableDefaultUI: true
                 };
 		    	if(mapElement'. $mapId . ') {
-			        document.addEventListener("DOMContentLoaded", function initMap(){ 
-	                    map' . $mapId . ' = new google.maps.Map(mapElement' . $mapId . ', mapOptions);
-	                    
-	                    var bounds = new google.maps.LatLngBounds();
+			        document.addEventListener("DOMContentLoaded", function initMap(){ 	                    
 	                    var points = [];
 	                    var pointCount = markers' . $mapId . '.length;
-						
-	                    for (var i = 0; i < pointCount; i++) {
-							point = markers' . $mapId . '[i];
-	                        latLng = new google.maps.LatLng(point.latitude, point.longitude);
-	
-	                        marker = new google.maps.Marker({
-	                            position: latLng,
-	                            map: map' . $mapId . ',
-	                            lat: point.latitude,
-	                            lng: point.longitude,
-								color: "#' . $markerColor . '",
-	                        });
-	                        
-	                        bounds.extend(latLng);
-	                        points.push(marker);
-	                    }
-	                    if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
-	                        bounds.extend(new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01));
-	                        bounds.extend(new google.maps.LatLng(bounds.getSouthWest().lat() - 0.01, bounds.getSouthWest().lng() - 0.01));
-	                    }
-	                    map' . $mapId . '.fitBounds(bounds);
+	                    if (pointCount == 1) {
+         	    			renderPoint(markers' . $mapId . '[0]["latitude"], markers' . $mapId . '[0]["longitude"]);
+        				} 
 			        });
 		        }
+		        
+		        function renderPoint(lat, lng) {		    	   
+        	    	var markerLatLng = new google.maps.LatLng(lat, lng);
+        	    	var map' . $mapId . ' = new google.maps.Map(mapElement' . $mapId . ', mapOptions);
+	                var marker = new google.maps.Marker({
+           			    position: markerLatLng,
+            			map: map' . $mapId . ',
+        			});
+                    map' . $mapId . '.setCenter(markerLatLng);
+       			}
+
 		    </script>
 	    ';
 			$this->mapCount = $this->mapCount + 1;
