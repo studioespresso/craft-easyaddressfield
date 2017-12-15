@@ -22,31 +22,34 @@ class AddressVariable {
 		$this->key      = $pluginSettings->googleApiKey;
 	}
 
-	public function getMap( $data, $options) {
-		d($options);
+	public function getMap( $data, $options ) {
 		$controls = 'false';
-		if(isset($options['controls']) && $options['controls']) { $controls = 'true'; }
+		if ( isset( $options['controls'] ) && $options['controls'] ) {
+			$controls = 'true';
+		}
 
 		$zoom = 16;
-		if(isset($options['zoom']) && $options['zoom']) { $zoom = $options['zoom']; }
+		if ( isset( $options['zoom'] ) && $options['zoom'] ) {
+			$zoom = $options['zoom'];
+		}
 
 		if ( $this->key ) {
-			$markerColor = $this->settings->defaultMarkerColor ? $this->settings->defaultMarkerColor : 'red';
-			$mapId = substr(md5(json_encode($data)), -4);
-			$html = $this->loadJs();
-			$html .= $this->loadMarkers( $data , $mapId );
-			$html .= '
+			$markerColor    = $this->settings->defaultMarkerColor ? $this->settings->defaultMarkerColor : 'red';
+			$mapId          = substr( md5( json_encode( $data ) ), - 4 );
+			$html           = $this->loadJs();
+			$html           .= $this->loadMarkers( $data, $mapId );
+			$html           .= '
 		    <div id="map-' . $mapId . '" class="easyaddressfield-map">Loading map...</div>
 			<script>		    	
-				var mapElement'. $mapId . ' = document.getElementById("map-' . $mapId . '");
-		    	var markers'. $mapId . ' = window["points' . $mapId . '"];
+				var mapElement' . $mapId . ' = document.getElementById("map-' . $mapId . '");
+		    	var markers' . $mapId . ' = window["points' . $mapId . '"];
 		    	var mapOptions = {
-        			zoom: ' . $zoom .',
+        			zoom: ' . $zoom . ',
                 	gestureHandling: "none",
                     zoomControl: ' . $controls . ',		
                     disableDefaultUI: true
                 };
-		    	if(mapElement'. $mapId . ') {
+		    	if(mapElement' . $mapId . ') {
 			        document.addEventListener("DOMContentLoaded", function initMap(){ 	                    
 	                    var points = [];
 	                    var pointCount = markers' . $mapId . '.length;
@@ -69,6 +72,7 @@ class AddressVariable {
 		    </script>
 	    ';
 			$this->mapCount = $this->mapCount + 1;
+
 			return Template::raw( $html );
 		} elseif ( Craft::$app->config->getGeneral()->devMode ) {
 			throw new \Exception( 'Google API not set' );
@@ -78,16 +82,18 @@ class AddressVariable {
 
 	}
 
-	private function loadMarkers( $data , $mapId) {
+	private function loadMarkers( $data, $mapId ) {
 		if ( is_array( $data ) ) {
 			$markers = json_encode( array_map( function ( $marker ) {
-				return $marker->toArray();
+				if ( $marker ) {
+					return $marker->toArray();
+				}
 			}, $data ) );
 		} else {
 			$markers = json_encode( array( $data->toArray() ) );
 		}
 
-		return '<script>var points' . $mapId .' = ' . $markers . '</script>';
+		return '<script>var points' . $mapId . ' = ' . $markers . '</script>';
 	}
 
 	private function loadJs() {
