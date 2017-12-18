@@ -4,7 +4,7 @@ The only address field you need
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0-beta.29 or later.
+This plugin requires Craft CMS 3.0.0-RC1 or later.
 
 ## Installation
 
@@ -18,13 +18,12 @@ To install the plugin, follow these instructions.
 
         composer require studioespresso/easyaddressfield
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Dumper.
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for "Easy Address Field".
 
-## Variables
+## Template variables
 
 ### Static map
 
-Getting the [static map](https://developers.google.com/maps/documentation/static-maps/) image for the address
-
+### Javascript map
 
 ###### Brought to you by [Studio Espresso](https://studioespresso.co)

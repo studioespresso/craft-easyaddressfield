@@ -55,7 +55,9 @@ class AddressVariable {
 	                    var pointCount = markers' . $mapId . '.length;
 	                    if (pointCount == 1) {
          	    			renderPoint(markers' . $mapId . '[0]["latitude"], markers' . $mapId . '[0]["longitude"]);
-        				} 
+        			    } else if (pointCount > 1) {
+        				    renderPoints(markers' . $mapId . ');
+        			    }	
 			        });
 		        }
 		        
@@ -67,6 +69,38 @@ class AddressVariable {
             			map: map' . $mapId . ',
         			});
                     map' . $mapId . '.setCenter(markerLatLng);
+       			}
+       			
+       			function renderPoints(markers) {
+		    	    var markers = [];
+        			var map = new google.maps.Map(mapElement' . $mapId . ', mapOptions);
+        			var bounds = new google.maps.LatLngBounds();
+        			var pointCount = markers.length;
+        			
+                    for (var i = 0; i < pointCount; i++) {
+			            marker = markers[i];
+			            latLng = new google.maps.LatLng(marker.lat, marker.lng);
+			
+			            marker = new google.maps.Marker({
+			                position: latLng,
+			                map: map' . $mapId . ',
+			                lat: tmpMarker.lat,
+			                lng: tmpMarker.lng,
+			            });
+			
+			            marker.id = i;
+			            markers.push(marker);
+			            bounds.extend(latLng);
+			            
+			            if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+				            bounds.extend(new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01));
+				            bounds.extend(new google.maps.LatLng(bounds.getSouthWest().lat() - 0.01, bounds.getSouthWest().lng() - 0.01));
+				        }
+				
+				        map' . $mapId . '.fitBounds(bounds);
+				        map' . $mapId . '.setZoom(map' . $mapId . '.getZoom() - 1);
+						
+			        }
        			}
 
 		    </script>
@@ -92,6 +126,7 @@ class AddressVariable {
 		} else {
 			$markers = json_encode( array( $data->toArray() ) );
 		}
+		d($markers);
 
 		return '<script>var points' . $mapId . ' = ' . $markers . '</script>';
 	}
