@@ -6,6 +6,7 @@ use Craft;
 use craft\helpers\Template;
 use studioespresso\easyaddressfield\assetbundles\easyaddressmap\EasyAddressMapAsset;
 use studioespresso\easyaddressfield\Plugin;
+use studioespresso\easyaddressfield\services\CountriesService;
 
 class AddressVariable {
 	private $key;
@@ -114,6 +115,11 @@ class AddressVariable {
 			return false;
 		}
 
+	}
+
+	public function countries() {
+		$countriesService = new CountriesService();
+		return $countriesService->getCountriesAsArray();
 	}
 
 	private function loadMarkers( $data, $mapId ) {
