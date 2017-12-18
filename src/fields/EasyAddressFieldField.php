@@ -11,6 +11,7 @@ use League\ISO3166\ISO3166;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
 use studioespresso\easyaddressfield\Plugin;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\services\CountriesService;
 use studioespresso\easyaddressfield\services\GeoLocationService;
 use yii\db\Schema;
 
@@ -158,6 +159,9 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 			$keyConfigured = true;
 		}
 
+		$countriesService = new CountriesService();
+		$countries = $countriesService->getCountriesAsArray();
+
 		return Craft::$app->getView()->renderTemplate(
 			'easyaddressfield/_field/_input',
 			[
@@ -167,22 +171,12 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 				'id'             => $id,
 				'keyConfigured'  => $keyConfigured,
 				'iconUrl'        => $iconUrl,
-				'countries'      => $this->getCountries(),
+				'countries'      => $countries,
 				'namespacedId'   => $namespacedId,
 				'fieldSettings'  => $fieldSettings,
 				'pluginSettings' => $pluginSettings,
 			]
 		);
 	}
-
-	protected function getCountries() {
-		$data = new ISO3166();
-		$data = $data->all();
-		$countries = array();
-		foreach($data as $country) {
-			$countries[$country['alpha2']] = $country['name'];
-		};
-		return $countries;
-	}
-
+	
 }
