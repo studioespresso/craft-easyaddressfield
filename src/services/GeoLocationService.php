@@ -5,30 +5,37 @@ namespace studioespresso\easyaddressfield\services;
 use craft\base\Component;
 use GuzzleHttp\Client;
 use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 
-class GeoLocationService extends Component
-{
+class GeoLocationService extends Component {
 
+	/**
+	 * @param EasyAddressFieldModel $model
+	 *
+	 * @return EasyAddressFieldModel
+	 */
+	public function locate( EasyAddressFieldModel $model ) {
+		$pluginSettings = EasyAddressField::getInstance()->getSettings();
+		if ( ! $pluginSettings->googleApiKey ) {
+			return $value;
+		}
 
-    public function geoLocate($value)
-    {
-        $pluginSettings = EasyAddressField::getInstance()->getSettings();
-        if (!$pluginSettings->googleApiKey) {
-            return $value;
-        }
-        $apiKey = $pluginSettings->googleApiKey;
-        $client = new Client(['base_uri' => 'https://maps.googleapis.com']);
-        $res = $client->request('GET', 'maps/api/geocode/json?address=' . urlencode($value->toString()) . '&key='. $apiKey .'', ['allow_redirects' => false]);
-        $json = json_decode($res->getBody()->getContents(), true);
+		if ( ! $model->latitude && ! $model->longitude ) {
 
-	    if ( $json['status'] == 'OK' ) {
-		    if ( $json['results'][0]['geometry']['location'] ) {
-			    $value['latitude']  = $json['results'][0]['geometry']['location']['lat'];
-			    $value['longitude'] = $json['results'][0]['geometry']['location']['lng'];
-		    }
-	    }
+			$client = new Client( [ 'base_uri' => 'https://maps.googleapis.com' ] );
+			$res    = $client->request( 'GET', 'maps/api/geocode/json?address=' . urlencode( $model->toString() ) . '&key=' . $pluginSettings->googleApiKey . '', [ 'allow_redirects' => false ] );
+			$json   = json_decode( $res->getBody()->getContents(), true );
 
-        return $value;
-    }
+			if ( $json['status'] == 'OK' ) {
+				if ( $json['results'][0]['geometry']['location'] ) {
+					$model->latitude  = $json['results'][0]['geometry']['location']['lat'];
+					$model->longitude = $json['results'][0]['geometry']['location']['lng'];
+				}
+			}
+		}
+
+		return $model;
+
+	}
 
 }

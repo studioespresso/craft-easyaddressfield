@@ -14,6 +14,7 @@ use craft\web\twig\variables\CraftVariable;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldSettignsAsset;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
 use studioespresso\easyaddressfield\services\FieldService;
+use studioespresso\easyaddressfield\services\GeoLocationService;
 use studioespresso\easyaddressfield\web\twig\variables\AddressVariable;
 use yii\base\Event;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
@@ -47,6 +48,7 @@ class EasyAddressField extends Plugin {
 
 		$this->setComponents([
 			'field' => FieldService::class,
+			'geolocation' => GeoLocationService::class
 		]);
 
 		// Register our fields
@@ -74,6 +76,10 @@ class EasyAddressField extends Plugin {
 		return $this->field;
 	}
 
+	public function geolocation () : GeoLocationService
+	{
+		return $this->geolocation;
+	}
 	/**
 	 * Creates and returns the model used to store the plugin’s settings.
 	 *
