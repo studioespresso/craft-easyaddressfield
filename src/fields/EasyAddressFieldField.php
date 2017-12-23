@@ -37,7 +37,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 
 
 	public static function displayName(): string {
-		return Craft::t( 'easyaddressfield', 'Easy Address Field' );
+		return Craft::t( 'easy-address-field', 'Easy Address Field' );
 	}
 
 	/**
@@ -48,12 +48,14 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 	 */
 	public function getSettingsHtml(): string {
 		// Render the settings template
+		$countriesService = new CountriesService();
+		$countries = $countriesService->getCountriesAsArray();
 
 		return Craft::$app->getView()->renderTemplate(
-			'easyaddressfield/_field/_settings',
+			'easy-address-field/_field/_settings',
 			[
 				'field'     => $this,
-				'countries' => $this->getCountries()
+				'countries' => $countries
 			]
 		);
 	}
@@ -87,6 +89,14 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		$rules = array_merge( $rules, $addressRules );
 
 		return $rules;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public static function hasContentColumn (): bool
+	{
+		return false;
 	}
 
 	/**
@@ -150,6 +160,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 			Craft::$app->getView()->registerJsFile( 'https://maps.googleapis.com/maps/api/js?key=' . $pluginSettings->googleApiKey );
 			$keyConfigured = true;
 		}
+		dd($value);
 
 		$countriesService = new CountriesService();
 		$countries        = $countriesService->getCountriesAsArray();
