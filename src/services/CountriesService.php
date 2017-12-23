@@ -11,6 +11,9 @@ use yii\web\View;
 
 class CountriesService extends Component {
 
+	/**
+	 * @return array
+	 */
 	public function getCountriesAsArray() {
 		$data      = new ISO3166();
 		$data      = $data->all();
