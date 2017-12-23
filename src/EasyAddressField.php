@@ -23,7 +23,7 @@ use yii\web\UrlManager;
  * @author Studio Espresso <support@studioespresso.co>
  * @since  1.0
  */
-class Plugin extends \craft\base\Plugin {
+class EasyAddressField extends Plugin {
 
 	/**
 	 * @var \studioespresso\easyaddressfield\Plugin Plugin instance

@@ -39,6 +39,7 @@
   ],
   "extra": {
     "name": "Easy Address Field",
-    "handle": "easyaddressfield"
+    "handle": "easy-address-field",
+    "class": "studioespresso\\easyaddressfield\\EasyAddressField"
   }
 }
