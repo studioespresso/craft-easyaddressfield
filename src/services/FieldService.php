@@ -8,13 +8,18 @@ use craft\base\ElementInterface;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use studioespresso\easyaddressfield\Plugin;
 use studioespresso\easyaddressfield\records\EasyAddressFieldRecord;
 use yii\web\View;
 
 class FieldService extends Component {
 
-	public function saveField( $field, $element ) {
+	/**
+	 * @param EasyAddressFieldField $field
+	 * @param ElementInterface $element
+	 *
+	 * @return bool
+	 */
+	public function saveField( EasyAddressFieldField $field, ElementInterface $element ) {
 
 		$locale = $element->getSite()->language;
 		$value  = $element->getFieldValue( $field->handle );
@@ -43,11 +48,21 @@ class FieldService extends Component {
 
 
 		$save = $record->save();
+		if ( ! $save ) {
+			Craft::getLogger()->log( $record->getErrors(), LOG_ERR, 'easy-address-field' );
+		}
 
 		return $save;
 	}
-	// MapField $field, ElementInterface $owner, $value): Map
-	public function getField(EasyAddressFieldField $field, ElementInterface $element, $value) {
+
+	/**
+	 * @param EasyAddressFieldField $field
+	 * @param ElementInterface $element
+	 * @param $value
+	 *
+	 * @return EasyAddressFieldModel
+	 */
+	public function getField( EasyAddressFieldField $field, ElementInterface $element, $value ) {
 		$record = EasyAddressFieldRecord::findOne(
 			[
 				'owner' => $element->id,
@@ -55,14 +70,15 @@ class FieldService extends Component {
 				'field' => $field->id,
 			]
 		);
-		if (Craft::$app->request->getIsPost() && $value) {
-			$field = new EasyAddressFieldModel($value);
-		} else if ($record) {
-			$field = new EasyAddressFieldModel($record->getAttributes());
+		if ( Craft::$app->request->getIsPost() && $value ) {
+			$model = new EasyAddressFieldModel( $value );
+		} else if ( $record ) {
+			$model = new EasyAddressFieldModel( $record->getAttributes() );
 		} else {
-			$field = new EasyAddressFieldModel();
+			$model = new EasyAddressFieldModel();
 		}
-		return $field;
+
+		return $model;
 	}
 
 }
