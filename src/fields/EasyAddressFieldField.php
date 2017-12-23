@@ -9,6 +9,7 @@ use craft\base\PreviewableFieldInterface;
 use craft\helpers\Db;
 use League\ISO3166\ISO3166;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
+use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\Plugin;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 use studioespresso\easyaddressfield\services\CountriesService;
@@ -33,7 +34,6 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		'state'      => false,
 		'country'    => true,
 	);
-
 
 
 	public static function displayName(): string {
@@ -133,37 +133,29 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		$id           = Craft::$app->getView()->formatInputId( $this->handle );
 		$namespacedId = Craft::$app->getView()->namespaceInputId( $id );
 
-		$pluginSettings = Plugin::getInstance()->getSettings();
+		$pluginSettings = EasyAddressField::getInstance()->getSettings();
 		$fieldSettings  = $this->getSettings();
 
-		return $this->renderFormFields( $value );
-	}
-
-	protected function renderFormFields( EasyAddressFieldModel $value = null ) {
 		// Get our id and namespace
 		$id           = Craft::$app->getView()->formatInputId( $this->handle );
 		$namespacedId = Craft::$app->getView()->namespaceInputId( $id );
 
 		$fieldSettings  = $this->getSettings();
-		$pluginSettings = Plugin::getInstance()->getSettings();
 
-		$fieldLabels   = null;
-		$addressFields = null;
 		$keyConfigured = false;
 
 		$iconUrl        = Craft::$app->assetManager->getPublishedUrl( '@studioespresso/easyaddressfield/assets', true, 'marker.svg' );
-		$pluginSettings = Plugin::getInstance()->getSettings();
 
-		if($pluginSettings->googleApiKey) {
+		if ( $pluginSettings->googleApiKey ) {
 			Craft::$app->getView()->registerJsFile( 'https://maps.googleapis.com/maps/api/js?key=' . $pluginSettings->googleApiKey );
 			$keyConfigured = true;
 		}
 
 		$countriesService = new CountriesService();
-		$countries = $countriesService->getCountriesAsArray();
+		$countries        = $countriesService->getCountriesAsArray();
 
 		return Craft::$app->getView()->renderTemplate(
-			'easyaddressfield/_field/_input',
+			'easy-address-field/_field/_input',
 			[
 				'name'           => $this->handle,
 				'value'          => $value,
@@ -178,5 +170,5 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 			]
 		);
 	}
-	
+
 }

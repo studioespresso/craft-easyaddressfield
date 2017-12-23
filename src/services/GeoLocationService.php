@@ -4,7 +4,7 @@ namespace studioespresso\easyaddressfield\services;
 
 use craft\base\Component;
 use GuzzleHttp\Client;
-use studioespresso\easyaddressfield\Plugin;
+use studioespresso\easyaddressfield\EasyAddressField;
 
 class GeoLocationService extends Component
 {
@@ -12,7 +12,7 @@ class GeoLocationService extends Component
 
     public function geoLocate($value)
     {
-        $pluginSettings = Plugin::getInstance()->getSettings();
+        $pluginSettings = EasyAddressField::getInstance()->getSettings();
         if (!$pluginSettings->googleApiKey) {
             return $value;
         }

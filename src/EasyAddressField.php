@@ -6,6 +6,7 @@
 namespace studioespresso\easyaddressfield;
 
 use Craft;
+use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\services\Fields;
@@ -78,16 +79,16 @@ class EasyAddressField extends Plugin {
 	protected function settingsHtml(): string {
 		$url = Craft::$app->assetManager->getPublishedUrl('@studioespresso/easyaddressfield/assets', true);
 		$styleOptions = [
-			'standard'  => Craft::t( "easyaddressfield", "Standard" ),
-			'silver'    => Craft::t( "easyaddressfield", 'Silver' ),
-			'retro'     => Craft::t( "easyaddressfield", 'Retro' ),
-			'dark'      => Craft::t( "easyaddressfield", 'Dark' ),
-			'night'     => Craft::t( "easyaddressfield", 'Night' ),
-			'aubergine' => Craft::t( "easyaddressfield", 'Aubergine' ),
+			'standard'  => Craft::t( "easy-address-field", "Standard" ),
+			'silver'    => Craft::t( "easy-address-field", 'Silver' ),
+			'retro'     => Craft::t( "easy-address-field", 'Retro' ),
+			'dark'      => Craft::t( "easy-address-field", 'Dark' ),
+			'night'     => Craft::t( "easy-address-field", 'Night' ),
+			'aubergine' => Craft::t( "easy-address-field", 'Aubergine' ),
 		];
 
 		return Craft::$app->getView()->renderTemplate(
-			'easyaddressfield/_settings',
+			'easy-address-field/_settings',
 			[
 				'settings'     => $this->getSettings(),
 				'styleOptions' => $styleOptions,
