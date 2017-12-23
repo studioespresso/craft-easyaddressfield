@@ -6,6 +6,7 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\elements\db\ElementQueryInterface;
 use craft\helpers\Db;
 use League\ISO3166\ISO3166;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
@@ -49,7 +50,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 	public function getSettingsHtml(): string {
 		// Render the settings template
 		$countriesService = new CountriesService();
-		$countries = $countriesService->getCountriesAsArray();
+		$countries        = $countriesService->getCountriesAsArray();
 
 		return Craft::$app->getView()->renderTemplate(
 			'easy-address-field/_field/_settings',
@@ -94,8 +95,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public static function hasContentColumn (): bool
-	{
+	public static function hasContentColumn(): bool {
 		return false;
 	}
 
@@ -106,17 +106,8 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 	 * @return mixed|EasyAddressFieldModel
 	 */
 	public function normalizeValue( $value, ElementInterface $element = null ) {
-		$settings = $this->getSettings();
-		if ( is_string( $value ) ) {
-			$value = json_decode( $value, true );
-		}
+		return EasyAddressField::$plugin->getField()->getField( $this, $element, $value );
 
-
-		if ( is_array( $value ) && ! empty( array_filter( $value ) ) ) {
-			return new EasyAddressFieldModel( $value );
-		}
-
-		return null;
 	}
 
 	public function serializeValue( $value, ElementInterface $element = null ) {
@@ -150,17 +141,16 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		$id           = Craft::$app->getView()->formatInputId( $this->handle );
 		$namespacedId = Craft::$app->getView()->namespaceInputId( $id );
 
-		$fieldSettings  = $this->getSettings();
+		$fieldSettings = $this->getSettings();
 
 		$keyConfigured = false;
 
-		$iconUrl        = Craft::$app->assetManager->getPublishedUrl( '@studioespresso/easyaddressfield/assets', true, 'marker.svg' );
+		$iconUrl = Craft::$app->assetManager->getPublishedUrl( '@studioespresso/easyaddressfield/assets', true, 'marker.svg' );
 
 		if ( $pluginSettings->googleApiKey ) {
 			Craft::$app->getView()->registerJsFile( 'https://maps.googleapis.com/maps/api/js?key=' . $pluginSettings->googleApiKey );
 			$keyConfigured = true;
 		}
-		dd($value);
 
 		$countriesService = new CountriesService();
 		$countries        = $countriesService->getCountriesAsArray();
@@ -182,10 +172,9 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		);
 	}
 
-	public function afterElementSave (ElementInterface $element, bool $isNew)
-	{
-		EasyAddressField::$plugin->getField()->saveField($this, $element);
-		parent::afterElementSave($element, $isNew);
+	public function afterElementSave( ElementInterface $element, bool $isNew ) {
+		EasyAddressField::$plugin->getField()->saveField( $this, $element );
+		parent::afterElementSave( $element, $isNew );
 	}
 
 

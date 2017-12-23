@@ -7,10 +7,20 @@ use yii\base\Model;
 
 class EasyAddressFieldModel extends Model {
 
+	public function __construct( $attributes = [], array $config = [] ) {
+		foreach ( $attributes as $key => $value ) {
+			if ( property_exists( $this, $key ) ) {
+				$this[ $key ] = $value;
+			}
+		}
+		parent::__construct( $config );
+	}
+
 	public function rules() {
 		return [
 			[
 				[
+					'id',
 					'name',
 					'street',
 					'street2',
@@ -24,6 +34,14 @@ class EasyAddressFieldModel extends Model {
 			],
 		];
 	}
+
+	public $id;
+
+	public $owner;
+
+	public $site;
+
+	public $field;
 
 	/**
 	 * Latitude
@@ -39,14 +57,24 @@ class EasyAddressFieldModel extends Model {
 		return $this->latitude;
 	}
 
-	public function toString($glue = '+'): string{
-		if(!empty($this->street)) { $data['street'] = $this->street; }
-		if(!empty($this->street2)) { $data['street2'] = $this->street2; }
-		if(!empty($this->postalCode)) { $data['postalCode'] = $this->postalCode; }
-		if(!empty($this->city)) { $data['city'] = $this->city; }
-		if(!empty($this->country)) { $data['country'] = $this->country; }
+	public function toString( $glue = '+' ): string {
+		if ( ! empty( $this->street ) ) {
+			$data['street'] = $this->street;
+		}
+		if ( ! empty( $this->street2 ) ) {
+			$data['street2'] = $this->street2;
+		}
+		if ( ! empty( $this->postalCode ) ) {
+			$data['postalCode'] = $this->postalCode;
+		}
+		if ( ! empty( $this->city ) ) {
+			$data['city'] = $this->city;
+		}
+		if ( ! empty( $this->country ) ) {
+			$data['country'] = $this->country;
+		}
 
-		return implode($glue, $data );
+		return implode( $glue, $data );
 	}
 
 	/**
