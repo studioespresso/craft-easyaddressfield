@@ -13,6 +13,7 @@ use craft\services\Fields;
 use craft\web\twig\variables\CraftVariable;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldSettignsAsset;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
+use studioespresso\easyaddressfield\services\FieldService;
 use studioespresso\easyaddressfield\web\twig\variables\AddressVariable;
 use yii\base\Event;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
@@ -44,6 +45,10 @@ class EasyAddressField extends Plugin {
 	public function init() {
 		self::$plugin = $this;
 
+		$this->setComponents([
+			'field' => FieldService::class,
+		]);
+
 		// Register our fields
 		Event::on(
 			Fields::className(),
@@ -59,6 +64,14 @@ class EasyAddressField extends Plugin {
 			$variable = $event->sender;
 			$variable->set( 'address', AddressVariable::class );
 		} );
+	}
+
+	// Components
+	// =========================================================================
+
+	public function getField (): FieldService
+	{
+		return $this->field;
 	}
 
 	/**
@@ -77,7 +90,7 @@ class EasyAddressField extends Plugin {
 	 * @throws \RuntimeException
 	 */
 	protected function settingsHtml(): string {
-		$url = Craft::$app->assetManager->getPublishedUrl('@studioespresso/easyaddressfield/assets', true);
+		$url          = Craft::$app->assetManager->getPublishedUrl( '@studioespresso/easyaddressfield/assets', true );
 		$styleOptions = [
 			'standard'  => Craft::t( "easy-address-field", "Standard" ),
 			'silver'    => Craft::t( "easy-address-field", 'Silver' ),
@@ -92,7 +105,7 @@ class EasyAddressField extends Plugin {
 			[
 				'settings'     => $this->getSettings(),
 				'styleOptions' => $styleOptions,
-				'url' => $url,
+				'url'          => $url,
 			]
 		);
 	}

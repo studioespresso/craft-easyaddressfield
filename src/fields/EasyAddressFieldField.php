@@ -171,4 +171,11 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface {
 		);
 	}
 
+	public function afterElementSave (ElementInterface $element, bool $isNew)
+	{
+		EasyAddressField::$plugin->getField()->saveField($this, $element);
+		parent::afterElementSave($element, $isNew);
+	}
+
+
 }
