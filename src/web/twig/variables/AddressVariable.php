@@ -5,7 +5,7 @@ namespace studioespresso\easyaddressfield\web\twig\variables;
 use Craft;
 use craft\helpers\Template;
 use studioespresso\easyaddressfield\assetbundles\easyaddressmap\EasyAddressMapAsset;
-use studioespresso\easyaddressfield\Plugin;
+use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\services\CountriesService;
 
 class AddressVariable {
@@ -14,7 +14,7 @@ class AddressVariable {
 	private $settings;
 	
 	public function __construct() {
-		$pluginSettings = Plugin::getInstance()->getSettings();
+		$pluginSettings = EasyAddressField::getInstance()->getSettings();
 		$this->settings = $pluginSettings;
 		$this->key      = $pluginSettings->googleApiKey;
 	}
