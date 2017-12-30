@@ -20,10 +20,14 @@ To install the plugin, follow these instructions.
 
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for "Easy Address Field".
 
+## Settings
+
+To enable geolocating and custom marker placement, you need to provide a Google Maps API key. 
+
 ## Template variables
 
 ### Static map
 
-### Javascript map
+
 
 ###### Brought to you by [Studio Espresso](https://studioespresso.co)
