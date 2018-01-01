@@ -45,7 +45,7 @@ class AddressVariable
      *
      * @return bool|string
      */
-    public function getStaticMapRaw($data, $zoom = 14, $size = '640x640', $style = null, $color = null)
+    public function getStaticMapRaw($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null)
     {
 
         if (!$this->key) {
@@ -58,6 +58,20 @@ class AddressVariable
         } else {
             $markerColor = $this->settings->defaultMarkerColor ? '0x' . ltrim($this->settings->defaultMarkerColor,
                     '#') : 'red';
+        }
+
+        // Check if the tag has a custom marker set or if we have a default custom maker
+        if (isset($icon)) {
+            $markerIcon = $icon;
+        } else {
+            $markerIcon = false;
+        }
+
+        // Use the custom marker if we have it, otherwise fall back to the standard marker + possible custom colors
+        if($markerIcon) {
+            $markerProperties = "icon:" . $markerIcon. '|';
+        } else {
+            $markerProperties = "color:" . $markerColor . '|';
         }
 
         $baseLink = 'https://maps.googleapis.com/maps/api/staticmap?';
@@ -76,7 +90,7 @@ class AddressVariable
         foreach ($data as $address) {
             $lat = $address['latitude'];
             $lng = $address['longitude'];
-            $location .= '&markers=color:' . $markerColor . '|' . $lat . ',' . $lng;
+            $location .= '&markers=' . $markerProperties. $lat . ',' . $lng;
         }
         $image = $baseLink . http_build_query($params) . $location;
 
