@@ -7,9 +7,12 @@ namespace studioespresso\easyaddressfield;
 
 use Craft;
 use craft\base\Plugin;
+use craft\events\PluginEvent;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\helpers\UrlHelper;
 use craft\services\Fields;
+use craft\services\Plugins;
 use craft\web\twig\variables\CraftVariable;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldSettignsAsset;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
@@ -51,6 +54,13 @@ class EasyAddressField extends Plugin {
 			'geolocation' => GeoLocationService::class
 		]);
 
+        // Redirect to settings after install
+        Event::on(
+            Plugins::className(),
+            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
+            [$this, 'afterPluginInstall']
+        );
+
 		// Register our fields
 		Event::on(
 			Fields::className(),
@@ -80,6 +90,17 @@ class EasyAddressField extends Plugin {
 	{
 		return $this->geolocation;
 	}
+
+    public function afterPluginInstall (PluginEvent $event)
+    {
+        if (!Craft::$app->getRequest()->getIsConsoleRequest()
+            && ($event->plugin === $this)) {
+            Craft::$app->getResponse()->redirect(
+                UrlHelper::cpUrl('settings/plugins/easy-address-field')
+            )->send();
+        }
+    }
+
 	/**
 	 * Creates and returns the model used to store the plugin’s settings.
 	 *
