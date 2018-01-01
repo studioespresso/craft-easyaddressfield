@@ -28,9 +28,9 @@ class AddressVariable
         return $countriesService->getCountriesAsArray();
     }
 
-    public function getStaticMap($data, $zoom = 14, $size = '640x640', $style = null, $color = null)
+    public function getStaticMap($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null)
     {
-        $image = $this->getStaticMapRaw($data, $zoom, $size, $style, $color);
+        $image = $this->getStaticMapRaw($data, $zoom, $size, $style, $color, $icon);
 
         return '<img src="' . $image . '"></a>';
 
