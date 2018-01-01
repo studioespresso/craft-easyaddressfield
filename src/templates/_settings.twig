@@ -26,7 +26,7 @@
 
 {{ forms.textField({
     label: 'Custom marker icon'|t,
-    instructions: 'This should be a public url to an image, not larger than 64 by 64 pixels.'|t,
+    instructions: 'This should be a public url to an image, not larger than 64 by 64 pixels.<br> (Google Maps does not support "https" links for custom markers, make sure the url you enter is "http")'|t,
     id: 'defaultMarkerIcon',
     name: 'defaultMarkerIcon',
     value: settings['defaultMarkerIcon'],
