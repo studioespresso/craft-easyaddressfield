@@ -28,6 +28,15 @@ class AddressVariable
         return $countriesService->getCountriesAsArray();
     }
 
+    /**
+     * @param $data :  array of EasyAddressField Model
+     * @param int $zoom : Zoom level of the map
+     * @param string $size : size of the rendered image, maximum 640x640
+     * @param string $style : map image style, if defined, it overrules the style defined in settings*
+     * @param string $color : HEX color value
+     *
+     * @return bool|string
+     */
     public function getStaticMap($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null)
     {
         $image = $this->getStaticMapRaw($data, $zoom, $size, $style, $color, $icon);

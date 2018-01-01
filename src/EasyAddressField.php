@@ -117,7 +117,7 @@ class EasyAddressField extends Plugin {
 	 * @throws \RuntimeException
 	 */
 	protected function settingsHtml(): string {
-		$url          = Craft::$app->assetManager->getPublishedUrl( '@studioespresso/easyaddressfield/assets', true );
+		$url          = Craft::$app->assetManager->getPublishedUrl( '@studioespresso/easyaddressfield/assets/themes', true );
 		$styleOptions = [
 			'standard'  => Craft::t( "easy-address-field", "Standard" ),
 			'silver'    => Craft::t( "easy-address-field", 'Silver' ),

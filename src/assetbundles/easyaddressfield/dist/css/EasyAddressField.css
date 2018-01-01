@@ -11,14 +11,17 @@
     width: 29%;
     float: left;
 }
+
 .form--city {
     width: 69%;
     float: right;
 }
+
 .form--long {
     width: 49.2%;
     float: right;
 }
+
 .form--lat {
     width: 49.3%;
     float: left;

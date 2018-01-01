@@ -57,16 +57,13 @@
                     existingCoords = false;
                 }
 
-                // Render map
                 var coords = getCoordinates(handle, existingCoords);
                 var marker = renderMap(handle, mapCanvas, coords, zoom);
 
-                // Set modal close trigger
                 $('.modal-cancel').on('click', function () {
                     dragPin[handle]['modal'].hide();
                 });
 
-                // Set modal submit trigger
                 $('.modal-submit-drag-pin').on('click', function () {
                     $('#' + handle + '-latitude').val(marker.getPosition().lat());
                     $('#' + handle + '-longitude').val(marker.getPosition().lng());
@@ -74,7 +71,6 @@
                     return false;
                 });
 
-                // Break loop
                 clearInterval(refreshIntervalId);
             }
 
@@ -86,17 +82,15 @@
 
         var coords;
 
-        // Set default map coordinates
         if (existingCoords) {
             coords = existingCoords;
         } else {
-            // Set default map position
 
             coords = {
                 'lat': 0,
                 'lng': 0
             };
-            // If JS geolocation available, recenter
+
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
                     var center = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -111,9 +105,7 @@
 
     function renderMap(handle, mapCanvas, coords, zoom) {
 
-        // If map already created
         if (dragPin[handle]['map']) {
-            // Remove marker and center map on new coords
             dragPin[handle]['marker'].setMap(null);
             dragPin[handle]['map'].panTo(coords);
         } else {
@@ -125,19 +117,16 @@
             dragPin[handle]['map'] = new google.maps.Map(mapCanvas, mapOptions);
         }
 
-        // Set marker for this map
         dragPin[handle]['marker'] = new google.maps.Marker({
             position: coords,
             map: dragPin[handle]['map'],
             draggable: true
         });
 
-        // When marker dropped, re-center map
         google.maps.event.addListener(dragPin[handle]['marker'], 'dragend', function (event) {
             dragPin[handle]['map'].panTo(event.latLng);
         });
 
-        // Return map marker
         return dragPin[handle]['marker'];
     }
 
