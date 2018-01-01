@@ -16,4 +16,6 @@ class EasyAddressFieldSettingsModel extends Model
 
     public $defaultMarkerColor;
 
+    public $defaultMarkerIcon;
+
 }

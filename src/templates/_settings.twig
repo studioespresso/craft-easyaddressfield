@@ -23,6 +23,16 @@
     {% endfor %}
 </div>
 
+
+{{ forms.textField({
+    label: 'Custom marker icon'|t,
+    instructions: 'This should be a public url to an image, not larger than 64 by 64 pixels.'|t,
+    id: 'defaultMarkerIcon',
+    name: 'defaultMarkerIcon',
+    value: settings['defaultMarkerIcon'],
+    errors: settings.getErrors('defaultMarkerIcon')
+}) }}
+
 {{ forms.colorField({
     label: 'Marker color',
     id: 'defaultMarkerColor',
