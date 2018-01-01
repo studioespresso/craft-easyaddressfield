@@ -61,8 +61,8 @@ class AddressVariable
         }
 
         // Check if the tag has a custom marker set or if we have a default custom maker
-        if (isset($icon)) {
-            $markerIcon = $icon;
+        if (isset($icon) || $this->settings->defaultMarkerIcon) {
+            $markerIcon = $icon ? $icon : $this->settings->defaultMarkerIcon;
         } else {
             $markerIcon = false;
         }
