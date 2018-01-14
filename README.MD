@@ -28,6 +28,20 @@ To enable geolocating and custom marker placement, you need to provide a Google 
 
 ### Static map
 
+The plugin makes it easy to render a static map image based on 1 or more address fields. 
 
+#### Available functions
+
+`craft.easyaddressfield.getStaticMap`: returns an `<img src` element to the static map image (needs to be followed by the `|raw` filter to show the image)
+
+`craft.easyaddressfield.getStaticMapRaw`: returns a link to the static map image, which you can use how you like yourself.
+
+#### Basic static maps
+
+`{{ craft.easyaddressfield.getStaticMap(entry.addressFieldHandle) }}`
+
+To include multiple address fields in the static map, add them as an array:
+
+`{{ craft.easyaddressfield.getStaticMap([entry.addressFieldHandle, entry.addressFieldHandle2 ]) }}`
 
 ###### Brought to you by [Studio Espresso](https://studioespresso.co)
