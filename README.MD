@@ -1,5 +1,8 @@
 # Easy Address Field plugin for Craft CMS 3.x
 
+![Easy Address Field](/resources/banner.png?raw=true)
+
+
 The only address field you need
 
 ## Requirements
@@ -22,13 +25,13 @@ To install the plugin, follow these instructions.
 
 ## Settings
 
-To enable geolocating and custom marker placement, you need to provide a Google Maps API key. 
+To enable geolocating and custom marker placement, you need to provide a Google Maps API key.
 
 ## Template variables
 
 ### Static map
 
-The plugin makes it easy to render a static map image based on 1 or more address fields. 
+The plugin makes it easy to render a static map image based on 1 or more address fields.
 
 #### Available functions
 
