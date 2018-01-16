@@ -16,6 +16,7 @@
     </div>
     {% endif %}
     <div class="form__row">
+        {% if 'name' in fieldSettings.enabledFields.name  %}
         <div class="form__item">
             {{ forms.text({
                 id: name ~ '-name',
@@ -24,6 +25,7 @@
                 value: value ? value.name : null
             }) }}
         </div>
+        {% endif %}
         <div class="form__item">
             {{ forms.text({
                 id: name ~ '-street',
@@ -32,6 +34,7 @@
                 value: value ? value.street : null
             }) }}
         </div>
+        {% if 'street2' in fieldSettings.enabledFields.name  %}
         <div class="form__item">
             {{ forms.text({
                 id: name ~ '-street2',
@@ -40,6 +43,7 @@
                 value: value ? value.street2 : null
             }) }}
         </div>
+        {% endif %}
 
         <div class="form__item form__inline form--postalcode">
             {{ forms.text({
@@ -57,7 +61,7 @@
                 value: value ? value.city : null
             }) }}
         </div>
-
+        {% if 'country' in fieldSettings.enabledFields.name  %}
         <div class="form__item form--country">
             {{ forms.selectField({
                 id:         name ~ '-country',
@@ -66,6 +70,9 @@
                 value:      (value|length and value.country|length) ? value.country : fieldSettings.defaultCountry
             }) }}
         </div>
+        {% else %}
+            <input type="hidden" name="{{ name }}~[country]" id="{{ name }}~[country]" value="{{ (value|length and value.country|length) ? value.country : fieldSettings.defaultCountry }}">
+        {% endif %}
     </div>
 
     <div class="form__row {% if not fieldSettings.showCoordinates %}visuallyhidden{% endif %}">
