@@ -26,8 +26,20 @@
             </thead>
             <tbody class="layout-table-rows">
                 <tr>
-                    <td class="layout-table-enable"> <input type="checkbox" id="fields[name]" name="fields[name]" value="1" /></td>
-                    <td class="layout-table-label"> <label for="fields[name]"> {{ 'Name'|t}}</label></td>
+                    <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[name]" name="enabledFields[name]" value="name" {% if  'name' in field.enabledFields %}checked{% endif %}/></td>
+                    <td class="layout-table-label"> <label for="enabledFields[name]"> {{ 'Name'|t}}</label></td>
+                </tr>
+                <tr>
+                    <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[street2]" name="enabledFields[street2]" value="street2" {% if  'street2' in field.enabledFields %}checked{% endif %}/></td>
+                    <td class="layout-table-label"> <label for="enabledFields[street2]"> {{ 'Street 2'|t}}</label></td>
+                </tr>
+                <tr>
+                    <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[state]" name="enabledFields[state]" value="state" {% if  'state' in field.enabledFields %}checked{% endif %}/></td>
+                    <td class="layout-table-label"> <label for="enabledFields[state]"> {{ 'State'|t}}</label></td>
+                </tr>
+                <tr>
+                    <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[country]" name="enabledFields[country]" value="country" {% if  'country' in field.enabledFields %}checked{% endif %}/></td>
+                    <td class="layout-table-label"> <label for="enabledFields[country]"> {{ 'Country'|t}}</label></td>
                 </tr>
             </tbody>
         </table>
