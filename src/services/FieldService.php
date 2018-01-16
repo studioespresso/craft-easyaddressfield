@@ -47,6 +47,7 @@ class FieldService extends Component {
 		$record->street2    = $value->street2;
 		$record->postalCode = $value->postalCode;
 		$record->city       = $value->city;
+		$record->state      = $value->state;
 		$record->country    = $value->country;
 		$record->latitude   = $value->latitude;
 		$record->longitude  = $value->longitude;

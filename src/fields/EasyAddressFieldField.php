@@ -29,7 +29,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 
     public $defaultCountry;
 
-    public $fields = array(
+    public $enabledFields = array(
         'name' => false,
         'street' => true,
         'street2' => false,
@@ -165,11 +165,6 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         $pluginSettings = EasyAddressField::getInstance()->getSettings();
         $fieldSettings = $this->getSettings();
 
-        // Get our id and namespace
-        $id = Craft::$app->getView()->formatInputId($this->handle);
-        $namespacedId = Craft::$app->getView()->namespaceInputId($id);
-
-        $fieldSettings = $this->getSettings();
 
         $keyConfigured = false;
 

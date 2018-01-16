@@ -17,6 +17,17 @@
     float: right;
 }
 
+.form--city-state {
+    width: 34%;
+    float: right;
+    margin-right: 12px;
+}
+
+.form--state {
+    width: 34%;
+    float: right;
+}
+
 .form--long {
     width: 49.2%;
     float: right;

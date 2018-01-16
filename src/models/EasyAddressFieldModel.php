@@ -38,6 +38,7 @@ class EasyAddressFieldModel extends Model {
 					'street2',
 					'postalCode',
 					'city',
+                    'state',
 					'country',
 					'latitude',
 					'longitude',
@@ -74,7 +75,7 @@ class EasyAddressFieldModel extends Model {
      * @var
      */
     public $field;
-    
+
     /**
      *  The name of the address
      *
