@@ -18,9 +18,8 @@
   ],
   "support": {
     "email": "support@studioespresso.co",
-    "issues": "https://studioespresso.co",
-    "source": "https://studioespresso.co",
-    "docs": "https://studioespresso.co"
+    "issues": "https://github.com/studioespresso/craft3-easyaddressfield/issues",
+    "docs": "https://github.com/studioespresso/craft3-easyaddressfield/blob/master/README.MD"
   },
   "require": {
     "craftcms/cms": "^3.0.0-RC1",
