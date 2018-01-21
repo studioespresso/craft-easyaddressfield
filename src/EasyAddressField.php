@@ -110,7 +110,17 @@ class EasyAddressField extends Plugin {
 		return new EasyAddressFieldSettingsModel();
 	}
 
-	/**
+    /**
+     * Redirect to settings after install
+     */
+    protected function afterInstall()
+    {
+        parent::afterInstall();
+        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/easy-address-field'))->send();
+    }
+
+
+    /**
 	 * @return string
 	 * @throws \yii\base\Exception
 	 * @throws \Twig_Error_Loader
