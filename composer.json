@@ -1,0 +1,44 @@
+{
+  "name": "studioespresso/craft-easyaddressfield",
+  "description": "The only address field you need",
+  "type": "craft-plugin",
+  "version": "1.0.0",
+  "keywords": [
+    "cms",
+    "craftcms",
+    "fieldtype",
+    "address",
+    "yii2"
+  ],
+  "authors": [
+    {
+      "name": "Studio Espresso",
+      "homepage": "https://studioespresso.co"
+    }
+  ],
+  "support": {
+    "email": "support@studioespresso.co",
+    "issues": "https://github.com/studioespresso/craft3-easyaddressfield/issues",
+    "docs": "https://github.com/studioespresso/craft3-easyaddressfield/blob/master/README.MD"
+  },
+  "require": {
+    "craftcms/cms": "^3.0.0-RC1",
+    "league/iso3166": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "studioespresso\\easyaddressfield\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "extra": {
+    "name": "Easy Address Field",
+    "handle": "easy-address-field",
+    "class": "studioespresso\\easyaddressfield\\EasyAddressField"
+  }
+}

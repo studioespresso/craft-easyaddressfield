@@ -1,0 +1,107 @@
+{% import "_includes/forms" as forms %}
+
+<div class="easyaddressfield-field" id="{{ name }}">
+    {% if keyConfigured %}
+    {% set dragPinData %}
+        data-default="false"
+        data-lat="50.8823536"
+        data-lng="4.7027497"
+        data-zoom="10"
+    {% endset %}
+        <div style="color: #576575; position: absolute; top: -30px; right: 3px;">
+        <span class="easyaddressfield-marker">
+            <img src="{{ iconUrl }}" height="28">
+            <span id="{{ name }}-drag-pin-data" {{ dragPinData|raw }}></span>
+        </span>
+    </div>
+    {% endif %}
+    <div class="form__row">
+        {% if 'name' in fieldSettings.enabledFields  %}
+        <div class="form__item">
+            {{ forms.text({
+                id: name ~ '-name',
+                name: name ~ '[name]',
+                placeholder: 'Name'|t,
+                value: value ? value.name : null
+            }) }}
+        </div>
+        {% endif %}
+        <div class="form__item">
+            {{ forms.text({
+                id: name ~ '-street',
+                name: name ~ '[street]',
+                placeholder: 'Street'|t,
+                value: value ? value.street : null
+            }) }}
+        </div>
+        {% if 'street2' in fieldSettings.enabledFields  %}
+        <div class="form__item">
+            {{ forms.text({
+                id: name ~ '-street2',
+                name: name ~ '[street2]',
+                placeholder: 'Street 2'|t,
+                value: value ? value.street2 : null
+            }) }}
+        </div>
+        {% endif %}
+
+        <div class="form__item form__inline form--postalcode">
+            {{ forms.text({
+                id: name ~ '-postalCode',
+                name: name ~ '[postalCode]',
+                placeholder: 'Postal code'|t,
+                value: value ? value.postalCode : null
+            }) }}
+        </div>
+        {% if 'state' in fieldSettings.enabledFields  %}
+        <div class="form__item form__inline form--state">
+            {{ forms.text({
+                id: name ~ '-state',
+                name: name ~ '[state]',
+                placeholder: 'State'|t,
+                value: value ? value.state : null
+            }) }}
+        </div>
+        {% endif %}
+
+        <div class="form__item form__inline form--city {% if 'state' in fieldSettings.enabledFields  %}form--city-state{% endif %}">
+            {{ forms.text({
+                id: name ~ '-city',
+                name: name ~ '[city]',
+                placeholder: 'City'|t,
+                value: value ? value.city : null
+            }) }}
+        </div>
+        {% if 'country' in fieldSettings.enabledFields  %}
+        <div class="form__item form--country">
+            {{ forms.selectField({
+                id:         name ~ '-country',
+                name:       name ~ '[country]',
+                options:    countries,
+                value:      (value|length and value.country|length) ? value.country : fieldSettings.defaultCountry
+            }) }}
+        </div>
+        {% else %}
+            <input type="hidden" name="{{ name }}~[country]" id="{{ name }}~[country]" value="{{ (value|length and value.country|length) ? value.country : fieldSettings.defaultCountry }}">
+        {% endif %}
+    </div>
+
+    <div class="form__row {% if not fieldSettings.showCoordinates %}visuallyhidden{% endif %}">
+        <div class="form__item form__inline form--lat">
+            {{ forms.text({
+                id: name ~ '-latitude',
+                name: name ~ '[latitude]',
+                placeholder: 'Latitude'|t,
+                value: value ? value.latitude : null
+            }) }}
+        </div>
+        <div class="form__item form__inline form--long">
+            {{ forms.text({
+                id: name ~ '-longitude',
+                name: name ~ '[longitude]',
+                placeholder: 'Longitude'|t,
+                value: value ? value.longitude : null
+            }) }}
+        </div>
+    </div>
+</div>
