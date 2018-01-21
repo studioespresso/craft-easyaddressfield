@@ -48,7 +48,7 @@
             id:         "defaultCountry",
             name:       "defaultCountry",
             options:    countries,
-            value:      field.defaultCountry
+            value:      field.defaultCountry|length ? field.defaultCountry : 'US'
         }) }}
 
 
