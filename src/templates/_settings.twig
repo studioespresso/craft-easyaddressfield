@@ -23,6 +23,12 @@
     {% endfor %}
 </div>
 
+{{ forms.colorField({
+    label: 'Marker color',
+    id: 'defaultMarkerColor',
+    name: 'defaultMarkerColor',
+    value: settings['defaultMarkerColor'] ? settings['defaultMarkerColor'] : '#E50000'})
+}}
 
 {{ forms.textField({
     label: 'Custom marker icon'|t,
@@ -33,12 +39,6 @@
     errors: settings.getErrors('defaultMarkerIcon')
 }) }}
 
-{{ forms.colorField({
-    label: 'Marker color',
-    id: 'defaultMarkerColor',
-    name: 'defaultMarkerColor',
-    value: settings['defaultMarkerColor'] ? settings['defaultMarkerColor'] : '#E50000'})
-}}
 <style>
     label > input{ /* HIDE RADIO */
         visibility: hidden; /* Makes input not-clickable */
