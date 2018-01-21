@@ -5,6 +5,8 @@
 
 The only address field you need
 
+This plugin will cost $29.00 once Craft 3 GA is released.
+
 ## Requirements
 
 This plugin requires Craft CMS 3.0.0-RC1 or later.
@@ -61,7 +63,7 @@ To include multiple address fields in the static map, add them as an array:
 #### Available settings
 
 - **data** (the field or fields to use)
-- **zoom** (the zoom level, integer between 1 & 17)
+- **zoom** (the zoom level, integer between `0` & `21`)
 - **size** (widthxheight, defaults to `640x640` which is also the maximum size)
 - **style** (name of the style the map should be using, falls back to the style set in settings)
 - **color** (hex value to be used as color for the marker(s), fallback to the color set in settings)
