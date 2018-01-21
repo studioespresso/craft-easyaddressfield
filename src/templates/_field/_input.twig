@@ -16,7 +16,7 @@
     </div>
     {% endif %}
     <div class="form__row">
-        {% if 'name' in fieldSettings.enabledFields.name  %}
+        {% if 'name' in fieldSettings.enabledFields  %}
         <div class="form__item">
             {{ forms.text({
                 id: name ~ '-name',
@@ -34,7 +34,7 @@
                 value: value ? value.street : null
             }) }}
         </div>
-        {% if 'street2' in fieldSettings.enabledFields.street2  %}
+        {% if 'street2' in fieldSettings.enabledFields  %}
         <div class="form__item">
             {{ forms.text({
                 id: name ~ '-street2',
@@ -53,7 +53,7 @@
                 value: value ? value.postalCode : null
             }) }}
         </div>
-        {% if 'state' in fieldSettings.enabledFields.state  %}
+        {% if 'state' in fieldSettings.enabledFields  %}
         <div class="form__item form__inline form--state">
             {{ forms.text({
                 id: name ~ '-state',
@@ -64,7 +64,7 @@
         </div>
         {% endif %}
 
-        <div class="form__item form__inline form--city {% if 'state' in fieldSettings.enabledFields.state  %}form--city-state{% endif %}">
+        <div class="form__item form__inline form--city {% if 'state' in fieldSettings.enabledFields  %}form--city-state{% endif %}">
             {{ forms.text({
                 id: name ~ '-city',
                 name: name ~ '[city]',
@@ -72,7 +72,7 @@
                 value: value ? value.city : null
             }) }}
         </div>
-        {% if 'country' in fieldSettings.enabledFields.country  %}
+        {% if 'country' in fieldSettings.enabledFields  %}
         <div class="form__item form--country">
             {{ forms.selectField({
                 id:         name ~ '-country',
