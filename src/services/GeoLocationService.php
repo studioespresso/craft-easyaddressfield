@@ -23,7 +23,7 @@ class GeoLocationService extends Component {
 		if ( ! $model->latitude && ! $model->longitude ) {
 
 			$client = new Client( [ 'base_uri' => 'https://maps.googleapis.com' ] );
-			$res    = $client->request( 'GET', 'maps/api/geocode/json?address=' . urlencode( $model->toString() ) . '&key=' . $pluginSettings->googleApiKey . '', [ 'allow_redirects' => false ] );
+            $res    = $client->request( 'GET', 'maps/api/geocode/json?address=' . urlencode( $model->toString() ) . '&key=' . $pluginSettings->googleApiKey . '', [ 'allow_redirects' => false ] );
 			$json   = json_decode( $res->getBody()->getContents(), true );
 
 			if ( $json['status'] == 'OK' ) {

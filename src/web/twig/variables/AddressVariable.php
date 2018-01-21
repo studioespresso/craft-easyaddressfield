@@ -6,6 +6,7 @@ use Craft;
 use craft\helpers\Template;
 use studioespresso\easyaddressfield\assetbundles\easyaddressmap\EasyAddressMapAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 use studioespresso\easyaddressfield\services\CountriesService;
 
 class AddressVariable
@@ -104,6 +105,24 @@ class AddressVariable
         $image = $baseLink . http_build_query($params) . $location;
 
         return urldecode($image);
+    }
+
+    /**
+     * @param $data
+     * @param $currentLocation
+     *
+     * @return string
+     */
+    public function getDirectionsUrl( $addressModel, $currentLocation = false ) {
+        if ( $currentLocation ) {
+            $str = 'https://www.google.com/maps/dir/current+location/';
+        } else {
+            $str = 'https://www.google.com/maps/dir//';
+        }
+        $data         = $addressModel->toString(',');
+        $str          .= str_replace( ' ', '+', $data );
+
+        return $str;
     }
 
     private function getMapStyle($style)

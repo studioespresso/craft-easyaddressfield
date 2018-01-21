@@ -152,6 +152,7 @@ class EasyAddressFieldModel extends Model {
      * @return string
      */
     public function toString( $glue = '+' ): string {
+        $data = array();
         if ( ! empty( $this->street ) ) {
             $data['street'] = $this->street;
         }
