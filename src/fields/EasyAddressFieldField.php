@@ -137,7 +137,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 
         if ($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
             $service = new GeoLocationService();
-            $value = $service->geoLocate($value);
+            $value = $service->locate($value);
 
         }
 

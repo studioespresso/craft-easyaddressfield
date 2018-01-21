@@ -17,7 +17,7 @@ class GeoLocationService extends Component {
 	public function locate( EasyAddressFieldModel $model ) {
 		$pluginSettings = EasyAddressField::getInstance()->getSettings();
 		if ( ! $pluginSettings->googleApiKey ) {
-			return $value;
+			return $model;
 		}
 
 		if ( ! $model->latitude && ! $model->longitude ) {
