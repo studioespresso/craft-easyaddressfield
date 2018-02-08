@@ -46,19 +46,19 @@ The plugin makes it easy to render a static map image based on 1 or more address
 
 #### Available functions
 
-`craft.easyaddressfield.getStaticMap`: returns an `<img src` element of the static map image (needs to be followed by the `|raw` filter to show the image)
+`craft.address.getStaticMap`: returns an `<img src` element of the static map image (needs to be followed by the `|raw` filter to show the image)
 
-`craft.easyaddressfield.getStaticMapRaw`: returns a link to the static map image, which you can use how you like yourself.
+`craft.address.getStaticMapRaw`: returns a link to the static map image, which you can use how you like yourself.
 
 `craft.address.getDirectionsUrl`: get a directions link to the given address
 
 #### Usage
 
-`{{ craft.easyaddressfield.getStaticMap(entry.addressFieldHandle) }}`
+`{{ craft.address.getStaticMap(entry.addressFieldHandle) }}`
 
 To include multiple address fields in the static map, add them as an array:
 
-`{{ craft.easyaddressfield.getStaticMap([entry.addressFieldHandle, entry.addressFieldHandle2 ]) }}`
+`{{ craft.address.getStaticMap([entry.addressFieldHandle, entry.addressFieldHandle2 ]) }}`
 
 #### Available settings
 
