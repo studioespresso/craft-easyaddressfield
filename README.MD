@@ -68,5 +68,6 @@ To include multiple address fields in the static map, add them as an array:
 - **style** (name of the style the map should be using, falls back to the style set in settings)
 - **color** (hex value to be used as color for the marker(s), fallback to the color set in settings)
 - **icon** (url that should be used as icon for the marker(s))
+- **scale** (the scale level of the image, integer, `1` or `2`)
 
 ###### Brought to you by [Studio Espresso](https://studioespresso.co)
