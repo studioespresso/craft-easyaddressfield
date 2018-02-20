@@ -35,12 +35,14 @@ class AddressVariable
      * @param string $size : size of the rendered image, maximum 640x640
      * @param string $style : map image style, if defined, it overrules the style defined in settings*
      * @param string $color : HEX color value
+     * @param string $icon : url to the custom icon
+     * @param int $scale: Scale level of the image
      *
      * @return bool|string
      */
-    public function getStaticMap($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null)
+    public function getStaticMap($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null, $scale = 1)
     {
-        $image = $this->getStaticMapRaw($data, $zoom, $size, $style, $color, $icon);
+        $image = $this->getStaticMapRaw($data, $zoom, $size, $style, $color, $icon, $scale);
 
         return '<img src="' . $image . '"></a>';
 
@@ -52,10 +54,12 @@ class AddressVariable
      * @param string $size : size of the rendered image, maximum 640x640
      * @param string $style : map image style, if defined, it overrules the style defined in settings*
      * @param string $color : HEX color value
+     * @param string $icon : url to the custom icon
+     * @param int $scale: Scale level of the image
      *
      * @return bool|string
      */
-    public function getStaticMapRaw($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null)
+    public function getStaticMapRaw($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null, $scale = 1)
     {
 
         if (!$this->key) {
@@ -88,6 +92,7 @@ class AddressVariable
         $params = array(
             'zoom' => $zoom,
             'size' => $size,
+            'scale' => $scale,
             'maptype' => 'roadmap',
             'key' => $this->key,
             'style' => $this->getMapStyle($style),
