@@ -8,23 +8,23 @@
 }
 
 .form--postalcode {
-    width: 29%;
+    width: 32%;
     float: left;
 }
 
 .form--city {
     width: 69%;
-    float: right;
+    float: left;
 }
 
 .form--city-state {
-    width: 34%;
-    float: right;
-    margin-right: 12px;
+    width: 32%;
+    float: left;
+    margin-left: 12px;
 }
 
 .form--state {
-    width: 34%;
+    width: 32%;
     float: right;
 }
 
@@ -36,10 +36,6 @@
 .form--lat {
     width: 49.3%;
     float: left;
-}
-
-.form--country .select, .form--country .select select {
-    width: 100%;
 }
 
 .visuallyhidden {

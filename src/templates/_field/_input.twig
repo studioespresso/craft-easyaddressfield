@@ -53,6 +53,15 @@
                 value: value ? value.postalCode : null
             }) }}
         </div>
+        <div class="form__item form__inline form--city {% if 'state' in fieldSettings.enabledFields  %}form--city-state{% endif %}">
+            {{ forms.text({
+                id: name ~ '-city',
+                name: name ~ '[city]',
+                placeholder: 'City'|t,
+                value: value ? value.city : null
+            }) }}
+        </div>
+
         {% if 'state' in fieldSettings.enabledFields  %}
         <div class="form__item form__inline form--state">
             {{ forms.text({
@@ -64,14 +73,6 @@
         </div>
         {% endif %}
 
-        <div class="form__item form__inline form--city {% if 'state' in fieldSettings.enabledFields  %}form--city-state{% endif %}">
-            {{ forms.text({
-                id: name ~ '-city',
-                name: name ~ '[city]',
-                placeholder: 'City'|t,
-                value: value ? value.city : null
-            }) }}
-        </div>
         {% if 'country' in fieldSettings.enabledFields  %}
         <div class="form__item form--country">
             {{ forms.selectField({
