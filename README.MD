@@ -70,4 +70,17 @@ To include multiple address fields in the static map, add them as an array:
 - **icon** (url that should be used as icon for the marker(s))
 - **scale** (the scale level of the image, integer, `1` or `2`)
 
+
+#### Examples:
+
+1) Static map with default options:
+`{{ craft.address.getStaticMap(entry.addressField)|raw }}`
+
+![Easy Address Field](/resources/default_static.png?raw=true)
+
+2) Static map with custom settings:
+`{{ craft.address.getStaticMap(entry.addressField2, 16, '500x350', 'night', '#00ff00')|raw }}`
+
+![Easy Address Field](/resources/custom_static.png?raw=true)
+
 ###### Brought to you by [Studio Espresso](https://studioespresso.co)
