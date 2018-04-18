@@ -19,9 +19,7 @@ class GeoLocationService extends Component {
 		if ( ! $pluginSettings->googleApiKey ) {
 			return $model;
 		}
-
-		if ( ! $model->latitude && ! $model->longitude and strlen($model->toString() >= 2) ) {
-
+		if ( ! $model->latitude && ! $model->longitude && strlen($model->toString()) > 2) {
 			$client = new Client( [ 'base_uri' => 'https://maps.googleapis.com' ] );
             $res    = $client->request( 'GET', 'maps/api/geocode/json?address=' . urlencode( $model->toString() ) . '&key=' . $pluginSettings->googleApiKey . '', [ 'allow_redirects' => false ] );
 			$json   = json_decode( $res->getBody()->getContents(), true );
