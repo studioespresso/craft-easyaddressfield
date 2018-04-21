@@ -2,10 +2,13 @@
 
 namespace studioespresso\easyaddressfield\services;
 
+use Craft;
 use craft\base\Component;
 use GuzzleHttp\Client;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use yii\base\InvalidConfigException;
+use yii\log\Logger;
 
 class GeoLocationService extends Component {
 
@@ -24,6 +27,14 @@ class GeoLocationService extends Component {
 			$client = new Client( [ 'base_uri' => 'https://maps.googleapis.com' ] );
             $res    = $client->request( 'GET', 'maps/api/geocode/json?address=' . urlencode( $model->toString() ) . '&key=' . $pluginSettings->googleApiKey . '', [ 'allow_redirects' => false ] );
 			$json   = json_decode( $res->getBody()->getContents(), true );
+
+			$generalConfig = Craft::$app->getConfig();
+			if ( $json['status'] != 'OK' ) {
+				if($generalConfig->general->devMode) {
+					throw new InvalidConfigException('Google API error: ' . $json['error_message']);
+				}
+				Craft::getLogger()->log($json['error_message'], Logger::LEVEL_ERROR, 'easy-address-field');
+			}
 
 			if ( $json['status'] == 'OK' ) {
 				if ( $json['results'][0]['geometry']['location'] ) {
