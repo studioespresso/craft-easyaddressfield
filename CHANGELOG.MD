@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3 - 2018-04-21
+### Changed
+* Added better logging and error handling related to Google API responses.
+
+
 ## 1.1.2 - 2018-04-18
 ### Changed
 * Fixed an issue with the country field when it was hidden in the field options
