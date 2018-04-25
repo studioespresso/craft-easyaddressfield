@@ -33,7 +33,7 @@ To enable geolocating and custom marker placement, you need to provide a Google 
 
 **🚨 Important 🚨:**
 
-Google's Geocoding API does not support HTTP referrer restrictions. Make sure the API key you are using this not have these set.
+Google's Geocoding API does not support HTTP referrer restrictions. Make sure the API key you are using does not have these set.
 
 #### API Errors
 When `devMode` is enabled, any errors returned by Google's API will show an exception so you can clearly see what's going wrong. With `devMode` disabled, any errors will be logged to Craft's `web.log`.
