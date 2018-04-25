@@ -31,7 +31,8 @@ To enable geolocating and custom marker placement, you need to provide a Google 
 2) Create a new project
 3) Enable the `Google Maps Geocoding API` and the `Google Static Maps API`
 
-**🚨 Important 🚨**
+**🚨 Important 🚨:**
+
 Google's Geocoding API does not support HTTP referrer restrictions. Make sure the API key you are using this not have these set.
 
 #### API Errors
