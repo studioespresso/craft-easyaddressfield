@@ -31,8 +31,8 @@ To enable geolocating and custom marker placement, you need to provide a Google 
 2) Create a new project
 3) Enable the `Google Maps Geocoding API` and the `Google Static Maps API`
 
-**Important:**
-Google's Goecoding API does not support HTTP referrer restrictions. Make sure the API key you are using this not have these set.
+**🚨 Important 🚨**
+Google's Geocoding API does not support HTTP referrer restrictions. Make sure the API key you are using this not have these set.
 
 #### API Errors
 When `devMode` is enabled, any errors returned by Google's API will show an exception so you can clearly see what's going wrong. With `devMode` disabled, any errors will be logged to Craft's `web.log`.
