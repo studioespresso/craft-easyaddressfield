@@ -29,7 +29,7 @@ class GeoLocationService extends Component {
 			$json   = json_decode( $res->getBody()->getContents(), true );
 
 			$generalConfig = Craft::$app->getConfig();
-			if ( $json['status'] != 'OK' ) {
+			if ( $json['status'] != 'OK' && $json['error_message'] ) {
 				if($generalConfig->general->devMode) {
 					throw new InvalidConfigException('Google API error: ' . $json['error_message']);
 				}
