@@ -1,9 +1,13 @@
 # Changelog
 
+## 1.1.4 - 2018-09-17
+### Fixed
+- Small fixes to field layout when different fields are selected
+- Fixed an issue where the selected country value wasn't displayed after save
+
 ## 1.1.3 - 2018-04-21
 ### Changed
 * Added better logging and error handling related to Google API responses.
-
 
 ## 1.1.2 - 2018-04-18
 ### Changed
