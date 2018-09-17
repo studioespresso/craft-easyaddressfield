@@ -13,7 +13,8 @@
 }
 
 .form--city {
-    width: 69%;
+    width: 64%;
+    margin-left: 10px;
     float: left;
 }
 
