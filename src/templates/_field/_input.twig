@@ -77,9 +77,14 @@
         <div class="form__item form--country">
             <div class="input ltr">
                 <div class="select">
+                    {% if (value is defined and value.country|length) %}
+                        {% set selectedValue = value.country %}
+                    {% else %}
+                        {% set selectedValue = fieldSettings.defaultCountry %}
+                    {% endif %}
                         <select id="{{ name ~ '-country' }}" class="fieldtoggle" name="{{ name ~ '[country]' }}" required>
                         {% for key, country in countries %}
-                            <option value="{{ key }}" {% if (value|length and value.country|length and value.country == key) %}selected="selected"{% elseif fieldSettings.defaultCountry == key %}selected="selected"{% endif %}>{{ country }}</option>
+                            <option value="{{ key }}" {% if selectedValue == key %}selected{% endif %} >{{ country }}</option>
                         {% endfor %}
                     </select>
                 </div>
