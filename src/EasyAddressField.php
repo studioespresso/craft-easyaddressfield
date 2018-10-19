@@ -14,6 +14,7 @@ use craft\helpers\UrlHelper;
 use craft\services\Fields;
 use craft\services\Plugins;
 use craft\web\twig\variables\CraftVariable;
+use markhuot\CraftQL\Events\GetFieldSchema;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldSettignsAsset;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
 use studioespresso\easyaddressfield\services\FieldService;
@@ -62,6 +63,23 @@ class EasyAddressField extends Plugin
         Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
             $variable = $event->sender;
             $variable->set('address', AddressVariable::class);
+        });
+
+        Event::on(EasyAddressFieldField::class, 'craftQlGetFieldSchema', function (GetFieldSchema $event) {
+            $event->handled = true;
+            $field = $event->sender;
+            $object = $event->schema->createObjectType(ucfirst($field->handle) . 'EasyAddressField');
+
+            $object->addStringField('name');
+            $object->addStringField('street');
+            $object->addStringField('street2');
+            $object->addStringField('postalCode');
+            $object->addStringField('city');
+            $object->addStringField('state');
+            $object->addStringField('country');
+            $object->addStringField('lat');
+            $object->addStringField('lng');
+            $event->schema->addField($field)->type($object);
         });
     }
 
