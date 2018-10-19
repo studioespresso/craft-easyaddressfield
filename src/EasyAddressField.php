@@ -33,7 +33,7 @@ class EasyAddressField extends Plugin
 {
 
     /**
-     * @var \studioespresso\easyaddressfield\Plugin Plugin instance
+     * @var \studioespresso\easyaddressfield\EasyAddressField instance
      */
     public static $plugin;
 
@@ -44,9 +44,6 @@ class EasyAddressField extends Plugin
 
     // Public Methods
     // =========================================================================
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         self::$plugin = $this;
@@ -56,22 +53,10 @@ class EasyAddressField extends Plugin
             'geolocation' => GeoLocationService::class
         ]);
 
-        // Redirect to settings after install
-        Event::on(
-            Plugins::className(),
-            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            [$this, 'afterPluginInstall']
-        );
-
         // Register our fields
-        Event::on(
-            Fields::className(),
-            Fields::EVENT_REGISTER_FIELD_TYPES,
-            function (RegisterComponentTypesEvent $event) {
-                $event->types[] = EasyAddressFieldField::class;
-
-            }
-        );
+        Event::on(Fields::className(), Fields::EVENT_REGISTER_FIELD_TYPES, function (RegisterComponentTypesEvent $event) {
+            $event->types[] = EasyAddressFieldField::class;
+        });
 
         // Register our twig functions
         Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
@@ -93,16 +78,6 @@ class EasyAddressField extends Plugin
         return $this->geolocation;
     }
 
-    public function afterPluginInstall(PluginEvent $event)
-    {
-        if (!Craft::$app->getRequest()->getIsConsoleRequest()
-            && ($event->plugin === $this)) {
-            Craft::$app->getResponse()->redirect(
-                UrlHelper::cpUrl('settings/plugins/easy-address-field')
-            )->send();
-        }
-    }
-
     /**
      * Creates and returns the model used to store the plugin’s settings.
      *
@@ -121,7 +96,6 @@ class EasyAddressField extends Plugin
         parent::afterInstall();
         Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/easy-address-field'))->send();
     }
-
 
     /**
      * @return string
