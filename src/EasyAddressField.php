@@ -29,30 +29,32 @@ use yii\web\UrlManager;
  * @author Studio Espresso <support@studioespresso.co>
  * @since  1.0
  */
-class EasyAddressField extends Plugin {
+class EasyAddressField extends Plugin
+{
 
-	/**
-	 * @var \studioespresso\easyaddressfield\Plugin Plugin instance
-	 */
-	public static $plugin;
+    /**
+     * @var \studioespresso\easyaddressfield\Plugin Plugin instance
+     */
+    public static $plugin;
 
-	/**
-	 * @var bool
-	 */
-	public $hasCpSettings = true;
+    /**
+     * @var bool
+     */
+    public $hasCpSettings = true;
 
-	// Public Methods
-	// =========================================================================
-	/**
-	 * @inheritdoc
-	 */
-	public function init() {
-		self::$plugin = $this;
+    // Public Methods
+    // =========================================================================
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        self::$plugin = $this;
 
-		$this->setComponents([
-			'field' => FieldService::class,
-			'geolocation' => GeoLocationService::class
-		]);
+        $this->setComponents([
+            'field' => FieldService::class,
+            'geolocation' => GeoLocationService::class
+        ]);
 
         // Redirect to settings after install
         Event::on(
@@ -61,37 +63,37 @@ class EasyAddressField extends Plugin {
             [$this, 'afterPluginInstall']
         );
 
-		// Register our fields
-		Event::on(
-			Fields::className(),
-			Fields::EVENT_REGISTER_FIELD_TYPES,
-			function ( RegisterComponentTypesEvent $event ) {
-				$event->types[] = EasyAddressFieldField::class;
+        // Register our fields
+        Event::on(
+            Fields::className(),
+            Fields::EVENT_REGISTER_FIELD_TYPES,
+            function (RegisterComponentTypesEvent $event) {
+                $event->types[] = EasyAddressFieldField::class;
 
-			}
-		);
+            }
+        );
 
-		// Register our twig functions
-		Event::on( CraftVariable::class, CraftVariable::EVENT_INIT, function ( Event $event ) {
-			$variable = $event->sender;
-			$variable->set( 'address', AddressVariable::class );
-		} );
-	}
+        // Register our twig functions
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
+            $variable = $event->sender;
+            $variable->set('address', AddressVariable::class);
+        });
+    }
 
-	// Components
-	// =========================================================================
+    // Components
+    // =========================================================================
 
-	public function getField (): FieldService
-	{
-		return $this->field;
-	}
+    public function getField(): FieldService
+    {
+        return $this->field;
+    }
 
-	public function geolocation () : GeoLocationService
-	{
-		return $this->geolocation;
-	}
+    public function geolocation(): GeoLocationService
+    {
+        return $this->geolocation;
+    }
 
-    public function afterPluginInstall (PluginEvent $event)
+    public function afterPluginInstall(PluginEvent $event)
     {
         if (!Craft::$app->getRequest()->getIsConsoleRequest()
             && ($event->plugin === $this)) {
@@ -101,14 +103,15 @@ class EasyAddressField extends Plugin {
         }
     }
 
-	/**
-	 * Creates and returns the model used to store the plugin’s settings.
-	 *
-	 * @return \craft\base\Model|null
-	 */
-	protected function createSettingsModel() {
-		return new EasyAddressFieldSettingsModel();
-	}
+    /**
+     * Creates and returns the model used to store the plugin’s settings.
+     *
+     * @return \craft\base\Model|null
+     */
+    protected function createSettingsModel()
+    {
+        return new EasyAddressFieldSettingsModel();
+    }
 
     /**
      * Redirect to settings after install
@@ -121,29 +124,30 @@ class EasyAddressField extends Plugin {
 
 
     /**
-	 * @return string
-	 * @throws \yii\base\Exception
-	 * @throws \Twig_Error_Loader
-	 * @throws \RuntimeException
-	 */
-	protected function settingsHtml(): string {
-		$url          = Craft::$app->assetManager->getPublishedUrl( '@studioespresso/easyaddressfield/assets/themes', true );
-		$styleOptions = [
-			'standard'  => Craft::t( "easy-address-field", "Standard" ),
-			'silver'    => Craft::t( "easy-address-field", 'Silver' ),
-			'retro'     => Craft::t( "easy-address-field", 'Retro' ),
-			'dark'      => Craft::t( "easy-address-field", 'Dark' ),
-			'night'     => Craft::t( "easy-address-field", 'Night' ),
-			'aubergine' => Craft::t( "easy-address-field", 'Aubergine' ),
-		];
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \Twig_Error_Loader
+     * @throws \RuntimeException
+     */
+    protected function settingsHtml(): string
+    {
+        $url = Craft::$app->assetManager->getPublishedUrl('@studioespresso/easyaddressfield/assets/themes', true);
+        $styleOptions = [
+            'standard' => Craft::t("easy-address-field", "Standard"),
+            'silver' => Craft::t("easy-address-field", 'Silver'),
+            'retro' => Craft::t("easy-address-field", 'Retro'),
+            'dark' => Craft::t("easy-address-field", 'Dark'),
+            'night' => Craft::t("easy-address-field", 'Night'),
+            'aubergine' => Craft::t("easy-address-field", 'Aubergine'),
+        ];
 
-		return Craft::$app->getView()->renderTemplate(
-			'easy-address-field/_settings',
-			[
-				'settings'     => $this->getSettings(),
-				'styleOptions' => $styleOptions,
-				'url'          => $url,
-			]
-		);
-	}
+        return Craft::$app->getView()->renderTemplate(
+            'easy-address-field/_settings',
+            [
+                'settings' => $this->getSettings(),
+                'styleOptions' => $styleOptions,
+                'url' => $url,
+            ]
+        );
+    }
 }
