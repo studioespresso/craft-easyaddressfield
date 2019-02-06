@@ -111,8 +111,10 @@ class EasyAddressField extends Plugin
      */
     protected function afterInstall()
     {
-        parent::afterInstall();
-        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/easy-address-field'))->send();
+        if(!Craft::$app->getRequest()->isConsoleRequest) {
+            parent::afterInstall();
+            Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/easy-address-field'))->send();
+        }
     }
 
     /**
