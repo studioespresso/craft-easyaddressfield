@@ -48,6 +48,20 @@ This is an example of the exception you'll see when your API key has HTTP refere
 
 ## Template variables
 
+### Printing address values
+You can access the values from your address field in Twig through the following variables:
+````
+field.name
+field.street
+field.street2
+field.postalCode
+field.state
+field.country // returns the country code
+field.getCountryName() // returns the coutry's full name
+field.latitude
+field.longitude
+````
+
 ### Static map
 
 The plugin makes it easy to render a static map image based on 1 or more address fields.
@@ -90,5 +104,7 @@ To include multiple address fields in the static map, add them as an array:
 `{{ craft.address.getStaticMap(entry.addressField2, 16, '500x350', 'night', '#00ff00')|raw }}`
 
 ![Easy Address Field](/resources/custom_static.png?raw=true)
+
+
 
 ###### Brought to you by [Studio Espresso](https://studioespresso.co)
