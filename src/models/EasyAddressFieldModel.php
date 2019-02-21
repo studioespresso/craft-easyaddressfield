@@ -2,8 +2,8 @@
 
 namespace studioespresso\easyaddressfield\models;
 
+use studioespresso\easyaddressfield\EasyAddressField;
 use yii\base\Model;
-
 
 /**
  * Class EasyAddressFieldModel
@@ -137,6 +137,11 @@ class EasyAddressFieldModel extends Model
     public $country;
 
     /**
+     * @var
+     */
+    public $countryName;
+
+    /**
      * @return string
      */
     public function getLatitude(): string
@@ -150,6 +155,14 @@ class EasyAddressFieldModel extends Model
     public function getLongitude(): string
     {
         return $this->longitude;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryName(): string
+    {
+        return EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country);
     }
 
     /**
@@ -172,7 +185,7 @@ class EasyAddressFieldModel extends Model
             $data['city'] = $this->city;
         }
         if (!empty($this->country)) {
-            $data['country'] = $this->country;
+            $data['country'] = $this->countryName;
         }
 
         return implode($glue, $data);
