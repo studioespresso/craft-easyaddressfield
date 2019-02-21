@@ -2,51 +2,54 @@
 
 namespace studioespresso\easyaddressfield\models;
 
+use studioespresso\easyaddressfield\EasyAddressField;
 use yii\base\Model;
-
 
 /**
  * Class EasyAddressFieldModel
  * @package studioespresso\easyaddressfield\models
  */
-class EasyAddressFieldModel extends Model {
+class EasyAddressFieldModel extends Model
+{
 
     /**
      * EasyAddressFieldModel constructor.
      * @param array $attributes
      * @param array $config
      */
-    public function __construct( $attributes = [], array $config = [] ) {
-		foreach ( $attributes as $key => $value ) {
-			if ( property_exists( $this, $key ) ) {
-				$this[ $key ] = $value;
-			}
-		}
-		parent::__construct( $config );
-	}
+    public function __construct($attributes = [], array $config = [])
+    {
+        foreach ($attributes as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this[$key] = $value;
+            }
+        }
+        parent::__construct($config);
+    }
 
     /**
      * @return array
      */
-    public function rules() {
-		return [
-			[
-				[
-					'id',
-					'name',
-					'street',
-					'street2',
-					'postalCode',
-					'city',
+    public function rules()
+    {
+        return [
+            [
+                [
+                    'id',
+                    'name',
+                    'street',
+                    'street2',
+                    'postalCode',
+                    'city',
                     'state',
-					'country',
-					'latitude',
-					'longitude',
-				],
-				'safe',
-			],
-		];
-	}
+                    'country',
+                    'latitude',
+                    'longitude',
+                ],
+                'safe',
+            ],
+        ];
+    }
 
     /**
      *  Address ID
@@ -83,40 +86,40 @@ class EasyAddressFieldModel extends Model {
      */
     public $name;
 
-	/**
-	 * Latitude
-	 *
-	 * @var string
-	 */
-	public $latitude;
+    /**
+     * Latitude
+     *
+     * @var string
+     */
+    public $latitude;
 
-	/**
-	 * Longitude
-	 *
-	 * @var string
-	 */
-	public $longitude;
+    /**
+     * Longitude
+     *
+     * @var string
+     */
+    public $longitude;
 
-	/**
-	 * The first line of the street block.
-	 *
-	 * @var string
-	 */
-	public $street;
+    /**
+     * The first line of the street block.
+     *
+     * @var string
+     */
+    public $street;
 
-	/**
-	 * The second line of the street block.
-	 *
-	 * @var string
-	 */
-	public $street2;
+    /**
+     * The second line of the street block.
+     *
+     * @var string
+     */
+    public $street2;
 
-	/**
-	 * The postal code.
-	 *
-	 * @var string
-	 */
-	public $postalCode;
+    /**
+     * The postal code.
+     *
+     * @var string
+     */
+    public $postalCode;
 
     /**
      * @var
@@ -132,44 +135,55 @@ class EasyAddressFieldModel extends Model {
      * @var
      */
     public $country;
-
+    
     /**
      * @return string
      */
-    public function getLatitude(): string {
+    public function getLatitude(): string
+    {
         return $this->latitude;
     }
 
     /**
      * @return string
      */
-    public function getLongitude(): string {
+    public function getLongitude(): string
+    {
         return $this->longitude;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryName(): string
+    {
+        return EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country);
     }
 
     /**
      * @param string $glue
      * @return string
      */
-    public function toString( $glue = '+' ): string {
+    public function toString($glue = '+'): string
+    {
         $data = array();
-        if ( ! empty( $this->street ) ) {
+        if (!empty($this->street)) {
             $data['street'] = $this->street;
         }
-        if ( ! empty( $this->street2 ) ) {
+        if (!empty($this->street2)) {
             $data['street2'] = $this->street2;
         }
-        if ( ! empty( $this->postalCode ) ) {
+        if (!empty($this->postalCode)) {
             $data['postalCode'] = $this->postalCode;
         }
-        if ( ! empty( $this->city ) ) {
+        if (!empty($this->city)) {
             $data['city'] = $this->city;
         }
-        if ( ! empty( $this->country ) ) {
-            $data['country'] = $this->country;
+        if (!empty($this->country)) {
+            $data['country'] = $this->countryName;
         }
 
-        return implode( $glue, $data );
+        return implode($glue, $data);
     }
 
 }

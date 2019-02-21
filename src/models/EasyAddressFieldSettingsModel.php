@@ -1,6 +1,7 @@
 <?php
 
 namespace studioespresso\easyaddressfield\models;
+
 use craft\base\model;
 
 /**
@@ -10,7 +11,7 @@ use craft\base\model;
  */
 class EasyAddressFieldSettingsModel extends Model
 {
-	public $googleApiKey;
+    public $googleApiKey;
 
     public $defaultMapTheme;
 
