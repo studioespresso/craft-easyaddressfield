@@ -1,10 +1,14 @@
 # Changelog
 
+## 1.2.0 - 2019-02-21
+### Added
+- GraphQL support! The now also works in your GraphQL queries
+- Added getCountryName() to get the full name of the country selected in the field
+
 ## 1.1.5 - 2019-02-06
 ### Fixed
 - Don't redirect to settings when installing through command line
 - Fixed a small possible error when installing the plugin on 3.1
-
 
 ## 1.1.4 - 2018-09-17
 ### Fixed
