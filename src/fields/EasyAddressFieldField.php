@@ -6,17 +6,10 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
-use craft\elements\db\ElementQueryInterface;
 use craft\helpers\Db;
-use League\ISO3166\ISO3166;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
-use studioespresso\easyaddressfield\Plugin;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use studioespresso\easyaddressfield\services\CountriesService;
-use studioespresso\easyaddressfield\services\GeoLocationService;
-use yii\db\Schema;
-
 
 class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 {
@@ -56,14 +49,11 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
     public function getSettingsHtml(): string
     {
         // Render the settings template
-        $countriesService = new CountriesService();
-        $countries = $countriesService->getCountriesAsArray();
-
         return Craft::$app->getView()->renderTemplate(
             'easy-address-field/_field/_settings',
             [
                 'field' => $this,
-                'countries' => $countries
+                'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray()
             ]
         );
     }
@@ -136,9 +126,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         }
 
         if ($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
-            $service = new GeoLocationService();
-            $value = $service->locate($value);
-
+            $value = EasyAddressField::getInstance()->geoLocation->locate($value);
         }
 
         return Db::prepareValueForDb($value);
@@ -202,7 +190,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
      */
     public function afterElementSave(ElementInterface $element, bool $isNew)
     {
-        EasyAddressField::$plugin->getField()->saveField($this, $element);
+        EasyAddressField::getInstance()->field->saveField($this, $element);
         parent::afterElementSave($element, $isNew);
     }
 

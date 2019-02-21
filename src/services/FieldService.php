@@ -9,82 +9,84 @@ use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 use studioespresso\easyaddressfield\records\EasyAddressFieldRecord;
-use yii\web\View;
 
-class FieldService extends Component {
+class FieldService extends Component
+{
 
-	/**
-	 * @param EasyAddressFieldField $field
-	 * @param ElementInterface $element
-	 *
-	 * @return bool
-	 */
-	public function saveField( EasyAddressFieldField $field, ElementInterface $element ) {
+    /**
+     * @param EasyAddressFieldField $field
+     * @param ElementInterface $element
+     *
+     * @return bool
+     */
+    public function saveField(EasyAddressFieldField $field, ElementInterface $element)
+    {
 
-		$locale = $element->getSite()->language;
-		$value  = $element->getFieldValue( $field->handle );
+        $locale = $element->getSite()->language;
+        $value = $element->getFieldValue($field->handle);
 
-		$record = EasyAddressFieldRecord::findOne(
-			[
-				'owner' => $element->id,
-				'site'  => $element->siteId,
-				'field' => $field->id,
-			]
-		);
+        $record = EasyAddressFieldRecord::findOne(
+            [
+                'owner' => $element->id,
+                'site' => $element->siteId,
+                'field' => $field->id,
+            ]
+        );
 
-		if ( ! $record ) {
-			$record        = new EasyAddressFieldRecord();
-			$record->owner = $element->id;
-			$record->site  = $element->siteId;
-			$record->field = $field->id;
-		}
+        if (!$record) {
+            $record = new EasyAddressFieldRecord();
+            $record->owner = $element->id;
+            $record->site = $element->siteId;
+            $record->field = $field->id;
+        }
 
-		$value = EasyAddressField::$plugin->geolocation()->locate( $value );
-
-
-		$record->name       = $value->name;
-		$record->street     = $value->street;
-		$record->street2    = $value->street2;
-		$record->postalCode = $value->postalCode;
-		$record->city       = $value->city;
-		$record->state      = $value->state;
-		$record->country    = $value->country;
-		$record->latitude   = $value->latitude;
-		$record->longitude  = $value->longitude;
+        $value = EasyAddressField::$plugin->geolocation()->locate($value);
 
 
-		$save = $record->save();
-		if ( ! $save ) {
-			Craft::getLogger()->log( $record->getErrors(), LOG_ERR, 'easy-address-field' );
-		}
+        $record->name = $value->name;
+        $record->street = $value->street;
+        $record->street2 = $value->street2;
+        $record->postalCode = $value->postalCode;
+        $record->city = $value->city;
+        $record->state = $value->state;
+        $record->country = $value->country;
+        $record->latitude = $value->latitude;
+        $record->longitude = $value->longitude;
 
-		return $save;
-	}
 
-	/**
-	 * @param EasyAddressFieldField $field
-	 * @param ElementInterface $element
-	 * @param $value
-	 *
-	 * @return EasyAddressFieldModel
-	 */
-	public function getField( EasyAddressFieldField $field, ElementInterface $element, $value ) {
-		$record = EasyAddressFieldRecord::findOne(
-			[
-				'owner' => $element->id,
-				'site'  => $element->siteId,
-				'field' => $field->id,
-			]
-		);
-		if ( Craft::$app->request->getIsPost() && $value ) {
-			$model = new EasyAddressFieldModel( $value );
-		} else if ( $record ) {
-			$model = new EasyAddressFieldModel( $record->getAttributes() );
-		} else {
-			$model = new EasyAddressFieldModel();
-		}
+        $save = $record->save();
+        if (!$save) {
+            Craft::getLogger()->log($record->getErrors(), LOG_ERR, 'easy-address-field');
+        }
 
-		return $model;
-	}
+        return $save;
+    }
+
+    /**
+     * @param EasyAddressFieldField $field
+     * @param ElementInterface $element
+     * @param $value
+     *
+     * @return EasyAddressFieldModel
+     */
+    public function getField(EasyAddressFieldField $field, ElementInterface $element, $value)
+    {
+        $record = EasyAddressFieldRecord::findOne(
+            [
+                'owner' => $element->id,
+                'site' => $element->siteId,
+                'field' => $field->id,
+            ]
+        );
+        if (Craft::$app->request->getIsPost() && $value) {
+            $model = new EasyAddressFieldModel($value);
+        } else if ($record) {
+            $model = new EasyAddressFieldModel($record->getAttributes());
+        } else {
+            $model = new EasyAddressFieldModel();
+        }
+
+        return $model;
+    }
 
 }

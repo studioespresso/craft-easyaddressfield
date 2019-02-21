@@ -17,6 +17,7 @@ use craft\web\twig\variables\CraftVariable;
 use markhuot\CraftQL\Events\GetFieldSchema;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldSettignsAsset;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
+use studioespresso\easyaddressfield\services\CountriesService;
 use studioespresso\easyaddressfield\services\FieldService;
 use studioespresso\easyaddressfield\services\GeoLocationService;
 use studioespresso\easyaddressfield\web\twig\variables\AddressVariable;
@@ -29,6 +30,10 @@ use yii\web\UrlManager;
  *
  * @author Studio Espresso <support@studioespresso.co>
  * @since  1.0
+ *
+ * @property CountriesService $countries
+ * @property GeoLocationService $geoLocation
+ * @property FieldService $field
  */
 class EasyAddressField extends Plugin
 {
@@ -51,7 +56,8 @@ class EasyAddressField extends Plugin
 
         $this->setComponents([
             'field' => FieldService::class,
-            'geolocation' => GeoLocationService::class
+            'geolocation' => GeoLocationService::class,
+            'countries' => CountriesService::class
         ]);
 
         // Register our fields
