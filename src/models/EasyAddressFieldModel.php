@@ -135,12 +135,7 @@ class EasyAddressFieldModel extends Model
      * @var
      */
     public $country;
-
-    /**
-     * @var
-     */
-    public $countryName;
-
+    
     /**
      * @return string
      */

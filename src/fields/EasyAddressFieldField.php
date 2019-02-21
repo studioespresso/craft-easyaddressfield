@@ -164,8 +164,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
             $keyConfigured = true;
         }
 
-        $countriesService = new CountriesService();
-        $countries = $countriesService->getCountriesAsArray();
+        $countries = EasyAddressField::getInstance()->countries->getCountriesAsArray();
 
         return Craft::$app->getView()->renderTemplate(
             'easy-address-field/_field/_input',
