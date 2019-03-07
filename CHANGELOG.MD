@@ -1,4 +1,8 @@
-# Changelog
+# Release Notes for Easy Address Field for Craft CMS
+
+## 1.2.1 - 2019-03-07
+### Fixed
+- Address fields that are set as required now validated properly when they are empty
 
 ## 1.2.0 - 2019-02-21
 ### Added

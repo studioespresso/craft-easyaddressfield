@@ -132,6 +132,11 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         return Db::prepareValueForDb($value);
     }
 
+    public function isValueEmpty($value, ElementInterface $element): bool
+    {
+        return $value->isEmpty();
+    }
+
 
     /**
      * @param $value

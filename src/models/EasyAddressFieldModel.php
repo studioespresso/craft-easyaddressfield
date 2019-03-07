@@ -135,7 +135,7 @@ class EasyAddressFieldModel extends Model
      * @var
      */
     public $country;
-    
+
     /**
      * @return string
      */
@@ -184,6 +184,16 @@ class EasyAddressFieldModel extends Model
         }
 
         return implode($glue, $data);
+    }
+
+    public function isEmpty() {
+
+        $values = array_filter($this->toArray());
+        if(count($values) == 1 && isset($values['country'])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
