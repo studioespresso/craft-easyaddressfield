@@ -142,6 +142,11 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         return $value->modelToString(', ');
     }
 
+    public function getSearchKeywords($value, ElementInterface $element): string
+    {
+        return $value->modelToString(' ');
+    }
+    
     /**
      * @param $value
      * @param ElementInterface|null $element
