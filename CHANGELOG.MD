@@ -1,5 +1,10 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 1.2.2 - 2019-03-20
+## Improved
+- Field data can now be added and view in element overviews
+- Field data is now fully searchable, both on the CP and through twig
+
 ## 1.2.1 - 2019-03-07
 ### Fixed
 - Address fields that are set as required now validated properly when they are empty
