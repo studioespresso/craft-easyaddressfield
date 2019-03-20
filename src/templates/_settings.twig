@@ -1,7 +1,8 @@
 {% import "_includes/forms" as forms %}
 
 {{ forms.textField({
-    label: 'Google API Key'|t,
+    label: 'Google API Key (use for geocoding requests)'|t,
+    instructions: "Google's geocoding API does not support HTTML referer restrictions. <a href='{link}'>More information</a>"|t({link: 'https://developers.google.com/maps/faq#browser-keys-blocked-error'}),
     id: 'googleApiKey',
     name: 'googleApiKey',
     value: settings['googleApiKey'],

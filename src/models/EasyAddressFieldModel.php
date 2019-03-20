@@ -186,6 +186,34 @@ class EasyAddressFieldModel extends Model
         return implode($glue, $data);
     }
 
+    public function modelToString($glue = '+'): string
+    {
+        $data = array();
+        if (!empty($this->name)) {
+            $data['name'] = $this->name;
+        }
+        if (!empty($this->street)) {
+            $data['street'] = $this->street;
+        }
+        if (!empty($this->street2)) {
+            $data['street2'] = $this->street2;
+        }
+        if (!empty($this->postalCode)) {
+            $data['postalCode'] = $this->postalCode;
+        }
+        if (!empty($this->city)) {
+            $data['city'] = $this->city;
+        }
+        if (!empty($this->state)) {
+            $data['state'] = $this->state;
+        }
+        if (!empty($this->country)) {
+            $data['country'] = $this->countryName;
+        }
+
+        return implode($glue, $data);
+    }
+
     public function isEmpty() {
 
         $values = array_filter($this->toArray());
