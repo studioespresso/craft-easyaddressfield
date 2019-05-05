@@ -157,7 +157,9 @@ class EasyAddressFieldModel extends Model
      */
     public function getCountryName(): string
     {
-        return EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country);
+        if ($this->country) {
+            return EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country);
+        }
     }
 
     /**
