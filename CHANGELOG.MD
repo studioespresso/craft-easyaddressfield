@@ -1,5 +1,12 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+1.2.3 - Unreleased
+## Added
+- Added a migration for StatikAddress fields on install. Settings & content are migrated to EasyAddressField
+
+## Fixed
+- Only get do getCountryName() for fields which actually have a country
+
 ## 1.2.2 - 2019-03-20
 ## Improved
 - Field data can now be added and view in element overviews
