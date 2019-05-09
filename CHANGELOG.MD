@@ -1,6 +1,6 @@
 # Release Notes for Easy Address Field for Craft CMS
 
-1.2.3 - Unreleased
+1.2.3 - 2019-05-09
 ## Added
 - Added a migration for StatikAddress fields on install. Settings & content are migrated to EasyAddressField
 

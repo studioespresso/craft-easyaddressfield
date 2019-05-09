@@ -2,7 +2,7 @@
   "name": "studioespresso/craft-easyaddressfield",
   "description": "The only address field you need",
   "type": "craft-plugin",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "keywords": [
     "cms",
     "craftcms",
