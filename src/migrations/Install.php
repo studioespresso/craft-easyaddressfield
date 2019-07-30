@@ -201,7 +201,7 @@ class Install extends Migration
                 }
             }
         }
-        
+
         $projectConfig->muteEvents = false;
     }
 
