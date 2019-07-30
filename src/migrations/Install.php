@@ -111,7 +111,7 @@ class Install extends Migration
             $fieldHandle = "field_{$block['fieldHandle']}_{$block['handle']}";
             $matrix = Craft::$app->getFields()->getFieldById($block['fieldId']);
             $data = (new Query())
-                ->select(['id',$fieldHandle, 'siteId', 'elementId'])
+                ->select(['id', $fieldHandle, 'siteId', 'elementId'])
                 ->from([$matrix->contentTable])
                 ->where("$fieldHandle IS NOT NULL")
                 ->all();
@@ -172,35 +172,36 @@ class Install extends Migration
         }
 
         $matrixFields = $projectConfig->get(\craft\services\Matrix::CONFIG_BLOCKTYPE_KEY);
-        foreach ($matrixFields as $matrixUid => $matrixBlockFields) {
-            if($matrixBlockFields['fields']) {
-                foreach ($matrixBlockFields['fields'] as $fieldUid => $fieldData) {
-                    if (isset($fieldData['type']) && $fieldData['type'] === 'StatikAddress') {
-                        $fieldConfigsToMigrate[$fieldUid] = [
-                            'configPath' => Fields::CONFIG_FIELDS_KEY . '.' . $fieldUid,
-                            'config' => $fieldData
-                        ];
+        if ($matrixFields) {
+            foreach ($matrixFields as $matrixUid => $matrixBlockFields) {
+                if ($matrixBlockFields['fields']) {
+                    foreach ($matrixBlockFields['fields'] as $fieldUid => $fieldData) {
+                        if (isset($fieldData['type']) && $fieldData['type'] === 'StatikAddress') {
+                            $fieldConfigsToMigrate[$fieldUid] = [
+                                'configPath' => Fields::CONFIG_FIELDS_KEY . '.' . $fieldUid,
+                                'config' => $fieldData
+                            ];
+                        }
                     }
                 }
             }
-        }
 
-        // Migrate Fields
-        if ($fieldConfigsToMigrate) {
-            foreach ($fieldConfigsToMigrate as $fieldUid => $fieldConfig) {
-                $type = EasyAddressFieldField::class;
-                $settings = $this->_migrateFieldSettings($fieldConfig['config']['settings'] ?? false);
-                $fieldConfig['config']['type'] = $type;
-                $fieldConfig['config']['settings'] = $settings;
-                $this->update('{{%fields}}', [
-                    'type' => $type,
-                    'settings' => Json::encode($settings),
-                ], ['uid' => $fieldUid]);
-                $projectConfig->set(\craft\services\Matrix::CONFIG_BLOCKTYPE_KEY . '.' . $matrixUid . '.fields.' . $fieldUid, $fieldData);
+            // Migrate Fields
+            if ($fieldConfigsToMigrate) {
+                foreach ($fieldConfigsToMigrate as $fieldUid => $fieldConfig) {
+                    $type = EasyAddressFieldField::class;
+                    $settings = $this->_migrateFieldSettings($fieldConfig['config']['settings'] ?? false);
+                    $fieldConfig['config']['type'] = $type;
+                    $fieldConfig['config']['settings'] = $settings;
+                    $this->update('{{%fields}}', [
+                        'type' => $type,
+                        'settings' => Json::encode($settings),
+                    ], ['uid' => $fieldUid]);
+                    $projectConfig->set(\craft\services\Matrix::CONFIG_BLOCKTYPE_KEY . '.' . $matrixUid . '.fields.' . $fieldUid, $fieldData);
+                }
             }
         }
-
-
+        
         $projectConfig->muteEvents = false;
     }
 
