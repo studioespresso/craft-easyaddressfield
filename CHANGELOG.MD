@@ -1,6 +1,12 @@
 # Release Notes for Easy Address Field for Craft CMS
 
-1.2.3 - 2019-05-09
+
+# 1.3.0 - 2019-07-31
+## Added
+- Added support for [craftcms/feed-me](https://github.com/craftcms/feed-me/) so you can import addresses
+- You can now use an environment variable for the Google API key
+
+# 1.2.3 - 2019-05-09
 ## Added
 - Added a migration for StatikAddress fields on install. Settings & content are migrated to EasyAddressField
 
