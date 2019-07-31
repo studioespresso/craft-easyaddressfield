@@ -10,12 +10,14 @@ use craft\base\Plugin;
 use craft\events\PluginEvent;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\feedme\events\RegisterFeedMeFieldsEvent;
 use craft\helpers\UrlHelper;
 use craft\services\Fields;
 use craft\services\Plugins;
 use craft\web\twig\variables\CraftVariable;
 use markhuot\CraftQL\Events\GetFieldSchema;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldSettignsAsset;
+use studioespresso\easyaddressfield\fields\EasyAddressFieldFeedMe;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
 use studioespresso\easyaddressfield\services\CountriesService;
 use studioespresso\easyaddressfield\services\FieldService;
@@ -87,6 +89,14 @@ class EasyAddressField extends Plugin
             $object->addStringField('lng');
             $event->schema->addField($field)->type($object);
         });
+
+        // If craftcms/feed-me is installed & activacted, hook here to register the field for import
+        if (Craft::$app->getPlugins()->isPluginEnabled('feed-me')) {
+            Event::on(\craft\feedme\services\Fields::class, \craft\feedme\services\Fields::EVENT_REGISTER_FEED_ME_FIELDS, function (RegisterFeedMeFieldsEvent $e) {
+                $e->fields[] = EasyAddressFieldFeedMe::class;
+            });
+        }
+
     }
 
     // Components
@@ -117,7 +127,7 @@ class EasyAddressField extends Plugin
      */
     protected function afterInstall()
     {
-        if(!Craft::$app->getRequest()->isConsoleRequest) {
+        if (!Craft::$app->getRequest()->isConsoleRequest) {
             parent::afterInstall();
             Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/easy-address-field'))->send();
         }
