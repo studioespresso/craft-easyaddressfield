@@ -174,7 +174,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
             'marker.svg');
 
         if ($pluginSettings->googleApiKey) {
-            Craft::$app->getView()->registerJsFile('https://maps.googleapis.com/maps/api/js?key=' . $pluginSettings->googleApiKey);
+            Craft::$app->getView()->registerJsFile('https://maps.googleapis.com/maps/api/js?key=' . Craft::parseEnv($pluginSettings->googleApiKey));
             $keyConfigured = true;
         }
 
