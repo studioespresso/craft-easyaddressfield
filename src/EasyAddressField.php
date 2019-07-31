@@ -90,7 +90,7 @@ class EasyAddressField extends Plugin
             $event->schema->addField($field)->type($object);
         });
 
-        // If putyourlightson/craft-blitz is installed & activacted, clear that cache too
+        // If craftcms/feed-me is installed & activacted, hook here to register the field for import
         if (Craft::$app->getPlugins()->isPluginEnabled('feed-me')) {
             Event::on(\craft\feedme\services\Fields::class, \craft\feedme\services\Fields::EVENT_REGISTER_FEED_ME_FIELDS, function (RegisterFeedMeFieldsEvent $e) {
                 $e->fields[] = EasyAddressFieldFeedMe::class;

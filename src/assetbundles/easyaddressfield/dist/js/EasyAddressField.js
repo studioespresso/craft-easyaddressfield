@@ -6,7 +6,6 @@
 
     $(document).on('click', '.easyaddressfield-marker', function () {
         handle = $(this).closest('.easyaddressfield-field').attr('id');
-        console.log('Opening drag pin modal...');
         modalDragPin(handle);
     });
 
