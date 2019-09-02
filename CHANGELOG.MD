@@ -1,20 +1,24 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 1.4.0 - 2019-09-02
+### Added
+- Added a setting for a second Google API key, which is only used for non-geocoding request, to get around Google's API restrictions
 
-# 1.3.0 - 2019-07-31
-## Added
+
+## 1.3.0 - 2019-07-31
+### Added
 - Added support for [craftcms/feed-me](https://github.com/craftcms/feed-me/) so you can import addresses
 - You can now use an environment variable for the Google API key
 
-# 1.2.3 - 2019-05-09
-## Added
+## 1.2.3 - 2019-05-09
+### Added
 - Added a migration for StatikAddress fields on install. Settings & content are migrated to EasyAddressField
 
-## Fixed
+### Fixed
 - Only get do getCountryName() for fields which actually have a country
 
 ## 1.2.2 - 2019-03-20
-## Improved
+### Improved
 - Field data can now be added and view in element overviews
 - Field data is now fully searchable, both on the CP and through twig
 

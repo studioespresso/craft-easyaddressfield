@@ -11,6 +11,16 @@
     suggestAliases: true,
 }) }}
 
+{{ forms.autosuggestField({
+    label: 'Google API Key for maps requests (anything not geocoding related)'|t,
+    id: 'googleApiKeyNonGeo',
+    name: 'googleApiKeyNonGeo',
+    value: settings['googleApiKeyNonGeo'],
+    errors: settings.getErrors('googleApiKeyNonGeo'),
+    suggestEnvVars: true,
+    suggestAliases: true,
+}) }}
+
 <hr>
 <h2>{{ 'Look & feel'|t }}</h2>
 <div class="field" id="settings-defaultMapStyle-field">

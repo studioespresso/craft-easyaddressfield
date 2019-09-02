@@ -19,7 +19,7 @@ class AddressVariable
     {
         $pluginSettings = EasyAddressField::getInstance()->getSettings();
         $this->settings = $pluginSettings;
-        $this->key = $pluginSettings->googleApiKey;
+        $this->key = $pluginSettings->googleApiKeyNonGeo ? $pluginSettings->googleApiKeyNonGeo : $pluginSettings->googleApiKey;
     }
 
     public function countries()
