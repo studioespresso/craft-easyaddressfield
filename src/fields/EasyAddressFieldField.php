@@ -7,9 +7,14 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\helpers\Db;
+use GraphQL\Type\Definition\Type;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\graphql\EasyAddressFieldArguments;
+use studioespresso\easyaddressfield\graphql\EasyAddressFieldResolver;
+use studioespresso\easyaddressfield\graphql\EasyAddressFieldTypeGenerator;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\resolvers\AddressResolver;
 
 class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 {
@@ -101,6 +106,18 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         return false;
     }
 
+    public function getContentGqlType()
+    {
+        $typeArray = EasyAddressFieldTypeGenerator::generateTypes($this);
+
+        return [
+            'name' => $this->handle,
+            'description' => "Easy Address Field field",
+            'type' => array_shift($typeArray),
+        ];
+    }
+
+
     /**
      * @param mixed $value
      * @param ElementInterface|null $element
@@ -146,7 +163,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
     {
         return $value->modelToString(' ');
     }
-    
+
     /**
      * @param $value
      * @param ElementInterface|null $element
