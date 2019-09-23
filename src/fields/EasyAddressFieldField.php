@@ -10,6 +10,7 @@ use craft\helpers\Db;
 use GraphQL\Type\Definition\Type;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\graphql\EasyAddressFieldArguments;
 use studioespresso\easyaddressfield\graphql\EasyAddressFieldResolver;
 use studioespresso\easyaddressfield\graphql\EasyAddressFieldTypeGenerator;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
@@ -108,7 +109,12 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
     public function getContentGqlType()
     {
         $typeArray = EasyAddressFieldTypeGenerator::generateTypes($this);
-        return Type::listOf(array_pop($typeArray));
+
+        return [
+            'name' => $this->handle,
+            'description' => "Easy Address Field field",
+            'type' => array_shift($typeArray),
+        ];
     }
 
 
