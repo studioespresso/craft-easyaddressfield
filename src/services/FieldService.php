@@ -78,7 +78,7 @@ class FieldService extends Component
                 'field' => $field->id,
             ]
         );
-        if (Craft::$app->request->getIsPost() && $value) {
+        if ($value) {
             $model = new EasyAddressFieldModel($value);
         } else if ($record) {
             $model = new EasyAddressFieldModel($record->getAttributes());
