@@ -1,9 +1,15 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 2.0.0 - 2019-09-24
+### Added
+- Added support for Craft's native [GraphQL API](https://docs.craftcms.com/v3/graphql.html).
+
+### Fixed
+- Fixed an error when creating singles with the field through a migration/console request
+
 ## 1.4.0 - 2019-09-02
 ### Added
 - Added a setting for a second Google API key, which is only used for non-geocoding request, to get around Google's API restrictions
-
 
 ## 1.3.0 - 2019-07-31
 ### Added

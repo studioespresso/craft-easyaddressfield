@@ -22,7 +22,7 @@
     "docs": "https://github.com/studioespresso/craft3-easyaddressfield/blob/master/README.MD"
   },
   "require": {
-    "craftcms/cms": "^3.0.0-RC1",
+    "craftcms/cms": "^3.3.0",
     "league/iso3166": "^2.0"
   },
   "autoload": {
