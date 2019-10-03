@@ -23,7 +23,8 @@
   },
   "require": {
     "craftcms/cms": "^3.3.0",
-    "league/iso3166": "^2.0"
+    "league/iso3166": "^2.0",
+    "giggsey/locale": "^1.0.0"
   },
   "autoload": {
     "psr-4": {
