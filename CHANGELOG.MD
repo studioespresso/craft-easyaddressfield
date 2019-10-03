@@ -1,5 +1,12 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 2.1.0 - 2019-09-24
+### Added
+- Country names are now returns in the site's locale by default, instead of just in English.
+
+### Fixed
+- Fixed an issue where API keys from environment variable weren't parsed in static maps urls
+
 ## 2.0.0 - 2019-09-24
 ### Added
 - Added support for Craft's native [GraphQL API](https://docs.craftcms.com/v3/graphql.html).

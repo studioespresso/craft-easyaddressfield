@@ -57,7 +57,7 @@ field.street2
 field.postalCode
 field.state
 field.country // returns the country code
-field.getCountryName() // returns the coutry's full name
+field.getCountryName(craft.app.locale) // returns the coutry's full name, in the country's locale
 field.latitude
 field.longitude
 ````
