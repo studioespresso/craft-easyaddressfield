@@ -2,6 +2,7 @@
 
 namespace studioespresso\easyaddressfield\models;
 
+use Craft;
 use studioespresso\easyaddressfield\EasyAddressField;
 use yii\base\Model;
 
@@ -153,12 +154,17 @@ class EasyAddressFieldModel extends Model
     }
 
     /**
+     * @param $locale
      * @return string
      */
-    public function getCountryName(): string
+    public function getCountryName($locale = null): string
     {
+        if(!$locale) {
+            $locale = Craft::$app->getLocale();
+        }
         if ($this->country) {
-            return EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country);
+            $name = EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country, $locale);
+            return $name;
         }
     }
 
