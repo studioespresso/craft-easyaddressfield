@@ -2,7 +2,9 @@
 
 namespace studioespresso\easyaddressfield\services;
 
+use Craft;
 use craft\base\Component;
+use Giggsey\Locale\Locale;
 use League\ISO3166\ISO3166;
 
 class CountriesService extends Component
@@ -23,10 +25,16 @@ class CountriesService extends Component
         return $countries;
     }
 
-    public function getCountryNameByAlpha2($code)
+    public function getCountryNameByAlpha2($code, $locale)
     {
         $data = new ISO3166();
         $country = $data->alpha2($code);
-        return $country['name'];
+
+        try {
+            $translatedLocale = Locale::getDisplayRegion('-' . $country['alpha2'], $locale);
+            return $translatedLocale;
+        } catch (\Exception $e) {
+            return $country['name'];
+        }
     }
 }
