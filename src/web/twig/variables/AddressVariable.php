@@ -94,7 +94,7 @@ class AddressVariable
             'size' => $size,
             'scale' => $scale,
             'maptype' => 'roadmap',
-            'key' => $this->key,
+            'key' => Craft::parseEnv($this->key),
             'style' => $this->getMapStyle($style),
         );
         if (!is_array($data)) {
