@@ -1,0 +1,20 @@
+{% if address.name|length %}
+    {{ address.name }}<br>
+{% endif %}
+{% if address.street|length %}
+    {{ address.street }}<br>
+{% endif %}
+{% if address.street2|length %}
+    {{ address.street2 }}<br>
+{% endif %}
+{% if address.postalCode|length %}
+    {{ address.postalCode }} {% if address.city|length %}{{ address.city }}{% endif %}<br>
+{% elseif address.city|length %}
+    {{ address.city }}<br>
+{% endif %}
+{% if address.state|length %}
+    {{ address.state }}<br>
+{% endif %}
+{% if includeCountry %}
+    {{ address.getCountryName() }}
+{% endif %}

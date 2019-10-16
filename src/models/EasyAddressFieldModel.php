@@ -3,6 +3,8 @@
 namespace studioespresso\easyaddressfield\models;
 
 use Craft;
+use craft\helpers\Template;
+use craft\web\View;
 use studioespresso\easyaddressfield\EasyAddressField;
 use yii\base\Model;
 
@@ -159,7 +161,7 @@ class EasyAddressFieldModel extends Model
      */
     public function getCountryName($locale = null): string
     {
-        if(!$locale) {
+        if (!$locale) {
             $locale = Craft::$app->getLocale();
         }
         if ($this->country) {
@@ -222,10 +224,28 @@ class EasyAddressFieldModel extends Model
         return implode($glue, $data);
     }
 
-    public function isEmpty() {
+    public function formatted($includeCountry = false)
+    {
+        $view = Craft::$app->getView();
+        $oldTemplateMode = $view->getTemplateMode();
+
+        $view->setTemplateMode(View::TEMPLATE_MODE_CP);
+        $template = $view->renderTemplate('easy-address-field/_formatted', [
+            'address' => $this,
+            'includeCountry' => $includeCountry
+        ]);
+
+        $view->setTemplateMode($oldTemplateMode);
+        return Template::raw($template);
+
+    }
+
+
+    public function isEmpty()
+    {
 
         $values = array_filter($this->toArray());
-        if(count($values) == 1 && isset($values['country'])) {
+        if (count($values) == 1 && isset($values['country'])) {
             return true;
         } else {
             return false;
