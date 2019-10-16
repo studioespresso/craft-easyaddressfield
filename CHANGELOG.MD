@@ -1,6 +1,6 @@
 # Release Notes for Easy Address Field for Craft CMS
 
-## 2.2.O - 2019-10-16
+## 2.2.0 - 2019-10-16
 ### Added
 - Added ``formatted()`` function to the address model to make it easier to print the entrie address in 1 go.
 
