@@ -4,6 +4,9 @@
 ### Added
 - Added ``formatted()`` function to the address model to make it easier to print the entrie address in 1 go.
 
+### Fixed
+- Fixed an error with GraphQL support when the field was added to more than 1 section.
+
 ## 2.1.0 - 2019-09-24
 ### Added
 - Country names are now returns in the site's locale by default, instead of just in English.

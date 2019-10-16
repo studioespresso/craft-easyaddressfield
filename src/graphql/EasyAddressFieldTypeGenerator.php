@@ -31,13 +31,15 @@ class EasyAddressFieldTypeGenerator implements GeneratorInterface
             'longitude' => Type::float(),
         ];
 
-        $addressProperty = GqlEntityRegistry::createEntity($typeName, new EasyAddressFieldResolver([
-            'name' => $typeName,
-            'description' => 'This entity has all the EasyAddressField properties',
-            'fields' => function () use ($addressProperties) {
-                return $addressProperties;
-            }
-        ]));
+
+        $addressProperty = GqlEntityRegistry::getEntity($typeName)
+            ?: GqlEntityRegistry::createEntity($typeName, new EasyAddressFieldResolver([
+                'name' => $typeName,
+                'description' => 'This entity has all the EasyAddressField properties',
+                'fields' => function () use ($addressProperties) {
+                    return $addressProperties;
+                },
+            ]));
 
         TypeLoader::registerType($typeName, function () use ($addressProperty) {
             return $addressProperty;
