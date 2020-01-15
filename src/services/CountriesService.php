@@ -19,7 +19,7 @@ class CountriesService extends Component
         $data = $data->all();
         $countries = array();
         foreach ($data as $country) {
-            $countries[$country['alpha2']] = $country['name'];
+            $countries[$country['alpha2']] = Locale::getDisplayRegion('-' . $country['alpha2'], Craft::$app->getLocale());
         };
 
         return $countries;
