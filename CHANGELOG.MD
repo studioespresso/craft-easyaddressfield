@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## ## 2.2.2 - 2020-01-20
+### Fixed
+- Countries are now sorted aphabetically by name, not by country code
+
 ## 2.2.1 - 2020-01-15
 ### Added
 - The countries list is now returns in the locale of the site or the cp.

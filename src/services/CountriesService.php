@@ -21,7 +21,8 @@ class CountriesService extends Component
         foreach ($data as $country) {
             $countries[$country['alpha2']] = Locale::getDisplayRegion('-' . $country['alpha2'], Craft::$app->getLocale());
         };
-
+        asort($countries);
+        
         return $countries;
     }
 
