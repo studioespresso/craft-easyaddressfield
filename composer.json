@@ -34,7 +34,6 @@
   "extra": {
     "name": "Easy Address Field",
     "handle": "easy-address-field",
-    "changelogUrl": "https://github.com/studioespresso/craft3-easyaddressfield/blob/develop/CHANGELOG.MD",
     "class": "studioespresso\\easyaddressfield\\EasyAddressField"
   }
 }
