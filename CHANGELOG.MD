@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## ## 2.2.3 - 2020-01-21
+### Fixed
+- Countries that don't have a translation in the current locale will fall back to English now
+
 ## ## 2.2.2 - 2020-01-20
 ### Fixed
 - Countries are now sorted aphabetically by name, not by country code

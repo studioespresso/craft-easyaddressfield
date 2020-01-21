@@ -19,10 +19,11 @@ class CountriesService extends Component
         $data = $data->all();
         $countries = array();
         foreach ($data as $country) {
-            $countries[$country['alpha2']] = Locale::getDisplayRegion('-' . $country['alpha2'], Craft::$app->getLocale());
+            $countries[$country['alpha2']] =
+                Locale::getDisplayRegion('-' . $country['alpha2'], Craft::$app->getLocale()) != '' ?
+                Locale::getDisplayRegion('-' . $country['alpha2'], Craft::$app->getLocale()) : $country['name'];
         };
         asort($countries);
-        
         return $countries;
     }
 
