@@ -9,6 +9,7 @@ use craft\helpers\Json;
 use craft\services\Fields;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 use studioespresso\easyaddressfield\records\EasyAddressFieldRecord;
+use yii\db\Exception;
 
 /**
  * Install migration.
@@ -97,7 +98,7 @@ class Install extends Migration
 
         // Get all matrix context fields
         $statikAddressMatrixFields = (new Query())
-            ->select(['fields.handle', 'types.handle as fieldHandle', 'fields.id', 'types.fieldId', 'types.id as typeId'])
+            ->select(['fields.handle', 'types.handle as fieldHandle', 'fields.id', 'types.fieldId', 'types.id as typeId', 'fields.context'])
             ->from(['{{%fields}} as fields'])
             ->leftJoin('{{%matrixblocktypes}} as types', 'types.handle = fields.handle')
             ->where([
@@ -108,34 +109,47 @@ class Install extends Migration
             ->all();
 
         foreach ($statikAddressMatrixFields as $block) {
-            $fieldHandle = "field_{$block['fieldHandle']}_{$block['handle']}";
-            $matrix = Craft::$app->getFields()->getFieldById($block['fieldId']);
+            $context = explode(':', $block['context']);
+            $uid = $context[1];
+
+            $query = new Query();
+            $query->from('{{%matrixblocktypes}}');
+            $query->where(['uid' => $uid]);
+            $type = $query->one();
+            $blockType = Craft::$app->getMatrix()->getBlockTypeById($type['id']);
+
+            $fieldHandle = "field_{$blockType['handle']}_{$block['handle']}";
+            $matrix = Craft::$app->getFields()->getFieldById($blockType->fieldId);
             $data = (new Query())
                 ->select(['id', $fieldHandle, 'siteId', 'elementId'])
                 ->from([$matrix->contentTable])
                 ->where("$fieldHandle IS NOT NULL")
                 ->all();
 
-
             foreach ($data as $content) {
-                $value = Json::decode($content[$fieldHandle]);
-                $record = new EasyAddressFieldRecord();
+                try {
 
-                $record->owner = $content['elementId'];
-                $record->site = $content['siteId'];
-                $record->field = $block['id'];
+                    $value = Json::decode($content[$fieldHandle]);
+                    $record = new EasyAddressFieldRecord();
 
-                $record->name = $value['name'];
-                $record->street = $value['street'];
-                $record->street2 = $value['street2'];
-                $record->postalCode = $value['postalCode'];
-                $record->city = $value['city'];
-                $record->state = $value['region'];
-                $record->country = $value['country'];
-                $record->latitude = $value['lat'];
-                $record->longitude = $value['long'];
+                    $record->owner = $content['elementId'];
+                    $record->site = $content['siteId'];
+                    $record->field = $block['id'];
 
-                $record->save();
+                    $record->name = $value['name'];
+                    $record->street = $value['street'];
+                    $record->street2 = $value['street2'];
+                    $record->postalCode = $value['postalCode'];
+                    $record->city = $value['city'];
+                    $record->state = $value['region'];
+                    $record->country = $value['country'];
+                    $record->latitude = $value['lat'];
+                    $record->longitude = $value['long'];
+
+                    $record->save();
+                } catch (Exception $e) {
+
+                }
             }
         }
 
