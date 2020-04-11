@@ -156,6 +156,26 @@ class EasyAddressFieldModel extends Model
     }
 
     /**
+     * Fallback for older installs of StatikAddress
+     * @return string
+     */
+    public function lat()
+    {
+        Craft::$app->getDeprecator()->log(__CLASS__ . 'lat', "The 'lat' method has been renamed to 'latitude'.");
+        return $this->latitude;
+    }
+
+    /**
+     * Fallback for older installs of StatikAddress
+     * @return string
+     */
+    public function long()
+    {
+        Craft::$app->getDeprecator()->log(__CLASS__ . 'long', "The 'long' method has been renamed to 'longitude'.");
+        return $this->longitude;
+    }
+
+    /**
      * @param $locale
      * @return string
      */

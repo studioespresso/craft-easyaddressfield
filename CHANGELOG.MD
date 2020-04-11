@@ -1,5 +1,13 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## ## 2.2.4 - 2020-04-11
+### Fixed
+- Fixed an issue with upgrading from StatikAddress when fields were inside a Matrix field
+
+### Added
+- Added placeholder functions for lat & long so upgrades don't crash but just show deprecation warnings
+
+
 ## ## 2.2.3 - 2020-01-21
 ### Fixed
 - Countries that don't have a translation in the current locale will fall back to English now
