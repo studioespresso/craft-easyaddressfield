@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## ## 2.2.5 - 2020-08-10
+### Fixed
+- Allow the address country to be empty
+
 ## ## 2.2.4 - 2020-04-11
 ### Fixed
 - Fixed an issue with upgrading from StatikAddress when fields were inside a Matrix field
