@@ -177,9 +177,9 @@ class EasyAddressFieldModel extends Model
 
     /**
      * @param $locale
-     * @return string
+     * @return string | null
      */
-    public function getCountryName($locale = null): string
+    public function getCountryName($locale = null)
     {
         if (!$locale) {
             $locale = Craft::$app->getLocale();
@@ -188,6 +188,7 @@ class EasyAddressFieldModel extends Model
             $name = EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country, $locale);
             return $name;
         }
+        return null;
     }
 
     /**
