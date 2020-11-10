@@ -1,5 +1,24 @@
 {% import "_includes/forms" as forms %}
 
+{{ forms.selectField({
+    label: 'Geocoding service',
+    id: 'geocoder',
+    name: 'geocoder',
+    value: settings['geocoder'],
+    settings: settings.getErrors('geocoder'),
+    options: [
+        {
+            label: "Google",
+            value: "google"
+        },
+        {
+            label: "OpenStreetMap",
+            value: 'osm'
+        }
+    ]
+}) }}
+
+
 {{ forms.autosuggestField({
     label: 'Google API Key (use for geocoding requests)'|t,
     instructions: "Google's geocoding API does not support HTTP referer restrictions. <a href='{link}'>More information</a>"|t({link: 'https://developers.google.com/maps/faq#browser-keys-blocked-error'}),

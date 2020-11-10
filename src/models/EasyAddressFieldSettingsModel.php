@@ -11,8 +11,9 @@ use craft\base\model;
  */
 class EasyAddressFieldSettingsModel extends Model
 {
-    public $googleApiKey;
+    public $geocoder = "google";
 
+    public $googleApiKey;
     public $googleApiKeyNonGeo;
 
     public $defaultMapTheme;
