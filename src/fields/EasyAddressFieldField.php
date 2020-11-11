@@ -181,12 +181,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         $pluginSettings = EasyAddressField::getInstance()->getSettings();
         $fieldSettings = $this->getSettings();
 
-
         $keyConfigured = false;
-
-        $iconUrl = Craft::$app->assetManager->getPublishedUrl('@studioespresso/easyaddressfield/assets/icon', true,
-            'marker.svg');
-
         if ($pluginSettings->googleApiKey) {
             Craft::$app->getView()->registerJsFile('https://maps.googleapis.com/maps/api/js?key=' . Craft::parseEnv($pluginSettings->googleApiKey));
             $keyConfigured = true;
@@ -202,7 +197,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
                 'field' => $this,
                 'id' => $id,
                 'keyConfigured' => $keyConfigured,
-                'iconUrl' => $iconUrl,
+                'geocoder' => $pluginSettings->geocoder,
                 'countries' => $countries,
                 'namespacedId' => $namespacedId,
                 'fieldSettings' => $fieldSettings,
