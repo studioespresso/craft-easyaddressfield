@@ -182,12 +182,14 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         $fieldSettings = $this->getSettings();
 
         $keyConfigured = false;
-        if ($pluginSettings->googleApiKey) {
+        if ($pluginSettings->googleApiKey && $pluginSettings->geocoder === 'google') {
             Craft::$app->getView()->registerJsFile('https://maps.googleapis.com/maps/api/js?key=' . Craft::parseEnv($pluginSettings->googleApiKey));
             $keyConfigured = true;
         }
 
-        $countries = EasyAddressField::getInstance()->countries->getCountriesAsArray();
+        if($pluginSettings->geocoder === 'osm') {
+
+        }
 
         return Craft::$app->getView()->renderTemplate(
             'easy-address-field/_field/_input',
@@ -198,7 +200,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
                 'id' => $id,
                 'keyConfigured' => $keyConfigured,
                 'geocoder' => $pluginSettings->geocoder,
-                'countries' => $countries,
+                'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray(),
                 'namespacedId' => $namespacedId,
                 'fieldSettings' => $fieldSettings,
                 'pluginSettings' => $pluginSettings,
