@@ -1,18 +1,8 @@
 {% import "_includes/forms" as forms %}
 
 {{ forms.autosuggestField({
-    label: 'Google API Key (use for geocoding requests)'|t,
-    instructions: "Google's geocoding API does not support HTTP referer restrictions. <a href='{link}'>More information</a>"|t({link: 'https://developers.google.com/maps/faq#browser-keys-blocked-error'}),
-    id: 'googleApiKey',
-    name: 'googleApiKey',
-    value: settings['googleApiKey'],
-    errors: settings.getErrors('googleApiKey'),
-    suggestEnvVars: true,
-    suggestAliases: true,
-}) }}
-
-{{ forms.autosuggestField({
-    label: 'Google API Key for maps requests (anything not geocoding related)'|t,
+    label: 'Google API Key for maps requests'|t,
+    instructions: 'Only needed if you are using the static map functions in your templates'|t,
     id: 'googleApiKeyNonGeo',
     name: 'googleApiKeyNonGeo',
     value: settings['googleApiKeyNonGeo'],
@@ -22,7 +12,7 @@
 }) }}
 
 <hr>
-<h2>{{ 'Look & feel'|t }}</h2>
+<h2>{{ 'Google Static Map - Look & feel'|t }}</h2>
 <div class="field" id="settings-defaultMapStyle-field">
     <div class="heading">
         <label id="settings-defaultMapStyle-label" for="settings-defaultMapStyle">{{ 'Map theme'|t }}</label>

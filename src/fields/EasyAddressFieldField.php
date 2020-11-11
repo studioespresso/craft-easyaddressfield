@@ -7,6 +7,7 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\helpers\Db;
+use craft\helpers\ElementHelper;
 use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\graphql\EasyAddressFieldTypeGenerator;
@@ -138,9 +139,11 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         if (!$value) {
             return $value;
         }
+        if (!ElementHelper::isDraftOrRevision($element)) {
 
-        if ($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
-            $value = EasyAddressField::getInstance()->geoLocation->locate($value);
+            if ($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
+                $value = EasyAddressField::getInstance()->geoLocation->locate($value);
+            }
         }
 
         return Db::prepareValueForDb($value);
@@ -181,19 +184,6 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         $pluginSettings = EasyAddressField::getInstance()->getSettings();
         $fieldSettings = $this->getSettings();
 
-
-        $keyConfigured = false;
-
-        $iconUrl = Craft::$app->assetManager->getPublishedUrl('@studioespresso/easyaddressfield/assets/icon', true,
-            'marker.svg');
-
-        if ($pluginSettings->googleApiKey) {
-            Craft::$app->getView()->registerJsFile('https://maps.googleapis.com/maps/api/js?key=' . Craft::parseEnv($pluginSettings->googleApiKey));
-            $keyConfigured = true;
-        }
-
-        $countries = EasyAddressField::getInstance()->countries->getCountriesAsArray();
-
         return Craft::$app->getView()->renderTemplate(
             'easy-address-field/_field/_input',
             [
@@ -201,9 +191,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
                 'value' => $value,
                 'field' => $this,
                 'id' => $id,
-                'keyConfigured' => $keyConfigured,
-                'iconUrl' => $iconUrl,
-                'countries' => $countries,
+                'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray(),
                 'namespacedId' => $namespacedId,
                 'fieldSettings' => $fieldSettings,
                 'pluginSettings' => $pluginSettings,

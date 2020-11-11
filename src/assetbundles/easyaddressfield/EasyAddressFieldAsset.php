@@ -22,13 +22,16 @@ class EasyAddressFieldAsset extends AssetBundle
             CpAsset::class,
         ];
 
-        $this->js = [
-            'js/EasyAddressField.js',
-        ];
-
         $this->css = [
             'css/EasyAddressField.css',
+            'css/leaflet.css',
         ];
+
+        $this->js = [
+            'js/EasyAddressField.js',
+            'js/leaflet.js',
+        ];
+
 
         parent::init();
     }

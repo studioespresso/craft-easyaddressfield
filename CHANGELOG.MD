@@ -1,10 +1,17 @@
 # Release Notes for Easy Address Field for Craft CMS
 
-## ## 2.2.5 - 2020-08-10
+## 3.0.0 - 2020-11-11
+### Added
+- The plugin now uses OpenStreetMaps for all geocoding requests so you no longer need a Google API key for those requests.
+
+### Fixed
+- Small bugfix in the field settings layout
+
+## 2.2.5 - 2020-08-10
 ### Fixed
 - Allow the address country to be empty
 
-## ## 2.2.4 - 2020-04-11
+## 2.2.4 - 2020-04-11
 ### Fixed
 - Fixed an issue with upgrading from StatikAddress when fields were inside a Matrix field
 
@@ -12,11 +19,11 @@
 - Added placeholder functions for lat & long so upgrades don't crash but just show deprecation warnings
 
 
-## ## 2.2.3 - 2020-01-21
+## 2.2.3 - 2020-01-21
 ### Fixed
 - Countries that don't have a translation in the current locale will fall back to English now
 
-## ## 2.2.2 - 2020-01-20
+## 2.2.2 - 2020-01-20
 ### Fixed
 - Countries are now sorted aphabetically by name, not by country code
 
