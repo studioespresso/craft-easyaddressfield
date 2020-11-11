@@ -16,7 +16,7 @@
     });
 
     function modalDragPinOSM(handle) {
-        if (handle in dragPin) {
+        if (handle in dragPin && dragPin[handle]['modal']) {
             dragPin[handle]['modal'].show();
         } else {
             dragPin[handle] = {};
@@ -38,38 +38,36 @@
         var refreshIntervalId = setInterval(function () {
             if ($(mapCanvas).width()) {
                 var existingCoords;
-                var zoom = 11;
+                var zoom = 15;
 
                 var lat = $('#' + handle + '-latitude').val();
                 var lng = $('#' + handle + '-longitude').val();
 
                 var defaultData = $('#' + handle + '-drag-pin-data').data();
+                console.log(defaultData);
                 if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
-                    existingCoords = {
+                    coords = {
                         'lat': lat,
                         'lng': lng
                     };
                 } else if (defaultData.default) {
-                    existingCoords = {
+                    coords = {
                         'lat': defaultData.lat,
                         'lng': defaultData.lng
                     };
                     zoom = defaultData.zoom;
-                } else {
-                    existingCoords = false;
                 }
 
-                var coords = existingCoords;
                 var marker = renderMapOSM(handle, mapCanvas, coords, zoom);
 
                 $('.modal-cancel').on('click', function () {
                     dragPin[handle]['modal'].hide();
-                    dragPin[handle]['map'] = false;
+                    dragPin[handle] = [];
                 });
 
                 $('.modal-submit-drag-pin').on('click', function () {
                     dragPin[handle]['modal'].hide();
-                    dragPin[handle]['map'] = false;
+                    dragPin[handle] = [];
                     $('#' + handle + '-latitude').val(marker.getLatLng().lat);
                     $('#' + handle + '-longitude').val(marker.getLatLng().lng);
                     return false;
@@ -82,6 +80,7 @@
     }
 
     function renderMapOSM(handle, mapCanvas, coords, zoom) {
+        console.log(zoom);
         if(dragPin[handle]['map'] === false) {
             dragPin[handle]['map'] = L.map(mapCanvas).setView([coords.lat,coords.lng], zoom);
         }
