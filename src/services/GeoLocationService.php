@@ -28,18 +28,8 @@ class GeoLocationService extends Component
      */
     public function locate(EasyAddressFieldModel $model)
     {
-        if (!$this->settings->geocoder === 'google' && $this->settings->googleApiKey) {
-            return $model;
-        }
-
         if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
-            if ($this->settings->geocoder === 'google') {
-                $model = $this->geocodeGoogle($model);
-            }
-
-            if ($this->settings->geocoder === 'osm') {
-                $model = $this->geocodeOSM($model);
-            }
+            $model = $this->geocodeOSM($model);
         }
 
         return $model;
@@ -52,12 +42,12 @@ class GeoLocationService extends Component
         $nominatim = new Nominatim($url);
         $search = $nominatim->newSearch()
             ->countryCode($model->country)
+            ->state($model->state)
             ->city($model->city)
             ->postalCode($model->postalCode)
-            ->street($model->street)
-            ->state($model->state)
+            ->street($model->street . ' ' . $model->street2)
             ->limit(1)
-            ->polygon('geojson')    //or 'kml', 'svg' and 'text'
+            ->polygon('geojson')
             ->addressDetails();
 
         $result = $nominatim->find($search);
@@ -76,28 +66,6 @@ class GeoLocationService extends Component
             $model->latitude = $result[0]['geojson']['coordinates'][1];
         }
         return $model;
-    }
-
-    private function geocodeGoogle($model)
-    {
-        $client = new Client(['base_uri' => 'https://maps.googleapis.com']);
-        $res = $client->request('GET', 'maps/api/geocode/json?address=' . urlencode($model->toString()) . '&key=' . Craft::parseEnv($this->settings->googleApiKey) . '', ['allow_redirects' => false]);
-        $json = json_decode($res->getBody()->getContents(), true);
-
-        $generalConfig = Craft::$app->getConfig();
-        if ($json['status'] != 'OK' && $json['error_message']) {
-            if ($generalConfig->general->devMode) {
-                throw new InvalidConfigException('Google API error: ' . $json['error_message']);
-            }
-            Craft::getLogger()->log($json['error_message'], Logger::LEVEL_ERROR, 'easy-address-field');
-        }
-
-        if ($json['status'] == 'OK') {
-            if ($json['results'][0]['geometry']['location']) {
-                $model->latitude = $json['results'][0]['geometry']['location']['lat'];
-                $model->longitude = $json['results'][0]['geometry']['location']['lng'];
-            }
-        }
     }
 
 }

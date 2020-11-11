@@ -25,22 +25,16 @@ To install the plugin, follow these instructions.
 
 ## Settings
 
+### Geocoding
+
+The plugin uses [OpenStreetMaps Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) as its geocoding service.
+
 ### Google Maps API
-To enable geolocating and custom marker placement, you need to provide a Google Maps API key.
+To enable stqtic map rendering and custom marker placement, you need to provide a Google Maps API key.
 1) Sign in to [Google's developers console](http://console.developers.google.com/)
 2) Create a new project
-3) Enable the `Google Maps Geocoding API` and the `Google Static Maps API`
+3) Enable the `Google Static Maps API`
 
-**🚨 Important 🚨:**
-
-Google's Geocoding API does not support HTTP referrer restrictions. Make sure the API key you are using does not have these set.
-
-#### API Errors
-When `devMode` is enabled, any errors returned by Google's API will show an exception so you can clearly see what's going wrong. With `devMode` disabled, any errors will be logged to Craft's `web.log`.
-This is an example of the exception you'll see when your API key has HTTP referers set.
-
-![Google API error example](/resources/api_error_example.png?raw=true)
- 
 ### Other settings
 - Default map styling (options are `silver`, `retro`, `dark`, `night` or `aubergine`)
 - Default marker color

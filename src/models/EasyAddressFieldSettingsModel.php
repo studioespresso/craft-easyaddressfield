@@ -11,15 +11,10 @@ use craft\base\model;
  */
 class EasyAddressFieldSettingsModel extends Model
 {
-    public $geocoder = "google";
-
     public $googleApiKey;
     public $googleApiKeyNonGeo;
-
     public $defaultMapTheme;
-
     public $defaultMarkerColor;
-
     public $defaultMarkerIcon;
 
 }
