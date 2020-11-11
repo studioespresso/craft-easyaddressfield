@@ -31,6 +31,7 @@
 
             dragPin[handle]['modal'] = new Garnish.Modal($modal);
         }
+        dragPin[handle]['map'] = false;
 
         var mapCanvas = document.getElementById('easyaddressfield-' + handle + '-drag-pin-canvas');
 
@@ -63,10 +64,14 @@
 
                 $('.modal-cancel').on('click', function () {
                     dragPin[handle]['modal'].hide();
+                    dragPin[handle]['map'] = false;
                 });
 
                 $('.modal-submit-drag-pin').on('click', function () {
                     dragPin[handle]['modal'].hide();
+                    dragPin[handle]['map'] = false;
+                    $('#' + handle + '-latitude').val(marker.getLatLng().lat);
+                    $('#' + handle + '-longitude').val(marker.getLatLng().lng);
                     return false;
                 });
 
@@ -77,7 +82,9 @@
     }
 
     function renderMapOSM(handle, mapCanvas, coords, zoom) {
-        dragPin[handle]['map'] = L.map(mapCanvas).setView([coords.lat,coords.lng], zoom);
+        if(dragPin[handle]['map'] === false) {
+            dragPin[handle]['map'] = L.map(mapCanvas).setView([coords.lat,coords.lng], zoom);
+        }
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Data ©<a href="http://osm.org/copyright">OpenStreetMap</a>',
@@ -89,10 +96,9 @@
             var position = marker.getLatLng();
             marker.setLatLng(new L.LatLng(position.lat, position.lng),{draggable:'true'});
             dragPin[handle]['map'].panTo(new L.LatLng(position.lat, position.lng))
-            $('#' + handle + '-latitude').val(position.lat);
-            $('#' + handle + '-longitude').val(position.lng);
         });
         dragPin[handle]['map'].addLayer(marker);
+        return marker;
     }
 
 
