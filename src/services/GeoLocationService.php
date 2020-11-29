@@ -42,9 +42,9 @@ class GeoLocationService extends Component
         $nominatim = new Nominatim($url);
         $search = $nominatim->newSearch()
             ->countryCode($model->country)
-            ->state($model->state)
-            ->city($model->city)
-            ->postalCode($model->postalCode)
+            ->state($model->state ?? '')
+            ->city($model->city ?? '')
+            ->postalCode($model->postalCode ?? '')
             ->street($model->street . ' ' . $model->street2)
             ->limit(1)
             ->polygon('geojson')
@@ -55,7 +55,7 @@ class GeoLocationService extends Component
             return $model;
         }
 
-        if(is_array($result[0]['geojson']['coordinates'][0][0])) {
+        if(is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
             $model->longitude = $result[0]['geojson']['coordinates'][0][0][0];
             $model->latitude = $result[0]['geojson']['coordinates'][0][0][1];
         } elseif(is_array($result[0]['geojson']['coordinates'][0])) {
