@@ -1,5 +1,10 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 3.0.1 - 2020-11-29
+### Fixed
+- Fixed an error with geolocating when some sub-fields are disabled ([#26](https://github.com/studioespresso/craft3-easyaddressfield/issues/26)) 
+
+
 ## 3.0.0 - 2020-11-11
 ### Added
 - The plugin now uses OpenStreetMaps for all geocoding requests so you no longer need a Google API key for those requests.
