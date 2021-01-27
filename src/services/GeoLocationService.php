@@ -55,7 +55,10 @@ class GeoLocationService extends Component
             return $model;
         }
 
-        if(is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
+        if(isset($result[0]['lat']) && isset($result[0]['lon'])) {
+            $model->longitude = $result[0]['lon'];
+            $model->latitude = $result[0]['lat'];
+        } elseif(is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
             $model->longitude = $result[0]['geojson']['coordinates'][0][0][0];
             $model->latitude = $result[0]['geojson']['coordinates'][0][0][1];
         } elseif(is_array($result[0]['geojson']['coordinates'][0])) {
