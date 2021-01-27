@@ -1,5 +1,11 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 3.0.2 - 2021-01-27
+### Fixed
+- Small fix to better catch multiple types of Nomanatim results ([#29](https://github.com/studioespresso/craft3-easyaddressfield/issues/29))
+
+
+
 ## 3.0.1 - 2020-11-29
 ### Fixed
 - Fixed an error with geolocating when some sub-fields are disabled ([#26](https://github.com/studioespresso/craft3-easyaddressfield/issues/26)) 
