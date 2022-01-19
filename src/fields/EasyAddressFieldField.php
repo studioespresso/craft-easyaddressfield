@@ -104,7 +104,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         return false;
     }
 
-    public function getContentGqlType()
+    public function getContentGqlType(): array
     {
         $typeArray = EasyAddressFieldTypeGenerator::generateTypes($this);
 
@@ -203,7 +203,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
      * @param ElementInterface $element
      * @param bool $isNew
      */
-    public function afterElementSave(ElementInterface $element, bool $isNew)
+    public function afterElementSave(ElementInterface $element, bool $isNew): void
     {
         EasyAddressField::getInstance()->field->saveField($this, $element);
         parent::afterElementSave($element, $isNew);

@@ -22,8 +22,8 @@
     "docs": "https://github.com/studioespresso/craft3-easyaddressfield/blob/master/README.MD"
   },
   "require": {
-    "craftcms/cms": "^3.3.0",
-    "league/iso3166": "^2.0",
+    "craftcms/cms": "^4.0.0-alpha",
+    "league/iso3166": "^3.0",
     "giggsey/locale": "^1.0.0",
     "maxh/php-nominatim": "^2.0"
   },
