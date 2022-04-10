@@ -1,9 +1,12 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 3.1.0 - 2022-04-10
+### Added
+- Added support for PHP 8
+
 ## 3.0.2 - 2021-01-27
 ### Fixed
 - Small fix to better catch multiple types of Nomanatim results ([#29](https://github.com/studioespresso/craft3-easyaddressfield/issues/29))
-
 
 
 ## 3.0.1 - 2020-11-29
