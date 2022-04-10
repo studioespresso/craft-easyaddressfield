@@ -122,7 +122,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
      *
      * @return mixed|EasyAddressFieldModel
      */
-    public function normalizeValue($value, ElementInterface $element = null)
+    public function normalizeValue($value, ElementInterface $element = null): mixed
     {
         return EasyAddressField::$plugin->getField()->getField($this, $element, $value);
 
@@ -133,7 +133,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
      * @param ElementInterface|null $element
      * @return array|mixed|null|string
      */
-    public function serializeValue($value, ElementInterface $element = null)
+    public function serializeValue($value, ElementInterface $element = null): mixed
     {
         $settings = $this->getSettings();
         if (!$value) {
