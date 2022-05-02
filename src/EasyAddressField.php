@@ -6,6 +6,7 @@
 namespace studioespresso\easyaddressfield;
 
 use Craft;
+use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\PluginEvent;
 use craft\events\RegisterComponentTypesEvent;
@@ -48,7 +49,7 @@ class EasyAddressField extends Plugin
     /**
      * @var bool
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     // Public Methods
     // =========================================================================
@@ -117,7 +118,7 @@ class EasyAddressField extends Plugin
      *
      * @return \craft\base\Model|null
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): Model
     {
         return new EasyAddressFieldSettingsModel();
     }
@@ -125,7 +126,7 @@ class EasyAddressField extends Plugin
     /**
      * Redirect to settings after install
      */
-    protected function afterInstall()
+    protected function afterInstall(): void
     {
         if (!Craft::$app->getRequest()->isConsoleRequest) {
             parent::afterInstall();
