@@ -7,6 +7,7 @@ use craft\db\Migration;
 use craft\db\Query;
 use craft\helpers\Json;
 use craft\services\Fields;
+use craft\services\ProjectConfig;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 use studioespresso\easyaddressfield\records\EasyAddressFieldRecord;
 use yii\db\Exception;
@@ -157,7 +158,7 @@ class Install extends Migration
         $projectConfig = Craft::$app->getProjectConfig();
         $projectConfig->muteEvents = true;
 
-        $fieldConfigs = $projectConfig->get(Fields::CONFIG_FIELDS_KEY) ?? [];
+        $fieldConfigs = $projectConfig->get(ProjectConfig::PATH_FIELDS) ?? [];
         $fieldConfigsToMigrate = [];
         foreach ($fieldConfigs as $fieldUid => $fieldConfig) {
             if (isset($fieldConfig['type']) && $fieldConfig['type'] === 'StatikAddress') {
@@ -185,7 +186,7 @@ class Install extends Migration
             }
         }
 
-        $matrixFields = $projectConfig->get(\craft\services\Matrix::CONFIG_BLOCKTYPE_KEY);
+        $matrixFields = $projectConfig->get(ProjectConfig::PATH_MATRIX_BLOCK_TYPES);
         if ($matrixFields) {
             foreach ($matrixFields as $matrixUid => $matrixBlockFields) {
                 if ($matrixBlockFields['fields']) {
