@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.0 - 2022-05-02
+### Added
+- Craft 4 🚀
+
 ## 3.1.0 - 2022-04-10
 ### Added
 - Added support for PHP 8
