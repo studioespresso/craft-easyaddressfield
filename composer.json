@@ -2,7 +2,7 @@
   "name": "studioespresso/craft-easyaddressfield",
   "description": "The only address field you need",
   "type": "craft-plugin",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "keywords": [
     "cms",
     "craftcms",
@@ -24,7 +24,7 @@
   "require": {
     "craftcms/cms": "^4.0.0-beta.1",
     "league/iso3166": "^3.0",
-    "giggsey/locale": "^1.0.0",
+    "giggsey/locale": "^2.0.0",
     "maxh/php-nominatim": "^2.0"
   },
   "autoload": {
