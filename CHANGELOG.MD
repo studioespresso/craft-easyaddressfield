@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.1 - 2022-05-03
+### Fixed
+- Now compatible with giggsey/locale 2.0 or higher
+
 ## 4.0.0 - 2022-05-02
 ### Added
 - Craft 4 🚀
