@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.2 - 2022-06-02
+### Fixed
+- Fixed an issue with empty state where custom validators could not make the field required ([#33](https://github.com/studioespresso/craft3-easyaddressfield/issues/33))
+
 ## 4.0.1 - 2022-05-03
 ### Fixed
 - Now compatible with giggsey/locale 2.0 or higher
