@@ -265,7 +265,12 @@ class EasyAddressFieldModel extends Model
     public function isEmpty()
     {
 
-        $values = array_filter($this->toArray());
+        $values = $this->toArray(['name', 'street', 'street2', 'postalCode', 'state', 'country']);
+        $values = array_filter($values);
+        if(empty($values)) {
+            return true;
+        }
+
         if (count($values) == 1 && isset($values['country'])) {
             return true;
         } else {
