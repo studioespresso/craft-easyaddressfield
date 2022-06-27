@@ -1,5 +1,10 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+
+## 3.1.1 - 2022-06-27
+### Fixed
+- Fixed empty state for address model
+
 ## 3.1.0 - 2022-04-10
 ### Added
 - Added support for PHP 8
