@@ -59,7 +59,7 @@ class EasyAddressField extends Plugin
 
         $this->setComponents([
             'field' => FieldService::class,
-            'geolocation' => GeoLocationService::class,
+            'geoLocation' => GeoLocationService::class,
             'countries' => CountriesService::class
         ]);
 
@@ -108,9 +108,9 @@ class EasyAddressField extends Plugin
         return $this->field;
     }
 
-    public function geolocation(): GeoLocationService
+    public function geoLocation(): GeoLocationService
     {
-        return $this->geolocation;
+        return $this->geoLocation;
     }
 
     /**

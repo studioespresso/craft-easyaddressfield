@@ -40,7 +40,7 @@ class FieldService extends Component
             $record->field = $field->id;
         }
 
-        $value = EasyAddressField::$plugin->geolocation()->locate($value);
+        $value = EasyAddressField::$plugin->geoLocation()->locate($value);
 
 
         $record->name = $value->name;
