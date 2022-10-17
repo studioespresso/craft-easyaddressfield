@@ -1,5 +1,11 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.3 - 2022-10-17
+### Fixed
+- Fixed an issue with the geolocation service
+- Added parameters to isEmpty check
+
+
 ## 4.0.2 - 2022-06-02
 ### Fixed
 - Fixed an issue with empty state where custom validators could not make the field required ([#33](https://github.com/studioespresso/craft3-easyaddressfield/issues/33))
