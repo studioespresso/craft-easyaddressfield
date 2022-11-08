@@ -19,7 +19,7 @@ class EasyAddressFieldFeedMe extends Field implements FieldInterface
     // Templates
     // =========================================================================
 
-    public function getMappingTemplate()
+    public function getMappingTemplate(): string
     {
         return 'easy-address-field/_feedme';
     }
@@ -28,7 +28,7 @@ class EasyAddressFieldFeedMe extends Field implements FieldInterface
     // Public Methods
     // =========================================================================
 
-    public function parseField()
+    public function parseField(): mixed
     {
         $preppedData = [];
 

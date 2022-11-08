@@ -22,9 +22,25 @@ class EasyAddressFieldModel extends Model
      */
     public function __construct($attributes = [], array $config = [])
     {
-        foreach ($attributes as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this[$key] = $value;
+        if (is_array($attributes)) {
+
+            foreach ($attributes as $key => $value) {
+                if (property_exists($this, $key)) {
+                    $this[$key] = $value;
+                }
+            }
+        } elseif(is_object($attributes) && get_class($attributes) === self::class) {
+            foreach ($attributes->toArray() as $key => $value) {
+                if (property_exists($this, $key)) {
+                    $this[$key] = $value;
+                }
+            }
+        } else {
+            $attributes = Json::decodeIfJson($attributes);
+            foreach ($attributes as $key => $value) {
+                if (property_exists($this, $key)) {
+                    $this[$key] = $value;
+                }
             }
         }
         parent::__construct($config);
