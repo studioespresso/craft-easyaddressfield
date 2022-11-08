@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.4 - 2022-11-8
+### Fixed
+- Fixed return type on feedme field class
+
 ## 4.0.3 - 2022-10-17
 ### Fixed
 - Fixed an issue with the geolocation service
