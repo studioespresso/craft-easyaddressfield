@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.5 - 2023-03-07
+### Fixed
+- Fixed return type in GraphQL resolver
+
 ## 4.0.4 - 2022-11-8
 ### Fixed
 - Fixed return type on feedme field class
