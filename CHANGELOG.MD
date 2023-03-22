@@ -1,5 +1,8 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.7 - 2023-03-22
+### Fixed
+- Improved the position of the map in the field and added an extra label [#36](https://github.com/studioespresso/craft3-easyaddressfield/issues/36)
 
 ## 4.0.6 - 2023-03-20
 ### Fixed
