@@ -3,6 +3,7 @@
 namespace studioespresso\easyaddressfield\models;
 
 use Craft;
+use craft\helpers\Json;
 use craft\helpers\Template;
 use craft\web\View;
 use studioespresso\easyaddressfield\EasyAddressField;
