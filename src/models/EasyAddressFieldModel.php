@@ -30,7 +30,7 @@ class EasyAddressFieldModel extends Model
                     $this[$key] = $value;
                 }
             }
-        } elseif(is_object($attributes) && get_class($attributes) === self::class) {
+        } elseif (is_object($attributes) && get_class($attributes) === self::class) {
             foreach ($attributes->toArray() as $key => $value) {
                 if (property_exists($this, $key)) {
                     $this[$key] = $value;
@@ -208,6 +208,20 @@ class EasyAddressFieldModel extends Model
         return null;
     }
 
+
+    public function getDirectionsUrl($currentLocation = false): string
+    {
+        if ($currentLocation) {
+            $str = 'https://www.google.com/maps/dir/current+location/';
+        } else {
+            $str = 'https://www.google.com/maps/dir//';
+        }
+        $data = $this->toString(',');
+        $str .= str_replace(' ', '+', $data);
+
+        return $str;
+    }
+
     /**
      * @param string $glue
      * @return string
@@ -282,13 +296,13 @@ class EasyAddressFieldModel extends Model
     public function isEmpty($params = [])
     {
 
-        if($params) {
+        if ($params) {
             $values = $this->toArray($params);
         } else {
             $values = $this->toArray(['name', 'street', 'street2', 'postalCode', 'state', 'country']);
         }
         $values = array_filter($values);
-        if(empty($values)) {
+        if (empty($values)) {
             return true;
         }
 

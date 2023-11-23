@@ -39,9 +39,12 @@ class AddressVariable
      * @param int $scale: Scale level of the image
      *
      * @return bool|string
+     * @throws \craft\errors\DeprecationException
+     *
      */
     public function getStaticMap($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null, $scale = 1)
     {
+        Craft::$app->getDeprecator()->log(__CLASS__ . 'getStaticMap', "The 'getStaticMap' method will be remove in Craft 5.");
         $image = $this->getStaticMapRaw($data, $zoom, $size, $style, $color, $icon, $scale);
 
         return '<img src="' . $image . '"></a>';
@@ -58,9 +61,11 @@ class AddressVariable
      * @param int $scale: Scale level of the image
      *
      * @return bool|string
+     * @throws \craft\errors\DeprecationException
      */
     public function getStaticMapRaw($data, $zoom = 14, $size = '640x640', $style = null, $color = null, $icon = null, $scale = 1)
     {
+        Craft::$app->getDeprecator()->log(__CLASS__ . 'getStaticMapRaw', "The 'getStaticMapRaw' method will be remove in Craft 5.");
 
         if (!$this->key) {
             return false;
@@ -117,8 +122,10 @@ class AddressVariable
      * @param $currentLocation
      *
      * @return string
+     * @throws \craft\errors\DeprecationException
      */
     public function getDirectionsUrl( $addressModel, $currentLocation = false ) {
+        Craft::$app->getDeprecator()->log(__CLASS__ . 'getDirectionsUrl', "The 'getDirectionsUrl' has been moved to a function on the field, instead of through a twig variable. The previous way of working will be removed in Craft 5");
         if ( $currentLocation ) {
             $str = 'https://www.google.com/maps/dir/current+location/';
         } else {
