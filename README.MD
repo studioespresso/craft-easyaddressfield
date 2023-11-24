@@ -44,7 +44,7 @@ To enable stqtic map rendering and custom marker placement, you need to provide 
 
 ### Printing address values
 You can access the values from your address field in Twig through the following variables:
-````
+````twig
 field.name
 field.street
 field.street2
@@ -54,6 +54,7 @@ field.country // returns the country code
 field.getCountryName(craft.app.locale) // returns the coutry's full name, in the country's locale
 field.latitude
 field.longitude
+field.getDirectionsUrl() // get a directions link to the given address
 ````
 
 ### Static map
@@ -65,8 +66,6 @@ The plugin makes it easy to render a static map image based on 1 or more address
 `craft.address.getStaticMap`: returns an `<img src` element of the static map image (needs to be followed by the `|raw` filter to show the image)
 
 `craft.address.getStaticMapRaw`: returns a link to the static map image, which you can use how you like yourself.
-
-`craft.address.getDirectionsUrl`: get a directions link to the given address
 
 #### Usage
 

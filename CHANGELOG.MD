@@ -1,5 +1,11 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.8 - 2023-11-23
+### Changed
+- Fixed missing return statement in AddressFieldModel
+- Moved getDirectionsUrl from the twig function to the field model and added deprecation notice
+
+
 ## 4.0.7 - 2023-03-22
 ### Fixed
 - Improved the position of the map in the field and added an extra label [#36](https://github.com/studioespresso/craft3-easyaddressfield/issues/36)
