@@ -22,7 +22,7 @@
     "docs": "https://github.com/studioespresso/craft3-easyaddressfield/blob/master/README.MD"
   },
   "require": {
-    "craftcms/cms": "^5.0.x-dev as 5.0.0-alpha",
+    "craftcms/cms": "^5.0.0-alpha.1",
     "league/iso3166": "^3.0",
     "giggsey/locale": "^2.0.0",
     "maxh/php-nominatim": "^2.0"
