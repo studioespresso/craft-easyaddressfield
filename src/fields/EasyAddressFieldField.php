@@ -99,9 +99,9 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
     /**
      * @inheritdoc
      */
-    public static function hasContentColumn(): bool
+    public static function dbType(): null
     {
-        return false;
+        return null;
     }
 
     public function getContentGqlType(): array
