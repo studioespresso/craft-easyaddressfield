@@ -6,17 +6,14 @@
 namespace studioespresso\easyaddressfield;
 
 use Craft;
-use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\feedme\events\RegisterFeedMeFieldsEvent;
-use craft\helpers\UrlHelper;
 use craft\services\Fields;
 use craft\web\twig\variables\CraftVariable;
 use markhuot\CraftQL\Events\GetFieldSchema;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldFeedMe;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
-use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
 use studioespresso\easyaddressfield\services\CountriesService;
 use studioespresso\easyaddressfield\services\FieldService;
 use studioespresso\easyaddressfield\services\GeoLocationService;
@@ -43,7 +40,7 @@ class EasyAddressField extends Plugin
     /**
      * @var bool
      */
-    public bool $hasCpSettings = true;
+    public bool $hasCpSettings = false;
 
     // Public Methods
     // =========================================================================
@@ -106,54 +103,5 @@ class EasyAddressField extends Plugin
     public function geoLocation(): GeoLocationService
     {
         return $this->geoLocation;
-    }
-
-    /**
-     * Creates and returns the model used to store the plugin’s settings.
-     *
-     * @return \craft\base\Model|null
-     */
-    protected function createSettingsModel(): Model
-    {
-        return new EasyAddressFieldSettingsModel();
-    }
-
-    /**
-     * Redirect to settings after install
-     */
-    protected function afterInstall(): void
-    {
-        if (!Craft::$app->getRequest()->isConsoleRequest) {
-            parent::afterInstall();
-            Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/easy-address-field'))->send();
-        }
-    }
-
-    /**
-     * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
-     */
-    protected function settingsHtml(): string
-    {
-        $url = Craft::$app->assetManager->getPublishedUrl('@studioespresso/easyaddressfield/assets/themes', true);
-        $styleOptions = [
-            'standard' => Craft::t("easy-address-field", "Standard"),
-            'silver' => Craft::t("easy-address-field", 'Silver'),
-            'retro' => Craft::t("easy-address-field", 'Retro'),
-            'dark' => Craft::t("easy-address-field", 'Dark'),
-            'night' => Craft::t("easy-address-field", 'Night'),
-            'aubergine' => Craft::t("easy-address-field", 'Aubergine'),
-        ];
-
-        return Craft::$app->getView()->renderTemplate(
-            'easy-address-field/_settings',
-            [
-                'settings' => $this->getSettings(),
-                'styleOptions' => $styleOptions,
-                'url' => $url,
-            ]
-        );
     }
 }

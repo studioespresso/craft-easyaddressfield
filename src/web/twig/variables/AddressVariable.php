@@ -7,15 +7,12 @@ use studioespresso\easyaddressfield\services\CountriesService;
 
 class AddressVariable
 {
-    private $key;
-
     private $settings;
 
     public function __construct()
     {
         $pluginSettings = EasyAddressField::getInstance()->getSettings();
         $this->settings = $pluginSettings;
-        $this->key = $pluginSettings->googleApiKeyNonGeo ? $pluginSettings->googleApiKeyNonGeo : $pluginSettings->googleApiKey;
     }
 
     public function countries()
