@@ -1,6 +1,6 @@
 # Easy Address Field plugin for Craft CMS 3.x
 
-![Easy Address Field](/resources/banner.png?raw=true)
+![Easy Address Field](https://www.studioespresso.co/assets/Easy-Address-Field-Github-Banner.png)
 
 
 The only address field you need
