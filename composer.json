@@ -13,7 +13,7 @@
   "authors": [
     {
       "name": "Studio Espresso",
-      "homepage": "https://studioespresso.dev"
+      "homepage": "https://www.studioespresso.co"
     }
   ],
   "support": {
@@ -22,10 +22,20 @@
     "docs": "https://github.com/studioespresso/craft3-easyaddressfield/blob/master/README.MD"
   },
   "require": {
-    "craftcms/cms": "^5.0.0-alpha.1",
+    "craftcms/cms": "^5.0.0-alpha",
     "league/iso3166": "^3.0",
     "giggsey/locale": "^2.0.0",
     "maxh/php-nominatim": "^2.0"
+  },
+  "require-dev": {
+    "craftcms/ecs": "dev-main",
+    "craftcms/phpstan": "dev-main",
+    "craftcms/rector": "dev-main"
+  },
+  "scripts": {
+    "check-cs": "ecs check --ansi",
+    "fix-cs": "ecs check --ansi --fix",
+    "phpstan": "phpstan --memory-limit=1G"
   },
   "autoload": {
     "psr-4": {
@@ -36,5 +46,11 @@
     "name": "Easy Address Field",
     "handle": "easy-address-field",
     "class": "studioespresso\\easyaddressfield\\EasyAddressField"
+  },
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true,
+      "craftcms/plugin-installer": true
+    }
   }
 }
