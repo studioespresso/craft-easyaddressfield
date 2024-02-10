@@ -2,7 +2,6 @@
 
 namespace studioespresso\easyaddressfield\web\twig\variables;
 
-use studioespresso\easyaddressfield\assetbundles\easyaddressmap\EasyAddressMapAsset;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\services\CountriesService;
 
@@ -25,5 +24,4 @@ class AddressVariable
 
         return $countriesService->getCountriesAsArray();
     }
-    
 }

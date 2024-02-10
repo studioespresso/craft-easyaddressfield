@@ -2,14 +2,10 @@
 
 namespace studioespresso\easyaddressfield\services;
 
-use Craft;
 use craft\base\Component;
-use GuzzleHttp\Client;
 use maxh\Nominatim\Nominatim;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use yii\base\InvalidConfigException;
-use yii\log\Logger;
 
 class GeoLocationService extends Component
 {
@@ -51,17 +47,17 @@ class GeoLocationService extends Component
             ->addressDetails();
 
         $result = $nominatim->find($search);
-        if(empty($result)) {
+        if (empty($result)) {
             return $model;
         }
 
-        if(isset($result[0]['lat']) && isset($result[0]['lon'])) {
+        if (isset($result[0]['lat']) && isset($result[0]['lon'])) {
             $model->longitude = $result[0]['lon'];
             $model->latitude = $result[0]['lat'];
-        } elseif(is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
+        } elseif (is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
             $model->longitude = $result[0]['geojson']['coordinates'][0][0][0];
             $model->latitude = $result[0]['geojson']['coordinates'][0][0][1];
-        } elseif(is_array($result[0]['geojson']['coordinates'][0])) {
+        } elseif (is_array($result[0]['geojson']['coordinates'][0])) {
             $model->longitude = $result[0]['geojson']['coordinates'][0][0];
             $model->latitude = $result[0]['geojson']['coordinates'][0][1];
         } else {
@@ -70,5 +66,4 @@ class GeoLocationService extends Component
         }
         return $model;
     }
-
 }

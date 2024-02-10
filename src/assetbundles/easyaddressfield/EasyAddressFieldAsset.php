@@ -2,10 +2,8 @@
 
 namespace studioespresso\easyaddressfield\assetbundles\easyaddressfield;
 
-use Craft;
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
-
 
 class EasyAddressFieldAsset extends AssetBundle
 {

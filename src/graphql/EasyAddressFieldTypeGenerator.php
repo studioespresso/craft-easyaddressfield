@@ -2,7 +2,6 @@
 
 namespace studioespresso\easyaddressfield\graphql;
 
-
 use craft\gql\base\GeneratorInterface;
 use craft\gql\GqlEntityRegistry;
 use craft\gql\TypeLoader;
@@ -36,12 +35,12 @@ class EasyAddressFieldTypeGenerator implements GeneratorInterface
             ?: GqlEntityRegistry::createEntity($typeName, new EasyAddressFieldResolver([
                 'name' => $typeName,
                 'description' => 'This entity has all the EasyAddressField properties',
-                'fields' => function () use ($addressProperties) {
+                'fields' => function() use ($addressProperties) {
                     return $addressProperties;
                 },
             ]));
 
-        TypeLoader::registerType($typeName, function () use ($addressProperty) {
+        TypeLoader::registerType($typeName, function() use ($addressProperty) {
             return $addressProperty;
         });
         return [$addressProperty];

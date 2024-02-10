@@ -2,7 +2,7 @@
 
 namespace studioespresso\easyaddressfield\models;
 
-use craft\base\model;
+use craft\base\Model;
 
 /**
  * Class EasyAddressFieldSettingsModel
@@ -16,5 +16,4 @@ class EasyAddressFieldSettingsModel extends Model
     public $defaultMapTheme;
     public $defaultMarkerColor;
     public $defaultMarkerIcon;
-
 }

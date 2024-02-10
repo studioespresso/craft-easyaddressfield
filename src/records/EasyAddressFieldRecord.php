@@ -6,21 +6,18 @@ use craft\db\ActiveRecord;
 
 class EasyAddressFieldRecord extends ActiveRecord
 {
+    // Props
+    // =========================================================================
 
-	// Props
-	// =========================================================================
+    public static $tableName = '{{%easyaddressfield}}';
 
-	public static $tableName = '{{%easyaddressfield}}';
-
-	/**
-	 * @inheritdoc
-	 *
-	 * @return string
-	 */
-	public static function tableName (): string
-	{
-		return self::$tableName;
-	}
+    /**
+     * @inheritdoc
+     *
+     * @return string
+     */
+    public static function tableName(): string
+    {
+        return self::$tableName;
+    }
 }
-
-

@@ -12,11 +12,9 @@ use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFie
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\graphql\EasyAddressFieldTypeGenerator;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use studioespresso\easyaddressfield\resolvers\AddressResolver;
 
 class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 {
-
     public $hasContentColumn = false;
 
     public $geoCode = true;
@@ -56,7 +54,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
             'easy-address-field/_field/_settings',
             [
                 'field' => $this,
-                'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray()
+                'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray(),
             ]
         );
     }
@@ -66,27 +64,26 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
      */
     public function rules(): array
     {
-
         $addressRules =
             array(
                 array(
                     array(
-                        'geoCode'
+                        'geoCode',
                     ),
-                    'boolean'
+                    'boolean',
                 ),
                 array(
                     array(
-                        'showCoordinates'
+                        'showCoordinates',
                     ),
-                    'boolean'
+                    'boolean',
                 ),
                 array(
                     array(
-                        'defaultCountry'
+                        'defaultCountry',
                     ),
-                    'string'
-                )
+                    'string',
+                ),
             );
 
 
@@ -125,7 +122,6 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
     public function normalizeValue($value, ElementInterface $element = null): mixed
     {
         return EasyAddressField::$plugin->getField()->getField($this, $element, $value);
-
     }
 
     /**
@@ -140,7 +136,6 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
             return $value;
         }
         if (!ElementHelper::isDraftOrRevision($element)) {
-
             if ($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
                 $value = EasyAddressField::getInstance()->geoLocation->locate($value);
             }
@@ -208,5 +203,4 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         EasyAddressField::getInstance()->field->saveField($this, $element);
         parent::afterElementSave($element, $isNew);
     }
-
 }

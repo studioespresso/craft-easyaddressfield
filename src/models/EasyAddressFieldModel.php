@@ -15,7 +15,6 @@ use yii\base\Model;
  */
 class EasyAddressFieldModel extends Model
 {
-
     /**
      * EasyAddressFieldModel constructor.
      * @param array $attributes
@@ -24,7 +23,6 @@ class EasyAddressFieldModel extends Model
     public function __construct($attributes = [], array $config = [])
     {
         if (is_array($attributes)) {
-
             foreach ($attributes as $key => $value) {
                 if (property_exists($this, $key)) {
                     $this[$key] = $value;
@@ -242,7 +240,7 @@ class EasyAddressFieldModel extends Model
             $data['city'] = $this->city;
         }
         if (!empty($this->country)) {
-            $data['country'] = $this->countryName;
+            $data['country'] = $this->getCountryName();
         }
 
         return implode($glue, $data);
@@ -270,7 +268,7 @@ class EasyAddressFieldModel extends Model
             $data['state'] = $this->state;
         }
         if (!empty($this->country)) {
-            $data['country'] = $this->countryName;
+            $data['country'] = $this->getCountryName();
         }
 
         return implode($glue, $data);
@@ -284,18 +282,16 @@ class EasyAddressFieldModel extends Model
         $view->setTemplateMode(View::TEMPLATE_MODE_CP);
         $template = $view->renderTemplate('easy-address-field/_formatted', [
             'address' => $this,
-            'includeCountry' => $includeCountry
+            'includeCountry' => $includeCountry,
         ]);
 
         $view->setTemplateMode($oldTemplateMode);
         return Template::raw($template);
-
     }
 
 
     public function isEmpty($params = [])
     {
-
         if ($params) {
             $values = $this->toArray($params);
         } else {
@@ -312,5 +308,4 @@ class EasyAddressFieldModel extends Model
             return false;
         }
     }
-
 }

@@ -7,7 +7,6 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 class EasyAddressFieldResolver extends ObjectType
 {
-
     /**
      * @inheritdoc
      */

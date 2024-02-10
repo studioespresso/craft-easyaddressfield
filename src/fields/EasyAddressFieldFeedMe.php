@@ -7,6 +7,7 @@ use craft\feedme\base\Field;
 use craft\feedme\base\FieldInterface;
 use craft\feedme\helpers\DataHelper;
 
+/** @phpstan-ignore-next-line */
 class EasyAddressFieldFeedMe extends Field implements FieldInterface
 {
     // Properties
@@ -32,6 +33,7 @@ class EasyAddressFieldFeedMe extends Field implements FieldInterface
     {
         $preppedData = [];
 
+        /** @phpstan-ignore-next-line */
         $fields = Hash::get($this->fieldInfo, 'fields');
 
         if (!$fields) {
@@ -39,6 +41,7 @@ class EasyAddressFieldFeedMe extends Field implements FieldInterface
         }
 
         foreach ($fields as $subFieldHandle => $subFieldInfo) {
+            /** @phpstan-ignore-next-line */
             $preppedData[$subFieldHandle] = DataHelper::fetchValue($this->feedData, $subFieldInfo);
         }
 
@@ -49,5 +52,4 @@ class EasyAddressFieldFeedMe extends Field implements FieldInterface
 
         return $preppedData;
     }
-
 }

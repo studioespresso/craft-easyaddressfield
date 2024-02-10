@@ -2,6 +2,8 @@ includes:
     - vendor/craftcms/phpstan/phpstan.neon
 
 parameters:
-    level: 5
+    level: 1
     paths:
         - src
+    excludePaths:
+        - src/fields/

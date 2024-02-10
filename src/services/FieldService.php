@@ -12,7 +12,6 @@ use studioespresso\easyaddressfield\records\EasyAddressFieldRecord;
 
 class FieldService extends Component
 {
-
     /**
      * @param EasyAddressFieldField $field
      * @param ElementInterface $element
@@ -21,7 +20,6 @@ class FieldService extends Component
      */
     public function saveField(EasyAddressFieldField $field, ElementInterface $element)
     {
-
         $locale = $element->getSite()->language;
         $value = $element->getFieldValue($field->handle);
 
@@ -80,7 +78,7 @@ class FieldService extends Component
         );
         if ($value) {
             $model = new EasyAddressFieldModel($value);
-        } else if ($record) {
+        } elseif ($record) {
             $model = new EasyAddressFieldModel($record->getAttributes());
         } else {
             $model = new EasyAddressFieldModel();
@@ -88,5 +86,4 @@ class FieldService extends Component
 
         return $model;
     }
-
 }

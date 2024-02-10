@@ -2,15 +2,8 @@
 
 namespace studioespresso\easyaddressfield\migrations;
 
-use Craft;
 use craft\db\Migration;
-use craft\db\Query;
-use craft\helpers\Json;
-use craft\services\Fields;
-use craft\services\ProjectConfig;
-use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 use studioespresso\easyaddressfield\records\EasyAddressFieldRecord;
-use yii\db\Exception;
 
 /**
  * Install migration.
