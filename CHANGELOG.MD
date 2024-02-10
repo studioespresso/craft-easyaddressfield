@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 5.0.0 - 2024-02-10
+### Added
+- Finished Craft 5 release
+
 ## 4.0.8 - 2023-11-23
 ### Changed
 - Fixed missing return statement in AddressFieldModel
