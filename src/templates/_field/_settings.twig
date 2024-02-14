@@ -19,26 +19,26 @@
         <table class="editable">
             <thead>
                 <tr>
-                    <th class="header" scope="col">{{ "Enable"|t }}</th>
-                    <th class="header" scope="col">{{ "Field"|t }}</th>
+                    <th class="header" scope="col">{{ "Field"|t('easy-address-field') }}</th>
+                    <th class="header" scope="col">{{ "Enable"|t('easy-address-field') }}</th>
                 </tr>
             </thead>
             <tbody class="layout-table-rows">
                 <tr>
+                    <td class="layout-table-label"> <label for="enabledFields[name]"> {{ 'Name'|t('easy-address-field') }}</label></td>
                     <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[name]" name="enabledFields[name]" value="name" {% if field.enabledFields.name is defined %}checked{% endif %}/></td>
-                    <td class="layout-table-label"> <label for="enabledFields[name]"> {{ 'Name'|t}}</label></td>
                 </tr>
                 <tr>
+                    <td class="layout-table-label"> <label for="enabledFields[street2]"> {{ 'Street 2'|t('easy-address-field') }}</label></td>
                     <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[street2]" name="enabledFields[street2]" value="street2" {% if field.enabledFields.street2 is defined %}checked{% endif %}/></td>
-                    <td class="layout-table-label"> <label for="enabledFields[street2]"> {{ 'Street 2'|t}}</label></td>
                 </tr>
                 <tr>
+                    <td class="layout-table-label"> <label for="enabledFields[state]"> {{ 'State'|t('easy-address-field') }}</label></td>
                     <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[state]" name="enabledFields[state]" value="state" {% if field.enabledFields.state is defined %}checked{% endif %}/></td>
-                    <td class="layout-table-label"> <label for="enabledFields[state]"> {{ 'State'|t}}</label></td>
                 </tr>
                 <tr>
+                    <td class="layout-table-label"> <label for="enabledFields[country]"> {{ 'Country'|t('easy-address-field') }}</label></td>
                     <td class="layout-table-enable"> <input type="checkbox" id="enabledFields[country]" name="enabledFields[country]" value="country" {% if field.enabledFields.country is defined %}checked{% endif %}/></td>
-                    <td class="layout-table-label"> <label for="enabledFields[country]"> {{ 'Country'|t}}</label></td>
                 </tr>
             </tbody>
         </table>
@@ -46,7 +46,7 @@
 </div>
 
         {{ forms.selectField({
-            label:      "Default country"|t,
+            label:      "Default country"|t('easy-address-field'),
             id:         "defaultCountry",
             name:       "defaultCountry",
             options:    countries,
@@ -54,14 +54,14 @@
         }) }}
 
         {{ forms.lightswitchField({
-            label:        "Get coordinates for addresses"|t,
+            label:        "Get coordinates for addresses"|t('easy-address-field'),
             id:           'geoCode',
             name:         'geoCode',
             on:           field.geoCode,
         }) }}
 
         {{ forms.lightswitchField({
-            label:        "Show coordinates?"|t,
+            label:        "Show coordinates?"|t('easy-address-field'),
             id:           'showCoordinates',
             name:         'showCoordinates',
             on:           field.showCoordinates,
