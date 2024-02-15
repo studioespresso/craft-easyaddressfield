@@ -4,7 +4,6 @@ namespace studioespresso\easyaddressfield\services;
 
 use craft\base\Component;
 use maxh\Nominatim\Nominatim;
-use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 
 class GeoLocationService extends Component
