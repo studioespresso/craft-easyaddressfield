@@ -14,5 +14,4 @@ return [
     'Postal code' => 'Postcode',
     'City' => 'Stad of gemeente',
     'Pick an address on the map' => 'Kies een adres op de kaart',
-
 ];

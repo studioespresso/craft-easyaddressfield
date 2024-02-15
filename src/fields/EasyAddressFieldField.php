@@ -176,9 +176,6 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         $id = Craft::$app->getView()->formatInputId($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
-        $pluginSettings = EasyAddressField::getInstance()->getSettings();
-        $fieldSettings = $this->getSettings();
-
         return Craft::$app->getView()->renderTemplate(
             'easy-address-field/_field/_input',
             [
@@ -188,8 +185,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
                 'id' => $id,
                 'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray(),
                 'namespacedId' => $namespacedId,
-                'fieldSettings' => $fieldSettings,
-                'pluginSettings' => $pluginSettings,
+                'fieldSettings' => $this->getSettings(),
             ]
         );
     }

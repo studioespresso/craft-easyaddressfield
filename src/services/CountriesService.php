@@ -32,8 +32,7 @@ class CountriesService extends Component
         $country = $data->alpha2($code);
 
         try {
-            $translatedLocale = Locale::getDisplayRegion('-' . $country['alpha2'], $locale);
-            return $translatedLocale;
+            return Locale::getDisplayRegion('-' . $country['alpha2'], $locale);
         } catch (\Exception $e) {
             return $country['name'];
         }

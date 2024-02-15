@@ -3,22 +3,11 @@
 namespace studioespresso\easyaddressfield\web\twig\variables;
 
 use studioespresso\easyaddressfield\EasyAddressField;
-use studioespresso\easyaddressfield\services\CountriesService;
 
 class AddressVariable
 {
-    private $settings;
-
-    public function __construct()
+    public function countries(): array
     {
-        $pluginSettings = EasyAddressField::getInstance()->getSettings();
-        $this->settings = $pluginSettings;
-    }
-
-    public function countries()
-    {
-        $countriesService = new CountriesService();
-
-        return $countriesService->getCountriesAsArray();
+        return EasyAddressField::getInstance()->countries->getCountriesAsArray();
     }
 }
