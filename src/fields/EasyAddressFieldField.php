@@ -149,7 +149,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         return $value->isEmpty();
     }
 
-    public function getTableAttributeHtml($value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         return $value->modelToString(', ');
     }
