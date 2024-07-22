@@ -1,9 +1,14 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.9 - 2024-07-22
+### Fixed
+- Better error catching on Nomanatim errors ([#37](https://github.com/studioespresso/craft-easyaddressfield/issues/37))
+
 ## 4.0.8 - 2023-11-23
 ### Changed
 - Fixed missing return statement in AddressFieldModel
 - Moved getDirectionsUrl from the twig function to the field model and added deprecation notice
+
 
 
 ## 4.0.7 - 2023-03-22
