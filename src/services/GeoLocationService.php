@@ -28,11 +28,15 @@ class GeoLocationService extends Component
      */
     public function locate(EasyAddressFieldModel $model)
     {
-        if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
-            $model = $this->geocodeOSM($model);
-        }
+        try {
+            if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
+                $model = $this->geocodeOSM($model);
+            }
 
-        return $model;
+            return $model;
+        } catch (\Throwable $e) {
+            Craft::error($e->getMessage());
+        }
     }
 
     private function geocodeOSM(EasyAddressFieldModel $model)
@@ -51,17 +55,17 @@ class GeoLocationService extends Component
             ->addressDetails();
 
         $result = $nominatim->find($search);
-        if(empty($result)) {
+        if (empty($result)) {
             return $model;
         }
 
-        if(isset($result[0]['lat']) && isset($result[0]['lon'])) {
+        if (isset($result[0]['lat']) && isset($result[0]['lon'])) {
             $model->longitude = $result[0]['lon'];
             $model->latitude = $result[0]['lat'];
-        } elseif(is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
+        } elseif (is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
             $model->longitude = $result[0]['geojson']['coordinates'][0][0][0];
             $model->latitude = $result[0]['geojson']['coordinates'][0][0][1];
-        } elseif(is_array($result[0]['geojson']['coordinates'][0])) {
+        } elseif (is_array($result[0]['geojson']['coordinates'][0])) {
             $model->longitude = $result[0]['geojson']['coordinates'][0][0];
             $model->latitude = $result[0]['geojson']['coordinates'][0][1];
         } else {
