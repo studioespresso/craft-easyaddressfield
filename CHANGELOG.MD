@@ -1,5 +1,8 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 3.1.2 - 2024-08-01
+### Fixed
+- Fixed a crash when Nomanatim service isn't available ([#37](https://github.com/studioespresso/craft-easyaddressfield/issues/37))
 
 ## 3.1.1 - 2022-06-27
 ### Fixed
