@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.10 - 2024-08-07
+### Fixed
+- Fields now respect wether geocoding is enabled or not ([#38](https://github.com/studioespresso/craft-easyaddressfield/issues/38))
+
 ## 4.0.9 - 2024-07-22
 ### Fixed
 - Better error catching on Nomanatim errors ([#37](https://github.com/studioespresso/craft-easyaddressfield/issues/37))
