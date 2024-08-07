@@ -5,6 +5,7 @@ namespace studioespresso\easyaddressfield\services;
 use Craft;
 use craft\base\Component;
 use craft\base\ElementInterface;
+use craft\helpers\ElementHelper;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
@@ -40,8 +41,9 @@ class FieldService extends Component
             $record->field = $field->id;
         }
 
-        $value = EasyAddressField::$plugin->geolocation()->locate($value);
-
+        if(!ElementHelper::isDraftOrRevision($element) && $field->geoCode) {
+            $value = EasyAddressField::$plugin->geolocation()->locate($value);
+        }
 
         $record->name = $value->name;
         $record->street = $value->street;

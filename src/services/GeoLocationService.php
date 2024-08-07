@@ -36,6 +36,7 @@ class GeoLocationService extends Component
             return $model;
         } catch (\Throwable $e ){
             Craft::error($e->getMessage(), __METHOD__);
+            return $model;
         }
     }
 
