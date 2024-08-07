@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 5.0.1 - 2024-08-07
+### Fixed
+- Fields now respect wether geocoding is enabled or not ([#38](https://github.com/studioespresso/craft-easyaddressfield/issues/38))
+
 ## 5.0.0 - 2024-02-10
 ### Added
 - Finished Craft 5 release
