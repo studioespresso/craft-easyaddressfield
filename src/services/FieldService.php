@@ -52,8 +52,8 @@ class FieldService extends Component
         $record->city = $value->city;
         $record->state = $value->state;
         $record->country = $value->country;
-        $record->latitude = $value->latitude;
-        $record->longitude = $value->longitude;
+        $record->latitude = $value->latitude ?? null;
+        $record->longitude = $value->longitude ?? null;
 
 
         $save = $record->save();
