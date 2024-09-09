@@ -15,11 +15,15 @@ class GeoLocationService extends Component
      */
     public function locate(EasyAddressFieldModel $model)
     {
-        if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
-            $model = $this->geocodeOSM($model);
+        try {
+            if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
+                $model = $this->geocodeOSM($model);
+            }
+            return $model;
+        } catch (\Throwable $exception) {
+            \Craft::error($exception->getMessage());
+            return $model;
         }
-
-        return $model;
     }
 
     private function geocodeOSM(EasyAddressFieldModel $model)
