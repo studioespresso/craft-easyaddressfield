@@ -36,22 +36,21 @@
 
                 var lat = $('#' + handle + '-latitude').val();
                 var lng = $('#' + handle + '-longitude').val();
+                var link  = $('#' + handle + '-drag-pin-data');
+                var defaultData = { 'lat': link.data('lat'), 'lng': link.data('lng')};
 
-                var defaultData = $('#' + handle + '-drag-pin-data').data();
-                console.log(defaultData);
                 if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
                     coords = {
                         'lat': lat,
                         'lng': lng
                     };
-                } else if (defaultData.default) {
+                } else if (defaultData) {
                     coords = {
                         'lat': defaultData.lat,
                         'lng': defaultData.lng
                     };
-                    zoom = defaultData.zoom;
                 }
-
+                zoom = defaultData.zoom;
                 var marker = renderMapOSM(handle, mapCanvas, coords, zoom);
 
                 $('.modal-cancel').on('click', function () {
@@ -66,15 +65,13 @@
                     $('#' + handle + '-longitude').val(marker.getLatLng().lng);
                     return false;
                 });
-
                 clearInterval(refreshIntervalId);
             }
 
         }, 10);
     }
 
-    function renderMapOSM(handle, mapCanvas, coords, zoom) {
-        console.log(zoom);
+    function renderMapOSM(handle, mapCanvas, coords, zoom = 14) {
         if(dragPin[handle]['map'] === false) {
             dragPin[handle]['map'] = L.map(mapCanvas).setView([coords.lat,coords.lng], zoom);
         }
