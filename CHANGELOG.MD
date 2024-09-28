@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.0.12 - 2024-09-28
+### Fixed
+- Fixed the map showing a blank screen when no coordinates could be found
+
 ## 4.0.11 - 2024-09-09
 ### Fixed
 - Better error catching on Nomanatim errors ([#39](https://github.com/studioespresso/craft-easyaddressfield/issues/39))
