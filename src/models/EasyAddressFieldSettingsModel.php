@@ -12,5 +12,8 @@ use craft\base\Model;
 class EasyAddressFieldSettingsModel extends Model
 {
     public string $geoCodingService = 'nomanatim';
+
     public ?string $googleApiKey = null;
+
+    public bool $enableGeoCodingForCraftElements = true;
 }

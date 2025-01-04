@@ -4,6 +4,7 @@ namespace studioespresso\easyaddressfield\services;
 
 use Craft;
 use craft\base\Component;
+use craft\elements\Address;
 use craft\helpers\Json;
 use GuzzleHttp\Client;
 use maxh\Nominatim\Nominatim;
@@ -31,9 +32,9 @@ class GeoLocationService extends Component
         try {
             if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
                 if ($this->settings->geoCodingService === 'google') {
-                    $model = $this->geocodeGoogle($model);
+                    $model = $this->geocodeModelGoogle($model);
                 } else {
-                    $model = $this->geocodeOSM($model);
+                    $model = $this->geocodeModelOSM($model);
                 }
             }
             return $model;
@@ -43,7 +44,70 @@ class GeoLocationService extends Component
         }
     }
 
-    private function geocodeGoogle(EasyAddressFieldModel $model)
+    public function locateElement(Address $element)
+    {
+        try {
+            if (!$element->latitude && !$element->longitude && $element->countryCode) {
+                if ($this->settings->geoCodingService === 'google') {
+                    $coordinates = $this->geocodeElementGoogle($element);
+                    return $coordinates;
+                } else {
+                    $coordinates = $this->geocodeElementOSM();
+                }
+                return [];
+            }
+        } catch (\Throwable $exception) {
+            \Craft::error($exception->getMessage(), 'easy-address-field');
+            return $element;
+        }
+    }
+
+
+    private function geocodeElementGoogle(Address $element)
+    {
+        if (!$this->settings->googleApiKey) {
+            return $element;
+        }
+
+        if (!$element->latitude && !$element->longitude && $element->countryCode) {
+            $client = new Client(['base_uri' => 'https://maps.googleapis.com']);
+            $fields = [
+                $element->addressLine1,
+                $element->addressLine2,
+                $element->addressLine3,
+                $element->postalCode,
+                $element->locality,
+                $element->countryCode
+            ];
+            $fields = array_filter($fields);
+            $data = implode('+', $fields);
+            $request = $client->request('GET',
+                'maps/api/geocode/json?address=' . urlencode($data) . '&key=' . Craft::parseEnv($this->settings->googleApiKey) . '',
+                ['allow_redirects' => false]
+            );
+            $json = Json::decodeIfJson($request->getBody()->getContents());
+
+            if ($json['status'] !== 'OK' && $json['error_message']) {
+                if (Craft::$app->getConfig()->general->devMode) {
+                    throw new InvalidConfigException('Google API error: ' . $json['error_message']);
+                }
+                Craft::error($json['error_message'], 'easy-address-field');
+            }
+
+            if ($json['status'] === 'OK') {
+                if ($json['results'][0]['geometry']['location']) {
+                    return [
+                        'latitude' => $json['results'][0]['geometry']['location']['lat'],
+                        'longitude' => $json['results'][0]['geometry']['location']['lng'],
+                    ];
+                }
+            }
+        }
+
+        return [];
+    }
+
+    private function geocodeModelGoogle(EasyAddressFieldModel $model)
     {
         if (!$this->settings->googleApiKey) {
             return $model;
@@ -75,7 +139,7 @@ class GeoLocationService extends Component
         return $model;
     }
 
-    private function geocodeOSM(EasyAddressFieldModel $model)
+    private function geocodeModelOSM(EasyAddressFieldModel $model)
     {
         // url encode the address
         $url = "http://nominatim.openstreetmap.org/";
