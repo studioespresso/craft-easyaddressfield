@@ -39,7 +39,7 @@ class FieldService extends Component
             $record->field = $field->id;
         }
 
-        if(!ElementHelper::isDraftOrRevision($element) && $field->geoCode) {
+        if (!ElementHelper::isDraftOrRevision($element) && $field->geoCode) {
             $value = EasyAddressField::$plugin->geoLocation()->locate($value);
         }
 

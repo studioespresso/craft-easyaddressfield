@@ -6,14 +6,17 @@
 namespace studioespresso\easyaddressfield;
 
 use Craft;
+use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\feedme\events\RegisterFeedMeFieldsEvent;
+use craft\helpers\UrlHelper;
 use craft\services\Fields;
 use craft\web\twig\variables\CraftVariable;
 use markhuot\CraftQL\Events\GetFieldSchema;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldFeedMe;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
+use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
 use studioespresso\easyaddressfield\services\CountriesService;
 use studioespresso\easyaddressfield\services\FieldService;
 use studioespresso\easyaddressfield\services\GeoLocationService;
@@ -40,7 +43,7 @@ class EasyAddressField extends Plugin
     /**
      * @var bool
      */
-    public bool $hasCpSettings = false;
+    public bool $hasCpSettings = true;
 
     // Public Methods
     // =========================================================================
@@ -94,6 +97,47 @@ class EasyAddressField extends Plugin
 
     // Components
     // =========================================================================
+
+    /**
+     * Creates and returns the model used to store the plugin’s settings.
+     *
+     * @return \craft\base\Model|null
+     */
+    protected function createSettingsModel(): Model
+    {
+        return new EasyAddressFieldSettingsModel();
+    }
+
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \Twig_Error_Loader
+     * @throws \RuntimeException
+     */
+    protected function settingsHtml(): string
+    {
+        return Craft::$app->getView()->renderTemplate(
+            'easy-address-field/_settings',
+            [
+                'services' => [
+                    'nominatim' => 'Nominatim',
+                    'google' => 'Google Maps',
+                ],
+                'settings' => $this->getSettings(),
+            ]
+        );
+    }
+
+    /**
+     * Redirect to settings after install
+     */
+    protected function afterInstall(): void
+    {
+        if (!Craft::$app->getRequest()->isConsoleRequest) {
+            parent::afterInstall();
+            Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('settings/plugins/easy-address-field'))->send();
+        }
+    }
 
     public function getField(): FieldService
     {
