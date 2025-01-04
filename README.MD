@@ -23,6 +23,26 @@ To install the plugin, follow these instructions.
 
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for "Easy Address Field".
 
+## Settings
+
+You can choose which geocoding API the plugin will use when you have geocoding enabled for your fields.
+Options are:
+- OpenStreetMap's Nominatim (default, no configuration, but very strict rate limits)
+- Google Maps (requires an API key, see below)
+
+### Google Maps API
+To enable geolocating and custom marker placement, you need to provide a Google Maps API key.
+1) Sign in to [Google's developers console](http://console.developers.google.com/)
+2) Create a new project
+3) Enable the `Google Maps Geocoding API` and the `Google Static Maps API`
+
+**🚨 Important 🚨:**
+
+Google's Geocoding API does not support HTTP referrer restrictions. Make sure the API key you are using does not have these set.
+
+#### API Errors
+When `devMode` is enabled, any errors returned by Google's API will show an exception so you can clearly see what's going wrong. With `devMode` disabled, any errors will be logged to Craft's `web.log`.
+
 ## Template variables
 
 ### Printing address values
