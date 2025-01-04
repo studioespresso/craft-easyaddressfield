@@ -139,6 +139,57 @@ class GeoLocationService extends Component
         return $model;
     }
 
+
+    private function geocodeElementOSM(Address $address): array
+    {
+        // url encode the address
+        $url = "http://nominatim.openstreetmap.org/";
+        $nominatim = new Nominatim($url);
+        $search = $nominatim->newSearch()
+            ->countryCode($address->countryCode)
+            ->state($address->administrativeArea ?? '')
+            ->city($address->locality ?? '')
+            ->postalCode($address->postalCode ?? '')
+            ->street($address->addressLine1 . ' ' . $address->addressLine2 . ' ' . $address->addressLine3)
+            ->limit(1)
+            ->polygon('geojson')
+            ->addressDetails();
+
+        $result = $nominatim->find($search);
+        if (empty($result)) {
+            return [];
+        }
+
+        if (isset($result[0]['lat']) && isset($result[0]['lon'])) {
+            return [
+                'latitude' => $result[0]['lat'],
+                'longitude' => $result[0]['lon'],
+            ];
+
+        }
+
+        if (is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
+            return [
+                'latitude' => $result[0]['geojson']['coordinates'][0][0][1],
+                'longitude' => $result[0]['geojson']['coordinates'][0][0][0],
+            ];
+
+        }
+
+        if (is_array($result[0]['geojson']['coordinates'][0])) {
+            return [
+                'latitude' => $result[0]['geojson']['coordinates'][0][1],
+                'longitude' => $result[0]['geojson']['coordinates'][0][0],
+            ];
+        }
+
+        return [
+            'latitude' => $result[0]['geojson']['coordinates'][1],
+            'longitude' => $result[0]['geojson']['coordinates'][0],
+        ];
+
+    }
+
     private function geocodeModelOSM(EasyAddressFieldModel $model)
     {
         // url encode the address
