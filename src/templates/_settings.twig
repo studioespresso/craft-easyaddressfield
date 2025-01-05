@@ -1,16 +1,15 @@
 {% import "_includes/forms" as forms %}
 
+
 {{ forms.selectField({
     label: 'Geocoding service'|t,
     instructions: 'The geocoding service used, defaults to Nomanatim',
     id: 'geoCodingService',
     name: 'geoCodingService',
     value: settings['geoCodingService'],
-    options: services,
+    options: geoCoders,
     errors: settings.getErrors('geoCodingService'),
 }) }}
-
-
 
 {{ forms.autosuggestField({
     label: 'Google API Key for geocoding requests'|t,
@@ -21,5 +20,13 @@
     errors: settings.getErrors('googleApiKey'),
     suggestEnvVars: true,
     suggestAliases: true,
+}) }}
+
+<hr>
+
+{{ forms.lightswitchField({
+    label: 'Enable geocoding for Craft Address fields/elements'|t('easy-address-field'),
+    name: 'enableGeoCodingForCraftElements',
+    on: settings['enableGeoCodingForCraftElements']
 }) }}
 

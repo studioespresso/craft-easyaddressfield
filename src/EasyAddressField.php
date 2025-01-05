@@ -6,19 +6,26 @@
 namespace studioespresso\easyaddressfield;
 
 use Craft;
+use craft\base\Element;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\elements\Address;
+use craft\events\ModelEvent;
 use craft\events\RegisterComponentTypesEvent;
 use craft\feedme\events\RegisterFeedMeFieldsEvent;
+use craft\helpers\ElementHelper;
 use craft\helpers\UrlHelper;
 use craft\services\Fields;
 use craft\web\twig\variables\CraftVariable;
 use markhuot\CraftQL\Events\GetFieldSchema;
+use studioespresso\easyaddressfield\events\RegisterGeocoderEvent;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldFeedMe;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
 use studioespresso\easyaddressfield\services\CountriesService;
 use studioespresso\easyaddressfield\services\FieldService;
+use studioespresso\easyaddressfield\services\geocoders\GoogleGeoCoder;
+use studioespresso\easyaddressfield\services\geocoders\NomanatimGeoCoder;
 use studioespresso\easyaddressfield\services\GeoLocationService;
 use studioespresso\easyaddressfield\web\twig\variables\AddressVariable;
 use yii\base\Event;
@@ -62,6 +69,19 @@ class EasyAddressField extends Plugin
             $event->types[] = EasyAddressFieldField::class;
         });
 
+        Event::on(Address::class, Element::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
+            /* @var Address $element */
+            $element = $event->sender;
+            if (ElementHelper::isDraftOrRevision($element)) {
+                return;
+            }
+            if ($this->getSettings()->enableGeoCodingForCraftElements) {
+                $event->sender = $this->geoLocation()->locateElement($element);
+            }
+        });
+
+
+
         // Register our twig functions
         Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
             $variable = $event->sender;
@@ -93,6 +113,11 @@ class EasyAddressField extends Plugin
                 $e->fields[] = EasyAddressFieldFeedMe::class;
             });
         }
+
+        Event::on(GeoLocationService::class, GeoLocationService::EVENT_REGISTER_GEOCODERS, function(RegisterGeocoderEvent $event) {
+            $event->geoCoders['nomanatim'] = NomanatimGeoCoder::class;
+            $event->geoCoders['google'] = GoogleGeoCoder::class;
+        });
     }
 
     // Components
@@ -116,13 +141,15 @@ class EasyAddressField extends Plugin
      */
     protected function settingsHtml(): string
     {
+        $geoCoders = EasyAddressField::getInstance()->geoLocation->geoCoders;
+        $geoCoders = $geoCoders->map(function($item) {
+            return $item->name;
+        });
+
         return Craft::$app->getView()->renderTemplate(
             'easy-address-field/_settings',
             [
-                'services' => [
-                    'nominatim' => 'Nominatim',
-                    'google' => 'Google Maps',
-                ],
+                'geoCoders' => $geoCoders->toArray(),
                 'settings' => $this->getSettings(),
             ]
         );
