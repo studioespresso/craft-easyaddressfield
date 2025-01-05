@@ -3,7 +3,6 @@
 namespace studioespresso\easyaddressfield\services\geocoders;
 
 use Craft;
-use craft\base\Component;
 use craft\elements\Address;
 use craft\helpers\Json;
 use GuzzleHttp\Client;
@@ -12,7 +11,6 @@ use yii\base\InvalidConfigException;
 
 class GoogleGeoCoder extends BaseGeoCoder
 {
-
     /**
      * Label for the geocoder, displayed in the plugin's settings
      * @var string|null
@@ -59,7 +57,7 @@ class GoogleGeoCoder extends BaseGeoCoder
             $element->addressLine3,
             $element->postalCode,
             $element->locality,
-            $element->countryCode
+            $element->countryCode,
         ];
         $fields = array_filter($fields);
         $data = implode('+', $fields);

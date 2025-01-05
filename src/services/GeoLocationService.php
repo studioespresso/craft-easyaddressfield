@@ -5,11 +5,9 @@ namespace studioespresso\easyaddressfield\services;
 use craft\base\Component;
 use craft\base\Event;
 use craft\elements\Address;
-use maxh\Nominatim\Nominatim;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\events\RegisterGeocoderEvent;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use studioespresso\easyaddressfield\services\geocoders\GoogleGeoCoder;
 
 class GeoLocationService extends Component
 {
@@ -25,7 +23,7 @@ class GeoLocationService extends Component
         $event = new RegisterGeocoderEvent();
         Event::trigger(self::class, self::EVENT_REGISTER_GEOCODERS, $event);
 
-        $this->geoCoders = collect(array_merge($this->geoCoders, $event->geoCoders))->map(function ($geoCoder) {
+        $this->geoCoders = collect(array_merge($this->geoCoders, $event->geoCoders))->map(function($geoCoder) {
             return \Craft::createObject($geoCoder);
         });
 

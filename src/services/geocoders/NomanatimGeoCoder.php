@@ -8,7 +8,6 @@ use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 
 class NomanatimGeoCoder extends BaseGeoCoder
 {
-
     /**
      * Label for the geocoder, displayed in the plugin's settings
      * @var string|null
@@ -98,7 +97,6 @@ class NomanatimGeoCoder extends BaseGeoCoder
                 'latitude' => $result[0]['lat'],
                 'longitude' => $result[0]['lon'],
             ];
-
         }
 
         if (is_array($result[0]['geojson']['coordinates'][0]) && is_array($result[0]['geojson']['coordinates'][0][0])) {
@@ -106,7 +104,6 @@ class NomanatimGeoCoder extends BaseGeoCoder
                 'latitude' => $result[0]['geojson']['coordinates'][0][0][1],
                 'longitude' => $result[0]['geojson']['coordinates'][0][0][0],
             ];
-
         }
 
         if (is_array($result[0]['geojson']['coordinates'][0])) {

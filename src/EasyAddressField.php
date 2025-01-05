@@ -65,11 +65,11 @@ class EasyAddressField extends Plugin
         ]);
 
         // Register our fields
-        Event::on(Fields::className(), Fields::EVENT_REGISTER_FIELD_TYPES, function (RegisterComponentTypesEvent $event) {
+        Event::on(Fields::className(), Fields::EVENT_REGISTER_FIELD_TYPES, function(RegisterComponentTypesEvent $event) {
             $event->types[] = EasyAddressFieldField::class;
         });
 
-        Event::on(Address::class, Element::EVENT_BEFORE_SAVE, function (ModelEvent $event) {
+        Event::on(Address::class, Element::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
             /* @var Address $element */
             $element = $event->sender;
             if (ElementHelper::isDraftOrRevision($element)) {
@@ -83,13 +83,13 @@ class EasyAddressField extends Plugin
 
 
         // Register our twig functions
-        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
             $variable = $event->sender;
             $variable->set('address', AddressVariable::class);
         });
 
         /** @phpstan-ignore-next-line */
-        Event::on(EasyAddressFieldField::class, 'craftQlGetFieldSchema', function (GetFieldSchema $event) {
+        Event::on(EasyAddressFieldField::class, 'craftQlGetFieldSchema', function(GetFieldSchema $event) {
             $event->handled = true;
             $field = $event->sender;
             $object = $event->schema->createObjectType(ucfirst($field->handle) . 'EasyAddressField');
@@ -109,16 +109,15 @@ class EasyAddressField extends Plugin
         // If craftcms/feed-me is installed & activacted, hook here to register the field for import
         if (Craft::$app->getPlugins()->isPluginEnabled('feed-me')) {
             /** @phpstan-ignore-next-line */
-            Event::on(\craft\feedme\services\Fields::class, \craft\feedme\services\Fields::EVENT_REGISTER_FEED_ME_FIELDS, function (RegisterFeedMeFieldsEvent $e) {
+            Event::on(\craft\feedme\services\Fields::class, \craft\feedme\services\Fields::EVENT_REGISTER_FEED_ME_FIELDS, function(RegisterFeedMeFieldsEvent $e) {
                 $e->fields[] = EasyAddressFieldFeedMe::class;
             });
         }
 
-        Event::on(GeoLocationService::class, GeoLocationService::EVENT_REGISTER_GEOCODERS, function (RegisterGeocoderEvent $event) {
+        Event::on(GeoLocationService::class, GeoLocationService::EVENT_REGISTER_GEOCODERS, function(RegisterGeocoderEvent $event) {
             $event->geoCoders['nomanatim'] = NomanatimGeoCoder::class;
             $event->geoCoders['google'] = GoogleGeoCoder::class;
         });
-
     }
 
     // Components
@@ -176,5 +175,4 @@ class EasyAddressField extends Plugin
     {
         return $this->geoLocation;
     }
-
 }
