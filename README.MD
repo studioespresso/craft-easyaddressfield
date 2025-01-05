@@ -43,6 +43,12 @@ Google's Geocoding API does not support HTTP referrer restrictions. Make sure th
 #### API Errors
 When `devMode` is enabled, any errors returned by Google's API will show an exception so you can clearly see what's going wrong. With `devMode` disabled, any errors will be logged to Craft's `web.log`.
 
+
+### GeoCoding for Craft Address elements
+Since Craft 5, Craft has a built-in element for Addresses, but no way to get coordinates for addresses out of the box.
+When you install Easy Address Field, you can enable GeoCoding for Craft Address elements.  This will add a `latitude` and `longitude` values to each Address element.
+You can enable this feature in the plugin settings.
+
 ## Template variables
 
 ### Printing address values
@@ -58,6 +64,25 @@ field.getCountryName(craft.app.locale) // returns the coutry's full name, in the
 field.latitude
 field.longitude
 field.getDirectionsUrl() // get a directions link to the given address
+````
+
+
+## Custom GeoCoding services
+Out of the box, the plugin comes with support for geocoding with OpenStreetMap's Nominatim service and Google.
+If you'd like to use a different service, you can create a custom service by creating a new class that implements the `studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder` interface.
+
+Once you created your geocoder, register it with the following event:
+
+````php
+use studioespresso\easyaddressfield\events\RegisterGeocoderEvent;
+use studioespresso\easyaddressfield\services\GeoLocationService;
+
+Event::on(
+   GeoLocationService::class, 
+   GeoLocationService::EVENT_REGISTER_GEOCODERS, 
+   function (RegisterGeocoderEvent $event) {
+       $event->geoCoders['your-service'] = YourGeoCoder::class;
+});
 ````
 
 ## Upgrading from Craft 4 to Craft 5
