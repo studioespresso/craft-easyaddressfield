@@ -1,5 +1,11 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 5.1.0 - 2025-01-05
+### Added
+- Added support for Google Geocoding API
+- Added events to register your own geocoding service
+- Added support for geocoding Craft Address elements
+
 ## 5.0.3 - 2024-09-28
 ### Fixed
 - Fixed the map showing a blank screen when no coordinates could be found
