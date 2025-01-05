@@ -15,5 +15,5 @@ class EasyAddressFieldSettingsModel extends Model
 
     public ?string $googleApiKey = null;
 
-    public bool $enableGeoCodingForCraftElements = true;
+    public bool $enableGeoCodingForCraftElements = false;
 }

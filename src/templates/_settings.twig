@@ -1,6 +1,5 @@
 {% import "_includes/forms" as forms %}
 
-{% set services = [] %}
 
 {{ forms.selectField({
     label: 'Geocoding service'|t,
@@ -12,8 +11,6 @@
     errors: settings.getErrors('geoCodingService'),
 }) }}
 
-
-
 {{ forms.autosuggestField({
     label: 'Google API Key for geocoding requests'|t,
     instructions: 'Only needed if you are using the geocoding functions in your templates'|t,
@@ -23,5 +20,13 @@
     errors: settings.getErrors('googleApiKey'),
     suggestEnvVars: true,
     suggestAliases: true,
+}) }}
+
+<hr>
+
+{{ forms.lightswitchField({
+    label: 'Enable geocoding for Craft Address fields/elements'|t('easy-address-field'),
+    name: 'enableGeoCodingForCraftElements',
+    on: settings['enableGeoCodingForCraftElements']
 }) }}
 
