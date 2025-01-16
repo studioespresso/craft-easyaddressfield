@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 4.1.0 - 2025-01-16
+### Added
+- Added support for geocoding with Google's geocoder
+
 ## 4.0.12 - 2024-09-28
 ### Fixed
 - Fixed the map showing a blank screen when no coordinates could be found

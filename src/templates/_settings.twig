@@ -1,5 +1,28 @@
 {% import "_includes/forms" as forms %}
 
+{{ forms.selectField({
+    label: 'Geocoding service'|t,
+    instructions: 'The geocoding service used, defaults to Nomanatim',
+    id: 'geoCodingService',
+    name: 'geoCodingService',
+    value: settings['geoCodingService'],
+    options: services,
+    errors: settings.getErrors('geoCodingService'),
+}) }}
+{{ forms.autosuggestField({
+    label: 'Google API Key for geocoding requests'|t,
+    instructions: 'Only needed if you are using the Google Maps Geocoder above.'|t,
+    id: 'googleApiKey',
+    name: 'googleApiKey',
+    value: settings['googleApiKey'],
+    errors: settings.getErrors('googleApiKey'),
+    suggestEnvVars: true,
+    suggestAliases: true,
+}) }}
+
+<hr>
+
+
 {{ forms.autosuggestField({
     label: 'Google API Key for maps requests'|t,
     instructions: 'Only needed if you are using the static map functions in your templates'|t,
