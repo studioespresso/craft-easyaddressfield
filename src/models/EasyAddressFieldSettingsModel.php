@@ -13,6 +13,7 @@ class EasyAddressFieldSettingsModel extends Model
 {
     public $googleApiKey;
     public $googleApiKeyNonGeo;
+    public $geoCodingService;
     public $defaultMapTheme;
     public $defaultMarkerColor;
     public $defaultMarkerIcon;

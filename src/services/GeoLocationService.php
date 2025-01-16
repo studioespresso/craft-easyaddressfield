@@ -4,6 +4,7 @@ namespace studioespresso\easyaddressfield\services;
 
 use Craft;
 use craft\base\Component;
+use craft\helpers\Json;
 use GuzzleHttp\Client;
 use maxh\Nominatim\Nominatim;
 use studioespresso\easyaddressfield\EasyAddressField;
@@ -28,9 +29,14 @@ class GeoLocationService extends Component
      */
     public function locate(EasyAddressFieldModel $model)
     {
+
         try {
             if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
-                $model = $this->geocodeOSM($model);
+                if ($this->settings->geoCodingService === "nominatim") {
+                    $model = $this->geocodeOSM($model);
+                } elseif ($this->settings->geoCodingService === "google") {
+                    $model = $this->geocodeGoogle($model);
+                }
             }
 
             return $model;
@@ -72,6 +78,34 @@ class GeoLocationService extends Component
         } else {
             $model->longitude = $result[0]['geojson']['coordinates'][0];
             $model->latitude = $result[0]['geojson']['coordinates'][1];
+        }
+        return $model;
+    }
+
+    public function geocodeGoogle(EasyAddressFieldModel $model)
+    {
+        $client = new Client(['base_uri' => 'https://maps.googleapis.com']);
+        $request = $client->request('GET',
+            'maps/api/geocode/json?address=' . urlencode($model->toString()) . '&key=' . Craft::parseEnv($this->settings->googleApiKey) . '',
+            ['allow_redirects' => false]
+        );
+        $result = Json::decodeIfJson($request->getBody()->getContents());
+
+        if ($result['status'] !== 'OK' && $result['error_message']) {
+            if (Craft::$app->getConfig()->general->devMode) {
+                throw new InvalidConfigException('Google API error: ' . $result['error_message']);
+            }
+            Craft::error($result['error_message'], 'easy-address-field');
+        }
+        if ($result['status'] === 'OK') {
+            if ($result['status'] === 'OK') {
+                if ($result['results'][0]['geometry']['location']) {
+                    $model->latitude = $result['results'][0]['geometry']['location']['lat'];
+                    $model->longitude = $result['results'][0]['geometry']['location']['lng'];
+
+                    return $model;
+                }
+            }
         }
         return $model;
     }
