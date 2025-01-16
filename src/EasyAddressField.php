@@ -158,6 +158,10 @@ class EasyAddressField extends Plugin
                 'settings' => $this->getSettings(),
                 'styleOptions' => $styleOptions,
                 'url' => $url,
+                'services' => [
+                    'nominatim' => 'Nominatim',
+                    'google' => 'Google Maps',
+                ],
             ]
         );
     }
