@@ -1,5 +1,9 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 6.0.0-alpha.1 - 2026-05-30
+### Added
+- Initial support for Craft 6.0.0
+
 ## 5.1.0 - 2025-01-05
 ### Added
 - Added support for Google Geocoding API
@@ -74,7 +78,7 @@
 
 ## 3.0.1 - 2020-11-29
 ### Fixed
-- Fixed an error with geolocating when some sub-fields are disabled ([#26](https://github.com/studioespresso/craft3-easyaddressfield/issues/26)) 
+- Fixed an error with geolocating when some sub-fields are disabled ([#26](https://github.com/studioespresso/craft3-easyaddressfield/issues/26))
 
 
 ## 3.0.0 - 2020-11-11
