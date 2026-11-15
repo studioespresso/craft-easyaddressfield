@@ -2,18 +2,22 @@
 
 namespace studioespresso\easyaddressfield\models;
 
-use craft\base\Model;
+use CraftCms\Cms\Plugin\PluginSettings;
 
-/**
- * Class EasyAddressFieldSettingsModel
- *
- * @package \studioespresso\easyaddressfield\models
- */
-class EasyAddressFieldSettingsModel extends Model
+class EasyAddressFieldSettingsModel extends PluginSettings
 {
     public string $geoCodingService = 'nomanatim';
 
     public ?string $googleApiKey = null;
 
     public bool $enableGeoCodingForCraftElements = false;
+
+    public function getRules(): array
+    {
+        return [
+            'geoCodingService' => ['required', 'string'],
+            'googleApiKey' => ['nullable', 'string'],
+            'enableGeoCodingForCraftElements' => ['boolean'],
+        ];
+    }
 }

@@ -14,4 +14,9 @@ return [
     'Postal code' => 'Postcode',
     'City' => 'Stad of gemeente',
     'Pick an address on the map' => 'Kies een adres op de kaart',
+    'Latitude' => 'Breedtegraad',
+    'Longitude' => 'Lengtegraad',
+    'Coordinates' => 'Coördinaten',
+    'Geocoding service' => 'Geocoding-dienst',
+    'Enable geocoding for Craft Address fields/elements' => 'Geocoding inschakelen voor Craft Address-velden/elementen',
 ];

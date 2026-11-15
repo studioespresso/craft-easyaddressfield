@@ -2,35 +2,25 @@
 
 namespace studioespresso\easyaddressfield\services\geocoders;
 
-use craft\base\Component;
-use craft\elements\Address;
+use CraftCms\Cms\Address\Elements\Address;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
 
-abstract class BaseGeoCoder extends Component
+abstract class BaseGeoCoder
 {
-    public EasyAddressFieldSettingsModel $settings;
-
+    /** Label for the geocoder, displayed in the plugin's settings */
     public ?string $name = null;
 
-    public function init(): void
-    {
-        $this->settings = EasyAddressField::getInstance()->getSettings();
-        parent::init();
-    }
+    public EasyAddressFieldSettingsModel $settings { get => EasyAddressField::getInstance()->getSettings(); }
 
     /**
-     * This function is used to geocode the model from the EasyAddressField
-     * @param EasyAddressFieldModel $model
-     * @return mixed
+     * Geocodes the value of an Easy Address Field
      */
     abstract public function geocodeModel(EasyAddressFieldModel $model): EasyAddressFieldModel;
 
     /**
-     * This function is used to geocode a Craft Address element
-     * @param Address $element
-     * @return mixed
+     * Geocodes a Craft Address element
      */
     abstract public function geocodeElement(Address $element): Address;
 }

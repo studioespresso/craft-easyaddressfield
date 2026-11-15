@@ -2,310 +2,202 @@
 
 namespace studioespresso\easyaddressfield\models;
 
-use Craft;
-use craft\helpers\Json;
-use craft\helpers\Template;
-use craft\web\View;
+use ArrayAccess;
+use CraftCms\Cms\Support\Facades\Deprecator;
+use CraftCms\Cms\Support\Json;
+use Illuminate\Contracts\Support\Arrayable;
 use studioespresso\easyaddressfield\EasyAddressField;
-use yii\base\Model;
+use Twig\Markup;
 
 /**
- * Class EasyAddressFieldModel
- * @package studioespresso\easyaddressfield\models
+ * The value of an Easy Address Field
+ *
+ * @implements Arrayable<string, mixed>
+ * @implements ArrayAccess<string, mixed>
  */
-class EasyAddressFieldModel extends Model
+class EasyAddressFieldModel implements Arrayable, ArrayAccess
 {
+    /** Address ID */
+    public ?int $id = null;
+
+    /** Element ID */
+    public ?int $owner = null;
+
+    /** Site ID */
+    public ?int $site = null;
+
+    /** Field ID */
+    public ?int $field = null;
+
+    public ?string $name = null;
+
+    public ?string $street = null;
+
+    public ?string $street2 = null;
+
+    public ?string $postalCode = null;
+
+    public ?string $city = null;
+
+    public ?string $state = null;
+
+    public ?string $country = null;
+
+    public ?string $latitude = null;
+
+    public ?string $longitude = null;
+
+    private const ATTRIBUTES = ['id', 'owner', 'site', 'field', 'name', 'street', 'street2', 'postalCode', 'city', 'state', 'country', 'latitude', 'longitude'];
+
     /**
-     * EasyAddressFieldModel constructor.
-     * @param array $attributes
-     * @param array $config
+     * @param  self|array<string, mixed>|string|null  $attributes
      */
-    public function __construct($attributes = [], array $config = [])
+    public function __construct(self|array|string|null $attributes = [])
     {
-        if (is_array($attributes)) {
-            foreach ($attributes as $key => $value) {
-                if (property_exists($this, $key)) {
-                    $this[$key] = $value;
-                }
-            }
-        } elseif (is_object($attributes) && get_class($attributes) === self::class) {
-            foreach ($attributes->toArray() as $key => $value) {
-                if (property_exists($this, $key)) {
-                    $this[$key] = $value;
-                }
-            }
-        } else {
+        if ($attributes instanceof self) {
+            $attributes = $attributes->toArray();
+        } elseif (! is_array($attributes)) {
             $attributes = Json::decodeIfJson($attributes);
-            foreach ($attributes as $key => $value) {
-                if (property_exists($this, $key)) {
-                    $this[$key] = $value;
-                }
+            $attributes = is_array($attributes) ? $attributes : [];
+        }
+
+        foreach (self::ATTRIBUTES as $key) {
+            if (array_key_exists($key, $attributes)) {
+                $this[$key] = $attributes[$key];
             }
         }
-        parent::__construct($config);
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
     }
 
     /**
-     * @return array
+     * Fallback for older installs of StatikAddress
      */
-    public function rules()
+    public function lat(): ?string
     {
-        return [
-            [
-                [
-                    'id',
-                    'name',
-                    'street',
-                    'street2',
-                    'postalCode',
-                    'city',
-                    'state',
-                    'country',
-                    'latitude',
-                    'longitude',
-                ],
-                'safe',
-            ],
+        Deprecator::log(self::class.'lat', "The 'lat' method has been renamed to 'latitude'.");
+
+        return $this->latitude;
+    }
+
+    /**
+     * Fallback for older installs of StatikAddress
+     */
+    public function long(): ?string
+    {
+        Deprecator::log(self::class.'long', "The 'long' method has been renamed to 'longitude'.");
+
+        return $this->longitude;
+    }
+
+    public function getCountryName(?string $locale = null): ?string
+    {
+        if (! $this->country) {
+            return null;
+        }
+
+        return EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country, $locale ?? app()->getLocale());
+    }
+
+    public function getDirectionsUrl(bool $currentLocation = false): string
+    {
+        $url = $currentLocation ? 'https://www.google.com/maps/dir/current+location/' : 'https://www.google.com/maps/dir//';
+
+        return $url.str_replace(' ', '+', $this->toString(','));
+    }
+
+    public function toString(string $glue = '+'): string
+    {
+        return $this->join(['street', 'street2', 'postalCode', 'city', 'country'], $glue);
+    }
+
+    public function modelToString(string $glue = '+'): string
+    {
+        return $this->join(['name', 'street', 'street2', 'postalCode', 'city', 'state', 'country'], $glue);
+    }
+
+    public function formatted(bool $includeCountry = false): Markup
+    {
+        $lines = [
+            $this->name,
+            $this->street,
+            $this->street2,
+            trim($this->postalCode.' '.$this->city),
+            $this->state,
         ];
+        $html = implode('', array_map(fn (string $line) => e($line).'<br>', array_filter($lines, fn ($line) => (string) $line !== '')));
+
+        if ($includeCountry) {
+            $html .= e($this->getCountryName());
+        }
+
+        return new Markup($html, 'UTF-8');
     }
 
     /**
-     *  Address ID
+     * Whether the address has no content. A country on its own counts as empty, since the input always posts one.
      *
-     * @var
+     * @param  list<string>  $params
      */
-    public $id;
-
-    /**
-     * Element ID
-     *
-     * @var
-     */
-    public $owner;
-
-    /**
-     * Site ID
-     *
-     * @var
-     */
-    public $site;
-
-    /**
-     *  Field ID
-     *
-     * @var
-     */
-    public $field;
-
-    /**
-     *  The name of the address
-     *
-     * @var
-     */
-    public $name;
-
-    /**
-     * Latitude
-     *
-     * @var string
-     */
-    public $latitude;
-
-    /**
-     * Longitude
-     *
-     * @var string
-     */
-    public $longitude;
-
-    /**
-     * The first line of the street block.
-     *
-     * @var string
-     */
-    public $street;
-
-    /**
-     * The second line of the street block.
-     *
-     * @var string
-     */
-    public $street2;
-
-    /**
-     * The postal code.
-     *
-     * @var string
-     */
-    public $postalCode;
-
-    /**
-     * @var
-     */
-    public $city;
-
-    /**
-     * @var
-     */
-    public $state;
-
-    /**
-     * @var
-     */
-    public $country;
-
-    /**
-     * @return string
-     */
-    public function getLatitude(): string
+    public function isEmpty(array $params = []): bool
     {
-        return $this->latitude;
+        $keys = $params ?: ['name', 'street', 'street2', 'postalCode', 'state', 'country'];
+        $values = array_filter(array_intersect_key($this->toArray(), array_flip($keys)));
+
+        return $values === [] || array_keys($values) === ['country'];
     }
 
-    /**
-     * @return string
-     */
-    public function getLongitude(): string
+    /** @return array<string, mixed> */
+    public function toArray(): array
     {
-        return $this->longitude;
+        return array_combine(self::ATTRIBUTES, array_map(fn (string $key) => $this->$key, self::ATTRIBUTES));
     }
 
-    /**
-     * Fallback for older installs of StatikAddress
-     * @return string
-     */
-    public function lat()
+    public function offsetExists(mixed $offset): bool
     {
-        Craft::$app->getDeprecator()->log(__CLASS__ . 'lat', "The 'lat' method has been renamed to 'latitude'.");
-        return $this->latitude;
+        return in_array($offset, self::ATTRIBUTES, true);
     }
 
-    /**
-     * Fallback for older installs of StatikAddress
-     * @return string
-     */
-    public function long()
+    public function offsetGet(mixed $offset): mixed
     {
-        Craft::$app->getDeprecator()->log(__CLASS__ . 'long', "The 'long' method has been renamed to 'longitude'.");
-        return $this->longitude;
+        return $this->offsetExists($offset) ? $this->$offset : null;
     }
 
-    /**
-     * @param $locale
-     * @return string | null
-     */
-    public function getCountryName($locale = null)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        if (!$locale) {
-            $locale = Craft::$app->getLocale();
+        if (! $this->offsetExists($offset)) {
+            return;
         }
-        if ($this->country) {
-            $name = EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country, $locale);
-            return $name;
-        }
-        return null;
+
+        $value = $value === '' || $value === null ? null : $value;
+        $this->$offset = in_array($offset, ['id', 'owner', 'site', 'field'], true)
+            ? ($value === null ? null : (int) $value)
+            : ($value === null ? null : (string) $value);
     }
 
-
-    public function getDirectionsUrl($currentLocation = false): string
+    public function offsetUnset(mixed $offset): void
     {
-        if ($currentLocation) {
-            $str = 'https://www.google.com/maps/dir/current+location/';
-        } else {
-            $str = 'https://www.google.com/maps/dir//';
-        }
-        $data = $this->toString(',');
-        $str .= str_replace(' ', '+', $data);
-
-        return $str;
+        $this->offsetSet($offset, null);
     }
 
-    /**
-     * @param string $glue
-     * @return string
-     */
-    public function toString($glue = '+'): string
+    /** @param list<string> $keys */
+    private function join(array $keys, string $glue): string
     {
-        $data = array();
-        if (!empty($this->street)) {
-            $data['street'] = $this->street;
-        }
-        if (!empty($this->street2)) {
-            $data['street2'] = $this->street2;
-        }
-        if (!empty($this->postalCode)) {
-            $data['postalCode'] = $this->postalCode;
-        }
-        if (!empty($this->city)) {
-            $data['city'] = $this->city;
-        }
-        if (!empty($this->country)) {
-            $data['country'] = $this->getCountryName();
+        $parts = [];
+        foreach ($keys as $key) {
+            if (! empty($this->$key)) {
+                $parts[] = $key === 'country' ? $this->getCountryName() : $this->$key;
+            }
         }
 
-        return implode($glue, $data);
-    }
-
-    public function modelToString($glue = '+'): string
-    {
-        $data = array();
-        if (!empty($this->name)) {
-            $data['name'] = $this->name;
-        }
-        if (!empty($this->street)) {
-            $data['street'] = $this->street;
-        }
-        if (!empty($this->street2)) {
-            $data['street2'] = $this->street2;
-        }
-        if (!empty($this->postalCode)) {
-            $data['postalCode'] = $this->postalCode;
-        }
-        if (!empty($this->city)) {
-            $data['city'] = $this->city;
-        }
-        if (!empty($this->state)) {
-            $data['state'] = $this->state;
-        }
-        if (!empty($this->country)) {
-            $data['country'] = $this->getCountryName();
-        }
-
-        return implode($glue, $data);
-    }
-
-    public function formatted($includeCountry = false)
-    {
-        $view = Craft::$app->getView();
-        $oldTemplateMode = $view->getTemplateMode();
-
-        $view->setTemplateMode(View::TEMPLATE_MODE_CP);
-        $template = $view->renderTemplate('easy-address-field/_formatted', [
-            'address' => $this,
-            'includeCountry' => $includeCountry,
-        ]);
-
-        $view->setTemplateMode($oldTemplateMode);
-        return Template::raw($template);
-    }
-
-
-    public function isEmpty($params = [])
-    {
-        if ($params) {
-            $values = $this->toArray($params);
-        } else {
-            $values = $this->toArray(['name', 'street', 'street2', 'postalCode', 'state', 'country']);
-        }
-        $values = array_filter($values);
-        if (empty($values)) {
-            return true;
-        }
-
-        if (count($values) == 1 && isset($values['country'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return implode($glue, $parts);
     }
 }

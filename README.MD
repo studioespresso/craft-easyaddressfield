@@ -1,4 +1,4 @@
-# Easy Address Field plugin for Craft CMS 3.x
+# Easy Address Field plugin for Craft CMS
 
 ![Easy Address Field](https://www.studioespresso.co/assets/Easy-Address-Field-Github-Banner.png)
 
@@ -7,7 +7,7 @@ The only address field you need
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0-RC1 or later.
+This plugin requires Craft CMS 6.0.0 or later and PHP 8.5.
 
 ## Installation
 
@@ -21,7 +21,7 @@ To install the plugin, follow these instructions.
 
         composer require studioespresso/craft-easyaddressfield
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for "Easy Address Field".
+3. Install the plugin from Settings → Plugins in the Control Panel, or run `php craft plugin/install easy-address-field`.
 
 ## Settings
 
@@ -41,11 +41,11 @@ To enable geolocating and custom marker placement, you need to provide a Google 
 Google's Geocoding API does not support HTTP referrer restrictions. Make sure the API key you are using does not have these set.
 
 #### API Errors
-When `devMode` is enabled, any errors returned by Google's API will show an exception so you can clearly see what's going wrong. With `devMode` disabled, any errors will be logged to Craft's `web.log`.
+When `APP_DEBUG` is enabled, any errors returned by Google's API will show an exception so you can clearly see what's going wrong. Otherwise, errors are written to the Laravel log.
 
 
 ### GeoCoding for Craft Address elements
-Since Craft 5, Craft has a built-in element for Addresses, but no way to get coordinates for addresses out of the box.
+Craft has a built-in element for Addresses, but no way to get coordinates for addresses out of the box.
 When you install Easy Address Field, you can enable GeoCoding for Craft Address elements.  This will add a `latitude` and `longitude` values to each Address element.
 You can enable this feature in the plugin settings.
 
@@ -64,26 +64,36 @@ field.getCountryName(craft.app.locale) // returns the coutry's full name, in the
 field.latitude
 field.longitude
 field.getDirectionsUrl() // get a directions link to the given address
+field.formatted(true) // the address as HTML lines, pass true to include the country
 ````
+
+### Countries
+`craft.address.countries()` returns all countries, keyed by their alpha-2 code.
+
+## GraphQL
+Each field gets a `{fieldHandle}_EasyAddressField` type with `name`, `street`, `street2`, `postalCode`, `city`, `state`, `country`, `latitude` and `longitude`.
 
 
 ## Custom GeoCoding services
 Out of the box, the plugin comes with support for geocoding with OpenStreetMap's Nominatim service and Google.
-If you'd like to use a different service, you can create a custom service by creating a new class that implements the `studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder` interface.
+If you'd like to use a different service, create a class that extends `studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder`.
 
-Once you created your geocoder, register it with the following event:
+Once you created your geocoder, register it in a service provider:
 
 ````php
+use Illuminate\Support\Facades\Event;
 use studioespresso\easyaddressfield\events\RegisterGeocoderEvent;
-use studioespresso\easyaddressfield\services\GeoLocationService;
 
-Event::on(
-   GeoLocationService::class, 
-   GeoLocationService::EVENT_REGISTER_GEOCODERS, 
-   function (RegisterGeocoderEvent $event) {
-       $event->geoCoders['your-service'] = YourGeoCoder::class;
+Event::listen(function (RegisterGeocoderEvent $event) {
+    $event->geoCoders['your-service'] = YourGeoCoder::class;
 });
 ````
+
+## Upgrading from Craft 5 to Craft 6
+Existing addresses are kept, the plugin uses the same `easyaddressfield` table.
+
+- Custom geocoders: replace `Event::on(GeoLocationService::class, GeoLocationService::EVENT_REGISTER_GEOCODERS, ...)` with `Event::listen(RegisterGeocoderEvent::class, ...)`, see above. Geocoders no longer extend `craft\base\Component`.
+- The Feed Me and CraftQL integrations have been removed.
 
 ## Upgrading from Craft 4 to Craft 5
 ### getDirectionsUrl()

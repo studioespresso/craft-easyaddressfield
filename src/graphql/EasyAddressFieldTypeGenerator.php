@@ -2,56 +2,43 @@
 
 namespace studioespresso\easyaddressfield\graphql;
 
-use craft\gql\base\GeneratorInterface;
-use craft\gql\GqlEntityRegistry;
-use craft\gql\TypeLoader;
+use CraftCms\Cms\Gql\Contracts\GeneratorInterface;
+use CraftCms\Cms\Gql\GqlEntityRegistry;
 use GraphQL\Type\Definition\Type;
 use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
 
 class EasyAddressFieldTypeGenerator implements GeneratorInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public static function generateTypes($context = null): array
+    public static function generateTypes(mixed $context = null): array
     {
-        /** @var EasyAddressFieldField $context */
-        $typeName = self::getName($context);
-
-        $addressProperties = [
-            'name' => Type::string(),
-            'street' => Type::string(),
-            'street2' => Type::string(),
-            'postalCode' => Type::string(),
-            'city' => Type::string(),
-            'state' => Type::string(),
-            'country' => Type::string(),
-            'latitude' => Type::float(),
-            'longitude' => Type::float(),
-        ];
-
-
-        $addressProperty = GqlEntityRegistry::getEntity($typeName)
-            ?: GqlEntityRegistry::createEntity($typeName, new EasyAddressFieldResolver([
-                'name' => $typeName,
-                'description' => 'This entity has all the EasyAddressField properties',
-                'fields' => function() use ($addressProperties) {
-                    return $addressProperties;
-                },
-            ]));
-
-        TypeLoader::registerType($typeName, function() use ($addressProperty) {
-            return $addressProperty;
-        });
-        return [$addressProperty];
+        return [static::generateType($context)];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public static function getName($context = null): string
+    /** @param EasyAddressFieldField $context */
+    public static function generateType(mixed $context): EasyAddressFieldType
     {
-        /** @var EasyAddressFieldField $context */
-        return $context->handle . '_EasyAddressField';
+        $typeName = static::getName($context);
+
+        return GqlEntityRegistry::getOrCreate($typeName, fn () => new EasyAddressFieldType([
+            'name' => $typeName,
+            'description' => 'This entity has all the EasyAddressField properties',
+            'fields' => fn () => [
+                'name' => Type::string(),
+                'street' => Type::string(),
+                'street2' => Type::string(),
+                'postalCode' => Type::string(),
+                'city' => Type::string(),
+                'state' => Type::string(),
+                'country' => Type::string(),
+                'latitude' => Type::float(),
+                'longitude' => Type::float(),
+            ],
+        ]));
+    }
+
+    /** @param EasyAddressFieldField|null $context */
+    public static function getName(mixed $context = null): string
+    {
+        return $context->handle.'_EasyAddressField';
     }
 }

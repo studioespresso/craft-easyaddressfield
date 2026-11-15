@@ -2,9 +2,13 @@
 
 namespace studioespresso\easyaddressfield\events;
 
-use craft\base\Event;
+use studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder;
 
-class RegisterGeocoderEvent extends Event
+/**
+ * Dispatched when the geocoders are collected. Listen with `Event::listen(RegisterGeocoderEvent::class, ...)`.
+ */
+class RegisterGeocoderEvent
 {
-    public $geoCoders = [];
+    /** @param array<string, class-string<BaseGeoCoder>> $geoCoders Geocoder classes keyed by handle */
+    public function __construct(public array $geoCoders = []) {}
 }

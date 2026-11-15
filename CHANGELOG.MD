@@ -1,5 +1,23 @@
 # Release Notes for Easy Address Field for Craft CMS
 
+## 6.0.0-beta.1 - 2026-11-15
+### Changed
+- Requires Craft CMS 6.0.0-beta.1
+- The Google API key setting suggests environment variables when you type `$`
+- Easy Address Field is now a native Craft 6 plugin, it no longer requires the yii2 adapter
+- The field input, including the "Pick an address on the map" picker, is now a Vue component that uses the control panel's own inputs
+- Geocoding requests now use Laravel's HTTP client, `maxh/php-nominatim` is no longer required
+- Custom geocoders are now registered by listening for the `RegisterGeocoderEvent` event with `Event::listen()`
+- Updated `league/iso3166` to 4.x
+- Moved to Laravel Pint & Larastan
+
+### Removed
+- Removed the Feed Me and CraftQL integrations
+
+### Fixed
+- Fixed Nominatim geocoding never returning coordinates for Easy Address Fields
+- Fixed Nominatim geocoding of Craft Address elements ignoring the state
+
 ## 6.0.0-alpha.1 - 2026-05-30
 ### Added
 - Initial support for Craft 6.0.0

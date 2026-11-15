@@ -2,101 +2,72 @@
 
 namespace studioespresso\easyaddressfield\services\geocoders;
 
-use Craft;
-use craft\elements\Address;
-use craft\helpers\Json;
-use GuzzleHttp\Client;
+use CraftCms\Cms\Address\Elements\Address;
+use CraftCms\Cms\Support\Env;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use RuntimeException;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use yii\base\InvalidConfigException;
 
 class GoogleGeoCoder extends BaseGeoCoder
 {
-    /**
-     * Label for the geocoder, displayed in the plugin's settings
-     * @var string|null
-     */
-    public ?string $name = "Google";
+    public ?string $name = 'Google';
 
-    /**
-     * This function is used to geocode the model from the EasyAddressField
-     * @param EasyAddressFieldModel $model
-     * @return mixed
-     */
     public function geocodeModel(EasyAddressFieldModel $model): EasyAddressFieldModel
     {
-        if (!$this->settings->googleApiKey) {
-            return $model;
-        }
-
-        if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
-            $result = $this->makeApiCall($model->toString());
-            if ($result === false) {
-                return $model;
-            }
-
-            if ($result) {
-                $model->latitude = $result['latitude'];
-                $model->longitude = $result['longitude'];
-                return $model;
-            }
+        if ($result = $this->makeApiCall($model->toString())) {
+            $model->latitude = $result['latitude'];
+            $model->longitude = $result['longitude'];
         }
 
         return $model;
     }
 
-    /**
-     * This function is used to geocode a Craft Address element
-     * @param Address $element
-     * @return mixed
-     */
     public function geocodeElement(Address $element): Address
     {
-        $fields = [
+        $address = implode('+', array_filter([
             $element->addressLine1,
             $element->addressLine2,
             $element->addressLine3,
             $element->postalCode,
             $element->locality,
             $element->countryCode,
-        ];
-        $fields = array_filter($fields);
-        $data = implode('+', $fields);
-        $result = $this->makeApiCall($data);
-        if ($result) {
-            $element->setAttributes([
-                'longitude' => $result['longitude'],
-                'latitude' => $result['latitude'],
-            ]);
+        ]));
+
+        if ($result = $this->makeApiCall($address)) {
+            $element->latitude = $result['latitude'];
+            $element->longitude = $result['longitude'];
         }
+
         return $element;
     }
 
-    private function makeApiCall($data): array|false
+    /** @return array{latitude: string, longitude: string}|null */
+    private function makeApiCall(string $address): ?array
     {
-        $client = new Client(['base_uri' => 'https://maps.googleapis.com']);
-        $request = $client->request('GET',
-            'maps/api/geocode/json?address=' . urlencode($data) . '&key=' . Craft::parseEnv($this->settings->googleApiKey) . '',
-            ['allow_redirects' => false]
-        );
-        $result = Json::decodeIfJson($request->getBody()->getContents());
+        $apiKey = Env::parse($this->settings->googleApiKey);
+        if (! $apiKey) {
+            return null;
+        }
 
-        if ($result['status'] !== 'OK' && $result['error_message']) {
-            if (Craft::$app->getConfig()->general->devMode) {
-                throw new InvalidConfigException('Google API error: ' . $result['error_message']);
-            }
-            Craft::error($result['error_message'], 'easy-address-field');
+        $result = Http::timeout(10)
+            ->withoutRedirecting()
+            ->get('https://maps.googleapis.com/maps/api/geocode/json', ['address' => $address, 'key' => $apiKey])
+            ->json();
+
+        if (($result['status'] ?? null) === 'OK' && isset($result['results'][0]['geometry']['location'])) {
+            $location = $result['results'][0]['geometry']['location'];
+
+            return ['latitude' => (string) $location['lat'], 'longitude' => (string) $location['lng']];
         }
-        if ($result['status'] === 'OK') {
-            if ($result['status'] === 'OK') {
-                if ($result['results'][0]['geometry']['location']) {
-                    $data = [
-                        'latitude' => $result['results'][0]['geometry']['location']['lat'],
-                        'longitude' => $result['results'][0]['geometry']['location']['lng'],
-                    ];
-                    return $data;
-                }
+
+        if ($message = $result['error_message'] ?? null) {
+            if (config('app.debug')) {
+                throw new RuntimeException('Google API error: '.$message);
             }
+            Log::error($message, ['plugin' => 'easy-address-field']);
         }
-        return false;
+
+        return null;
     }
 }

@@ -2,66 +2,61 @@
 
 namespace studioespresso\easyaddressfield\services;
 
-use craft\base\Component;
-use craft\base\Event;
-use craft\elements\Address;
+use CraftCms\Cms\Address\Elements\Address;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use studioespresso\easyaddressfield\EasyAddressField;
 use studioespresso\easyaddressfield\events\RegisterGeocoderEvent;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder;
+use studioespresso\easyaddressfield\services\geocoders\GoogleGeoCoder;
+use studioespresso\easyaddressfield\services\geocoders\NomanatimGeoCoder;
+use Throwable;
 
-class GeoLocationService extends Component
+class GeoLocationService
 {
-    public $settings;
+    /** @var Collection<string, BaseGeoCoder> */
+    public Collection $geoCoders { get => $this->geoCoders ??= $this->registerGeoCoders(); }
 
-    public const EVENT_REGISTER_GEOCODERS = 'registerGeoCodersEvent';
-    public $geoCoders = [];
-
-    public function init(): void
-    {
-        $this->settings = EasyAddressField::getInstance()->getSettings();
-
-        $event = new RegisterGeocoderEvent();
-        Event::trigger(self::class, self::EVENT_REGISTER_GEOCODERS, $event);
-
-        $this->geoCoders = collect(array_merge($this->geoCoders, $event->geoCoders))->map(function($geoCoder) {
-            return \Craft::createObject($geoCoder);
-        });
-
-        parent::init();
-    }
-
-    /**
-     * @param EasyAddressFieldModel $model
-     *
-     * @return EasyAddressFieldModel
-     */
     public function locate(EasyAddressFieldModel $model): EasyAddressFieldModel
     {
         try {
-            if (!$model->latitude && !$model->longitude and strlen($model->toString()) >= 2) {
-                return $this->geoCoders[$this->settings->geoCodingService]->geocodeModel($model);
+            if (! $model->latitude && ! $model->longitude && strlen($model->toString()) >= 2) {
+                return $this->geoCoder()?->geocodeModel($model) ?? $model;
             }
-            return $model;
-        } catch (\Throwable $exception) {
-            \Craft::error($exception->getMessage(), 'easy-address-field');
-            return $model;
+        } catch (Throwable $exception) {
+            Log::error($exception->getMessage(), ['plugin' => 'easy-address-field']);
         }
+
+        return $model;
     }
 
-    /**
-     * @param Address $element
-     * @return Address
-     */
     public function locateElement(Address $element): Address
     {
         try {
-            if (!$element->latitude && !$element->longitude && $element->countryCode) {
-                return $this->geoCoders[$this->settings->geoCodingService]->geocodeElement($element);
+            if (! $element->latitude && ! $element->longitude && $element->countryCode) {
+                return $this->geoCoder()?->geocodeElement($element) ?? $element;
             }
-            return $element;
-        } catch (\Throwable $exception) {
-            \Craft::error($exception->getMessage(), 'easy-address-field');
-            return $element;
+        } catch (Throwable $exception) {
+            Log::error($exception->getMessage(), ['plugin' => 'easy-address-field']);
         }
+
+        return $element;
+    }
+
+    private function geoCoder(): ?BaseGeoCoder
+    {
+        return $this->geoCoders->get(EasyAddressField::getInstance()->getSettings()->geoCodingService);
+    }
+
+    /** @return Collection<string, BaseGeoCoder> */
+    private function registerGeoCoders(): Collection
+    {
+        event($event = new RegisterGeocoderEvent([
+            'nomanatim' => NomanatimGeoCoder::class,
+            'google' => GoogleGeoCoder::class,
+        ]));
+
+        return collect($event->geoCoders)->map(fn (string $class) => app($class));
     }
 }

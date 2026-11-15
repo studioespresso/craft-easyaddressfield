@@ -1,0 +1,58 @@
+.easyaddressfield {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 8px 4px;
+}
+
+.easyaddressfield > * {
+    grid-column: span 12;
+}
+
+.easyaddressfield > .easyaddressfield__half {
+    grid-column: span 6;
+}
+
+.easyaddressfield__pick {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: #4168cf;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.easyaddressfield__pick:hover {
+    text-decoration: underline;
+}
+
+.easyaddressfield-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(0 0 0 / 50%);
+}
+
+.easyaddressfield-modal__panel {
+    display: flex;
+    flex-direction: column;
+    width: min(900px, 90vw);
+    height: min(600px, 80vh);
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.easyaddressfield-modal__map {
+    flex: 1;
+}
+
+.easyaddressfield-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #e3e5e8;
+}

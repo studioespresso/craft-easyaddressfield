@@ -2,28 +2,38 @@
 
 namespace studioespresso\easyaddressfield\fields;
 
-use Craft;
-use craft\base\ElementInterface;
-use craft\base\Field;
-use craft\base\PreviewableFieldInterface;
-use craft\helpers\Db;
-use craft\helpers\ElementHelper;
-use studioespresso\easyaddressfield\assetbundles\easyaddressfield\EasyAddressFieldAsset;
+use CraftCms\Cms\Element\Contracts\ElementInterface;
+use CraftCms\Cms\Field\Contracts\PreviewableFieldInterface;
+use CraftCms\Cms\Field\Field;
+use CraftCms\Cms\Field\FieldContext;
+use CraftCms\Cms\Ui\Contracts\Control;
+use CraftCms\Cms\Ui\Controls\Choice;
+use CraftCms\Cms\Ui\Controls\Lightswitch;
+use CraftCms\Cms\Ui\Nodes\Field as FormField;
+use CraftCms\Cms\Ui\Ui;
+use CraftCms\Cms\Ui\UiContext;
+use GraphQL\Type\Definition\Type;
 use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\form\AddressControl;
 use studioespresso\easyaddressfield\graphql\EasyAddressFieldTypeGenerator;
 use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
 
+use function CraftCms\Cms\t;
+
 class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 {
-    public $hasContentColumn = false;
+    public bool $geoCode = true;
 
-    public $geoCode = true;
+    public bool $showCoordinates = false;
 
-    public $showCoordinates = false;
+    public ?string $defaultCountry = null;
 
-    public $defaultCountry;
-
-    public $enabledFields = array(
+    /**
+     * Which optional inputs are shown. Older field settings store the handle as the value (`['name' => 'name']`), so any truthy value counts.
+     *
+     * @var array<string, mixed>
+     */
+    public array $enabledFields = [
         'name' => false,
         'street' => true,
         'street2' => false,
@@ -31,172 +41,137 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
         'city' => true,
         'state' => false,
         'country' => true,
-    );
+    ];
 
-    /**
-     * @return string
-     */
     public static function displayName(): string
     {
-        return Craft::t('easy-address-field', 'Easy Address Field');
+        return t('Easy Address Field', category: 'easy-address-field');
     }
 
-    /**
-     * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
-     */
-    public function getSettingsHtml(): string
+    public static function icon(): string
     {
-        // Render the settings template
-        return Craft::$app->getView()->renderTemplate(
-            'easy-address-field/_field/_settings',
-            [
-                'field' => $this,
-                'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray(),
-            ]
-        );
+        return 'location-dot';
     }
 
-    /**
-     * @return array
-     */
-    public function rules(): array
+    public static function phpType(): string
     {
-        $addressRules =
-            array(
-                array(
-                    array(
-                        'geoCode',
-                    ),
-                    'boolean',
-                ),
-                array(
-                    array(
-                        'showCoordinates',
-                    ),
-                    'boolean',
-                ),
-                array(
-                    array(
-                        'defaultCountry',
-                    ),
-                    'string',
-                ),
-            );
-
-
-        $rules = parent::rules();
-        $rules = array_merge($rules, $addressRules);
-
-        return $rules;
+        return EasyAddressFieldModel::class;
     }
 
     /**
-     * @inheritdoc
+     * Values live in the plugin's own table
      */
     public static function dbType(): null
     {
         return null;
     }
 
-    public function getContentGqlType(): array
+    public function getRules(): array
     {
-        $typeArray = EasyAddressFieldTypeGenerator::generateTypes($this);
+        return array_merge(parent::getRules(), [
+            'geoCode' => ['boolean'],
+            'showCoordinates' => ['boolean'],
+            'defaultCountry' => ['nullable', 'string'],
+        ]);
+    }
 
+    public function settingsUi(UiContext $context = new UiContext): Ui
+    {
+        $field = fn (string $key, string $label) => FormField::make(t($label, category: 'easy-address-field'), Lightswitch::make("enabledFields.$key")->value($this->isEnabled($key)));
+
+        return Ui::make([
+            $field('name', 'Name'),
+            $field('street2', 'Street 2'),
+            $field('state', 'State'),
+            $field('country', 'Country'),
+            FormField::make(t('Default country', category: 'easy-address-field'), Choice::make('defaultCountry')
+                ->options($this->countryOptions())
+                ->value($this->defaultCountry ?: 'US')),
+            FormField::make(t('Get coordinates for addresses', category: 'easy-address-field'), Lightswitch::make('geoCode')->value($this->geoCode)),
+            FormField::make(t('Show coordinates?', category: 'easy-address-field'), Lightswitch::make('showCoordinates')->value($this->showCoordinates)),
+        ]);
+    }
+
+    public function getContentGqlType(): Type|array
+    {
         return [
             'name' => $this->handle,
-            'description' => "Easy Address Field field",
-            'type' => array_shift($typeArray),
+            'description' => 'Easy Address Field field',
+            'type' => EasyAddressFieldTypeGenerator::generateType($this),
         ];
     }
 
-
-    /**
-     * @param mixed $value
-     * @param ElementInterface|null $element
-     *
-     * @return mixed|EasyAddressFieldModel
-     */
-    public function normalizeValue($value, ElementInterface $element = null): mixed
+    public function normalizeValue(mixed $value, ?ElementInterface $element): EasyAddressFieldModel
     {
-        return EasyAddressField::$plugin->getField()->getField($this, $element, $value);
-    }
-
-    /**
-     * @param $value
-     * @param ElementInterface|null $element
-     * @return array|mixed|null|string
-     */
-    public function serializeValue($value, ElementInterface $element = null): mixed
-    {
-        $settings = $this->getSettings();
-        if (!$value) {
+        if ($value instanceof EasyAddressFieldModel) {
             return $value;
         }
-        if (!ElementHelper::isDraftOrRevision($element)) {
-            if ($settings['geoCode'] and empty($value['latitude']) and empty($value['longitude'])) {
-                $value = EasyAddressField::getInstance()->geoLocation->locate($value);
-            }
-        }
 
-        return Db::prepareValueForDb($value);
+        return EasyAddressField::getInstance()->field->getField($this, $element, $value);
     }
 
-    public function isValueEmpty($value, ElementInterface $element): bool
+    /**
+     * Geocoding happens when the value is saved, see FieldService::saveField()
+     */
+    public function serializeValue(mixed $value, ?ElementInterface $element): ?array
     {
-        return $value->isEmpty();
+        return $value instanceof EasyAddressFieldModel ? $value->toArray() : null;
+    }
+
+    public function isValueEmpty(mixed $value, ElementInterface $element): bool
+    {
+        return ! $value instanceof EasyAddressFieldModel || $value->isEmpty();
     }
 
     public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
-        return $value->modelToString(', ');
+        return $value instanceof EasyAddressFieldModel ? e($value->modelToString(', ')) : '';
     }
 
-    public function getSearchKeywords($value, ElementInterface $element): string
+    protected function searchKeywords(mixed $value, ElementInterface $element): string
     {
-        return $value->modelToString(' ');
+        return $value instanceof EasyAddressFieldModel ? $value->modelToString(' ') : '';
     }
 
-    /**
-     * @param $value
-     * @param ElementInterface|null $element
-     * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function getInputHtml($value, ElementInterface $element = null): string
+    public function uiControl(FieldContext $context): Control
     {
-        // Register our asset bundle
-        Craft::$app->getView()->registerAssetBundle(EasyAddressFieldAsset::class);
+        /** @var EasyAddressFieldModel $value */
+        $value = $context->value;
+        $input = fn (string $key, string $label, int $width = 100) => ['key' => $key, 'label' => t($label, category: 'easy-address-field'), 'width' => $width];
 
-        // Get our id and namespace
-        $id = Craft::$app->getView()->formatInputId($this->handle);
-        $namespacedId = Craft::$app->getView()->namespaceInputId($id);
-
-        return Craft::$app->getView()->renderTemplate(
-            'easy-address-field/_field/_input',
-            [
-                'name' => $this->handle,
-                'value' => $value,
-                'field' => $this,
-                'id' => $id,
-                'countries' => EasyAddressField::getInstance()->countries->getCountriesAsArray(),
-                'namespacedId' => $namespacedId,
-                'fieldSettings' => $this->getSettings(),
-            ]
-        );
+        return AddressControl::make($context->path)
+            ->inputs(array_values(array_filter([
+                $this->isEnabled('name') ? $input('name', 'Name') : null,
+                $input('street', 'Street'),
+                $this->isEnabled('street2') ? $input('street2', 'Street 2') : null,
+                $input('postalCode', 'Postal code', 25),
+                $input('city', 'City', $this->isEnabled('state') ? 50 : 75),
+                $this->isEnabled('state') ? $input('state', 'State', 25) : null,
+            ])))
+            ->countries($this->isEnabled('country') ? $this->countryOptions() : null)
+            ->showCoordinates($this->showCoordinates)
+            ->value([...$value->toArray(), 'country' => $value->country ?: $this->defaultCountry]);
     }
 
-    /**
-     * @param ElementInterface $element
-     * @param bool $isNew
-     */
     public function afterElementSave(ElementInterface $element, bool $isNew): void
     {
         EasyAddressField::getInstance()->field->saveField($this, $element);
         parent::afterElementSave($element, $isNew);
+    }
+
+    private function isEnabled(string $key): bool
+    {
+        return ! empty($this->enabledFields[$key]);
+    }
+
+    /** @return list<array{label: string, value: string}> */
+    private function countryOptions(): array
+    {
+        $options = [];
+        foreach (EasyAddressField::getInstance()->countries->getCountriesAsArray() as $code => $name) {
+            $options[] = ['label' => $name, 'value' => $code];
+        }
+
+        return $options;
     }
 }

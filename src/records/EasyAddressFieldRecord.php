@@ -2,22 +2,29 @@
 
 namespace studioespresso\easyaddressfield\records;
 
-use craft\db\ActiveRecord;
+use CraftCms\Cms\Shared\BaseModel;
+use CraftCms\Cms\Shared\Concerns\HasUid;
 
-class EasyAddressFieldRecord extends ActiveRecord
+/**
+ * @property int $id
+ * @property int $owner
+ * @property int $site
+ * @property int $field
+ * @property string|null $name
+ * @property string|null $street
+ * @property string|null $street2
+ * @property string|null $postalCode
+ * @property string|null $city
+ * @property string|null $state
+ * @property string|null $country
+ * @property string|null $latitude
+ * @property string|null $longitude
+ */
+class EasyAddressFieldRecord extends BaseModel
 {
-    // Props
-    // =========================================================================
+    use HasUid;
 
-    public static $tableName = '{{%easyaddressfield}}';
+    protected $table = 'easyaddressfield';
 
-    /**
-     * @inheritdoc
-     *
-     * @return string
-     */
-    public static function tableName(): string
-    {
-        return self::$tableName;
-    }
+    protected $guarded = ['id'];
 }
