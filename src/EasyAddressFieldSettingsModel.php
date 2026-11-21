@@ -1,6 +1,6 @@
 <?php
 
-namespace studioespresso\easyaddressfield\models;
+namespace studioespresso\easyaddressfield;
 
 use CraftCms\Cms\Plugin\PluginSettings;
 

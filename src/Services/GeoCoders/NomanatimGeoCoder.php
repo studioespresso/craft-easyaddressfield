@@ -1,10 +1,10 @@
 <?php
 
-namespace studioespresso\easyaddressfield\services\geocoders;
+namespace studioespresso\easyaddressfield\Services\GeoCoders;
 
 use CraftCms\Cms\Address\Elements\Address;
 use Illuminate\Support\Facades\Http;
-use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\Data\EasyAddressFieldModel;
 
 class NomanatimGeoCoder extends BaseGeoCoder
 {

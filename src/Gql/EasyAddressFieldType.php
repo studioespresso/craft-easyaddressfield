@@ -1,6 +1,6 @@
 <?php
 
-namespace studioespresso\easyaddressfield\graphql;
+namespace studioespresso\easyaddressfield\Gql;
 
 use CraftCms\Cms\Gql\Types\ObjectType;
 

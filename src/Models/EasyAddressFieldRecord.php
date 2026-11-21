@@ -1,6 +1,6 @@
 <?php
 
-namespace studioespresso\easyaddressfield\records;
+namespace studioespresso\easyaddressfield\Models;
 
 use CraftCms\Cms\Shared\BaseModel;
 use CraftCms\Cms\Shared\Concerns\HasUid;

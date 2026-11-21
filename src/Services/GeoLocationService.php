@@ -1,18 +1,20 @@
 <?php
 
-namespace studioespresso\easyaddressfield\services;
+namespace studioespresso\easyaddressfield\Services;
 
 use CraftCms\Cms\Address\Elements\Address;
+use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use studioespresso\easyaddressfield\EasyAddressField;
-use studioespresso\easyaddressfield\events\RegisterGeocoderEvent;
-use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder;
-use studioespresso\easyaddressfield\services\geocoders\GoogleGeoCoder;
-use studioespresso\easyaddressfield\services\geocoders\NomanatimGeoCoder;
+use studioespresso\easyaddressfield\Data\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\EasyAddressFieldSettingsModel;
+use studioespresso\easyaddressfield\Events\RegisterGeocoderEvent;
+use studioespresso\easyaddressfield\Services\GeoCoders\BaseGeoCoder;
+use studioespresso\easyaddressfield\Services\GeoCoders\GoogleGeoCoder;
+use studioespresso\easyaddressfield\Services\GeoCoders\NomanatimGeoCoder;
 use Throwable;
 
+#[Singleton]
 class GeoLocationService
 {
     /** @var Collection<string, BaseGeoCoder> */
@@ -46,7 +48,7 @@ class GeoLocationService
 
     private function geoCoder(): ?BaseGeoCoder
     {
-        return $this->geoCoders->get(EasyAddressField::getInstance()->getSettings()->geoCodingService);
+        return $this->geoCoders->get(app(EasyAddressFieldSettingsModel::class)->geoCodingService);
     }
 
     /** @return Collection<string, BaseGeoCoder> */

@@ -1,11 +1,11 @@
 <?php
 
-namespace studioespresso\easyaddressfield\graphql;
+namespace studioespresso\easyaddressfield\Gql;
 
 use CraftCms\Cms\Gql\Contracts\GeneratorInterface;
 use CraftCms\Cms\Gql\GqlEntityRegistry;
 use GraphQL\Type\Definition\Type;
-use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
+use studioespresso\easyaddressfield\Fields\EasyAddressFieldField;
 
 class EasyAddressFieldTypeGenerator implements GeneratorInterface
 {

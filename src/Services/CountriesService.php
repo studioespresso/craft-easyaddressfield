@@ -1,11 +1,13 @@
 <?php
 
-namespace studioespresso\easyaddressfield\services;
+namespace studioespresso\easyaddressfield\Services;
 
 use Giggsey\Locale\Locale;
+use Illuminate\Container\Attributes\Singleton;
 use League\ISO3166\ISO3166;
 use Throwable;
 
+#[Singleton]
 class CountriesService
 {
     /**

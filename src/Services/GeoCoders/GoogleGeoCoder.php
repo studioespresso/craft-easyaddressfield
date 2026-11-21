@@ -1,13 +1,13 @@
 <?php
 
-namespace studioespresso\easyaddressfield\services\geocoders;
+namespace studioespresso\easyaddressfield\Services\GeoCoders;
 
 use CraftCms\Cms\Address\Elements\Address;
 use CraftCms\Cms\Support\Env;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
-use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\Data\EasyAddressFieldModel;
 
 class GoogleGeoCoder extends BaseGeoCoder
 {

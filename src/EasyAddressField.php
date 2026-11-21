@@ -21,12 +21,11 @@ use CraftCms\Cms\Ui\Ui;
 use CraftCms\Cms\Ui\UiContext;
 use CraftCms\Cms\Ui\UiControlTypes;
 use Illuminate\Support\Facades\Event;
-use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
-use studioespresso\easyaddressfield\form\AddressControl;
-use studioespresso\easyaddressfield\models\EasyAddressFieldSettingsModel;
-use studioespresso\easyaddressfield\services\CountriesService;
-use studioespresso\easyaddressfield\services\FieldService;
-use studioespresso\easyaddressfield\services\GeoLocationService;
+use studioespresso\easyaddressfield\Fields\EasyAddressFieldField;
+use studioespresso\easyaddressfield\Services\CountriesService;
+use studioespresso\easyaddressfield\Services\FieldService;
+use studioespresso\easyaddressfield\Services\GeoLocationService;
+use studioespresso\easyaddressfield\Ui\AddressControl;
 
 use function CraftCms\Cms\t;
 
@@ -59,14 +58,16 @@ class EasyAddressField extends Plugin
         __DIR__.'/../resources/dist/css/images' => 'css/images',
     ];
 
-    public FieldService $field { get => $this->field ??= new FieldService; }
+    public FieldService $field { get => app(FieldService::class); }
 
-    public GeoLocationService $geoLocation { get => $this->geoLocation ??= new GeoLocationService; }
+    public GeoLocationService $geoLocation { get => app(GeoLocationService::class); }
 
-    public CountriesService $countries { get => $this->countries ??= new CountriesService; }
+    public CountriesService $countries { get => app(CountriesService::class); }
 
     public function boot(UiControlTypes $controlTypes): void
     {
+        $this->app->singleton(EasyAddressFieldSettingsModel::class, fn () => $this->getSettings());
+
         $controlTypes->register(AddressControl::class);
 
         // Keeps `craft.address.countries()` working in templates
@@ -75,7 +76,7 @@ class EasyAddressField extends Plugin
             /** @return array<string, string> */
             public function countries(): array
             {
-                return EasyAddressField::getInstance()->countries->getCountriesAsArray();
+                return app(CountriesService::class)->getCountriesAsArray();
             }
         });
 

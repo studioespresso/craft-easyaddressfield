@@ -1,12 +1,12 @@
 <?php
 
-namespace studioespresso\easyaddressfield\models;
+namespace studioespresso\easyaddressfield\Data;
 
 use ArrayAccess;
 use CraftCms\Cms\Support\Facades\Deprecator;
 use CraftCms\Cms\Support\Json;
 use Illuminate\Contracts\Support\Arrayable;
-use studioespresso\easyaddressfield\EasyAddressField;
+use studioespresso\easyaddressfield\Services\CountriesService;
 use Twig\Markup;
 
 /**
@@ -104,7 +104,7 @@ class EasyAddressFieldModel implements Arrayable, ArrayAccess
             return null;
         }
 
-        return EasyAddressField::getInstance()->countries->getCountryNameByAlpha2($this->country, $locale ?? app()->getLocale());
+        return app(CountriesService::class)->getCountryNameByAlpha2($this->country, $locale ?? app()->getLocale());
     }
 
     public function getDirectionsUrl(bool $currentLocation = false): string

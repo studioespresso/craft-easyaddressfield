@@ -17,12 +17,12 @@
     ],
     "support": {
         "email": "support@studioespresso.co",
-        "issues": "https://github.com/studioespresso/craft3-easyaddressfield/issues",
-        "docs": "https://github.com/studioespresso/craft3-easyaddressfield/blob/master/README.MD"
+        "issues": "https://github.com/studioespresso/craft-easyaddressfield/issues",
+        "docs": "https://github.com/studioespresso/craft-easyaddressfield/blob/develop-v6/README.MD"
     },
     "require": {
         "php": ">=8.5",
-        "craftcms/cms": "^6.0.0-beta.1",
+        "craftcms/cms": "^6.0.0-beta.2",
         "league/iso3166": "^4.7.1",
         "giggsey/locale": "^2.10.0"
     },
@@ -40,7 +40,10 @@
     "autoload": {
         "psr-4": {
             "studioespresso\\easyaddressfield\\": "src/"
-        }
+        },
+        "files": [
+            "src/aliases.php"
+        ]
     },
     "extra": {
         "name": "Easy Address Field",

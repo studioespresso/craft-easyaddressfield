@@ -1,6 +1,6 @@
 <?php
 
-namespace studioespresso\easyaddressfield\form;
+namespace studioespresso\easyaddressfield\Ui;
 
 use CraftCms\Cms\Support\Html;
 use CraftCms\Cms\Ui\ControlPayload;

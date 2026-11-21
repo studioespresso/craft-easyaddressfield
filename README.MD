@@ -76,13 +76,13 @@ Each field gets a `{fieldHandle}_EasyAddressField` type with `name`, `street`, `
 
 ## Custom GeoCoding services
 Out of the box, the plugin comes with support for geocoding with OpenStreetMap's Nominatim service and Google.
-If you'd like to use a different service, create a class that extends `studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder`.
+If you'd like to use a different service, create a class that extends `studioespresso\easyaddressfield\Services\GeoCoders\BaseGeoCoder`.
 
 Once you created your geocoder, register it in a service provider:
 
 ````php
 use Illuminate\Support\Facades\Event;
-use studioespresso\easyaddressfield\events\RegisterGeocoderEvent;
+use studioespresso\easyaddressfield\Events\RegisterGeocoderEvent;
 
 Event::listen(function (RegisterGeocoderEvent $event) {
     $event->geoCoders['your-service'] = YourGeoCoder::class;
@@ -90,10 +90,7 @@ Event::listen(function (RegisterGeocoderEvent $event) {
 ````
 
 ## Upgrading from Craft 5 to Craft 6
-Existing addresses are kept, the plugin uses the same `easyaddressfield` table.
-
-- Custom geocoders: replace `Event::on(GeoLocationService::class, GeoLocationService::EVENT_REGISTER_GEOCODERS, ...)` with `Event::listen(RegisterGeocoderEvent::class, ...)`, see above. Geocoders no longer extend `craft\base\Component`.
-- The Feed Me and CraftQL integrations have been removed.
+See [UPGRADE.md](UPGRADE.md).
 
 ## Upgrading from Craft 4 to Craft 5
 ### getDirectionsUrl()

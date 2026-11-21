@@ -1,16 +1,19 @@
 <?php
 
-namespace studioespresso\easyaddressfield\services;
+namespace studioespresso\easyaddressfield\Services;
 
 use CraftCms\Cms\Element\Contracts\ElementInterface;
 use CraftCms\Cms\Element\ElementHelper;
-use studioespresso\easyaddressfield\EasyAddressField;
-use studioespresso\easyaddressfield\fields\EasyAddressFieldField;
-use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
-use studioespresso\easyaddressfield\records\EasyAddressFieldRecord;
+use Illuminate\Container\Attributes\Singleton;
+use studioespresso\easyaddressfield\Data\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\Fields\EasyAddressFieldField;
+use studioespresso\easyaddressfield\Models\EasyAddressFieldRecord;
 
+#[Singleton]
 class FieldService
 {
+    public function __construct(private readonly GeoLocationService $geoLocation) {}
+
     public function saveField(EasyAddressFieldField $field, ElementInterface $element): void
     {
         $value = $element->getFieldValue($field->handle);
@@ -19,7 +22,7 @@ class FieldService
         }
 
         if (! ElementHelper::isDraftOrRevision($element) && $field->geoCode) {
-            $value = EasyAddressField::getInstance()->geoLocation->locate($value);
+            $value = $this->geoLocation->locate($value);
         }
 
         EasyAddressFieldRecord::query()->updateOrCreate(

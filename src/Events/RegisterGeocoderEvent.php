@@ -1,8 +1,8 @@
 <?php
 
-namespace studioespresso\easyaddressfield\events;
+namespace studioespresso\easyaddressfield\Events;
 
-use studioespresso\easyaddressfield\services\geocoders\BaseGeoCoder;
+use studioespresso\easyaddressfield\Services\GeoCoders\BaseGeoCoder;
 
 /**
  * Dispatched when the geocoders are collected. Listen with `Event::listen(RegisterGeocoderEvent::class, ...)`.

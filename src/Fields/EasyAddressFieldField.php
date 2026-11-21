@@ -1,6 +1,6 @@
 <?php
 
-namespace studioespresso\easyaddressfield\fields;
+namespace studioespresso\easyaddressfield\Fields;
 
 use CraftCms\Cms\Element\Contracts\ElementInterface;
 use CraftCms\Cms\Field\Contracts\PreviewableFieldInterface;
@@ -13,10 +13,11 @@ use CraftCms\Cms\Ui\Nodes\Field as FormField;
 use CraftCms\Cms\Ui\Ui;
 use CraftCms\Cms\Ui\UiContext;
 use GraphQL\Type\Definition\Type;
-use studioespresso\easyaddressfield\EasyAddressField;
-use studioespresso\easyaddressfield\form\AddressControl;
-use studioespresso\easyaddressfield\graphql\EasyAddressFieldTypeGenerator;
-use studioespresso\easyaddressfield\models\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\Data\EasyAddressFieldModel;
+use studioespresso\easyaddressfield\Gql\EasyAddressFieldTypeGenerator;
+use studioespresso\easyaddressfield\Services\CountriesService;
+use studioespresso\easyaddressfield\Services\FieldService;
+use studioespresso\easyaddressfield\Ui\AddressControl;
 
 use function CraftCms\Cms\t;
 
@@ -107,7 +108,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
             return $value;
         }
 
-        return EasyAddressField::getInstance()->field->getField($this, $element, $value);
+        return app(FieldService::class)->getField($this, $element, $value);
     }
 
     /**
@@ -155,7 +156,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
 
     public function afterElementSave(ElementInterface $element, bool $isNew): void
     {
-        EasyAddressField::getInstance()->field->saveField($this, $element);
+        app(FieldService::class)->saveField($this, $element);
         parent::afterElementSave($element, $isNew);
     }
 
@@ -168,7 +169,7 @@ class EasyAddressFieldField extends Field implements PreviewableFieldInterface
     private function countryOptions(): array
     {
         $options = [];
-        foreach (EasyAddressField::getInstance()->countries->getCountriesAsArray() as $code => $name) {
+        foreach (app(CountriesService::class)->getCountriesAsArray() as $code => $name) {
             $options[] = ['label' => $name, 'value' => $code];
         }
 
